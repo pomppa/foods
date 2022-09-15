@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Ingredient {
+  id              Int               @id @default(autoincrement())
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @default(now())
+  name            String            @db.VarChar(255)
+  kcal            Decimal
+  protein         Decimal
+  carbs           Decimal
+  fat             Decimal
+  Meal_Ingredient Meal_Ingredient[]
+}
+
+model Meal {
+  id             Int               @id @default(autoincrement())
+  created_at     DateTime          @default(now())
+  updated_at     DateTime          @default(now())
+  name           String
+  MealIngredient Meal_Ingredient[]
+}
+
+model Meal_Ingredient {
+  id                Int        @id @default(autoincrement())
+  meal              Meal       @relation(fields: [meal_id], references: [id])
+  meal_id           Int
+  ingredient        Ingredient @relation(fields: [ingredient_id], references: [id])
+  ingredient_id     Int
+  ingredient_weight Decimal
+}
