@@ -2,20 +2,25 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
-import { calculateMacroPercentages, calculateMacros } from '../../lib/calculator';
-// todo make it dynamic
+import { getMealIds } from '../api/meals';
+import { calculateMacros } from '../../lib/calculator';
+
 export async function getStaticPaths() {
-  return {
-    paths: [{ params: { id: '20' } }],
-    fallback: false, //  todo check true || 'blocking'
-  }
+  const mealIds = await getMealIds();
+
+  const paths = mealIds.map((meal) => ({
+    params: { id: meal.id.toString() },
+  }))
+  return { paths, fallback: false }
 }
 
-export async function getStaticProps() {
-  const rawMealDataForId = await getMealDataForId(20);
+export async function getStaticProps(context) {
+  const id = context.params.id
+
+  const rawMealDataForId = await getMealDataForId(id);
   const allMealDataForId = JSON.stringify(rawMealDataForId);
   const mealMacros = calculateMacros(allMealDataForId);
-  //const mealMacroPercentages = calculateMacroPercentages(mealMacros)
+
   return {
     props: {
       allMealDataForId,

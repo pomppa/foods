@@ -5,23 +5,38 @@ const prisma = new PrismaClient()
 export default async function handle(req, res) {
   switch (req.method) {
     case 'POST':
-      await prisma.meal.create({
-        data: {
-          name: req.body.name,
-        },
-      })
+      await createMeal(req.body.name);
       res.status(200).json({ data: req.body })
-      const mealId = data.mealId
-      console.log('mealId created' + mealId)
-      await prisma.$disconnect()
-
       break;
     case 'GET':
-      const meals = await prisma.meal.findMany()
-      await prisma.$disconnect()
+      const meals = await getAllMeals();
       res.json(meals)
+      break;
   }
-  await prisma.$disconnect()
 
 }
 
+export async function getAllMeals() {
+  const meals = await prisma.meal.findMany()
+  await prisma.$disconnect()
+  return meals;
+}
+
+async function createMeal(name) {
+  await prisma.meal.create({
+    data: {
+      name: name,
+    },
+  })
+  await prisma.$disconnect()
+}
+
+export async function getMealIds() {
+  const mealIds = await prisma.meal.findMany({
+    select: {
+      id: true
+    }
+  })
+  await prisma.$disconnect()
+  return mealIds;
+}
