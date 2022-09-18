@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import { getMealIds } from '../api/meals';
 import { calculateMacros } from '../../lib/calculator';
+import EditMeal from '../../components/editMeal';
 
 export async function getStaticPaths() {
   const mealIds = await getMealIds();
@@ -30,7 +31,17 @@ export async function getStaticProps(context) {
 }
 
 export default function Meals({ allMealDataForId, mealMacros }) {
-  let allMealDataForIdObj = JSON.parse(allMealDataForId);
+  const [mealData, setMealData] = useState(allMealDataForId)
+  const [updatedMealMacros, setUpdatedMealMacros] = useState(mealMacros)
+
+  function handleMealChange(mealData) {
+    console.log("data was changed")
+    setMealData(mealData)
+    const newMealMacros = calculateMacros(JSON.stringify(mealData))
+    setUpdatedMealMacros(newMealMacros)
+  };
+
+  const allMealDataForIdObj = JSON.parse(allMealDataForId);
   const router = useRouter()
   const { id } = router.query
   if (!id) {
@@ -47,10 +58,11 @@ export default function Meals({ allMealDataForId, mealMacros }) {
 
       <div>
         <h1>Meal ID {id}</h1>
+        <EditMeal meal={allMealDataForIdObj} handler={handleMealChange}></EditMeal>
         <div>
           <h2> Meal macros</h2>
           <span></span>
-          <pre>{JSON.stringify(mealMacros, null, 2)}</pre>
+          <pre>{JSON.stringify(updatedMealMacros, null, 2)}</pre>
         </div>
         <div>
           <h2> Meal macro percentages</h2>
@@ -62,7 +74,7 @@ export default function Meals({ allMealDataForId, mealMacros }) {
         </h2>
       </div>
       <pre>
-        {JSON.stringify(allMealDataForIdObj, null, 2)}
+        {JSON.stringify(mealData, null, 2)}
       </pre>
 
     </div>

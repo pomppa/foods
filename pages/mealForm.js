@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 export default function MealForm() {
 
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+
   const [ingredients, setIngredients] = useState([]);
   const [meals, setMeals] = useState([]);
   const [formValues, setFormValues] = useState([{ ingredient: "", weight: "" }])
@@ -71,52 +73,88 @@ export default function MealForm() {
     const response = await fetch(endpoint, options)
     const result = await response.json()
     console.log('result ' + JSON.stringify(result, null, 2));
+    setRefresh(true);
   }
+  const handleMealSubmit = async (e) => {
+    e.preventDefault()
+    const mealName = e.target.newmeal.value;
+    const data = {
+      "name": mealName
+    }
+
+    const endpoint = '/api/meals/'
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }
+
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+    console.log('result ' + JSON.stringify(result, null, 2));
+  }
+
   if (!loading) return (
-    // We pass the event to the handleSubmit() function on submit.
-    <form onSubmit={handleSubmit}>
-      <label>pick a meal</label>
-      <select name="meal" value={selectedMeal} onChange={e => setSelectedMeal(e.target.value)}>
-        <option defaultValue>Select</option>
-        {meals.map((item, index) => (
-          <option key={index} value={item.id}>
-            {item.name}
-          </option>
-        ))}
-      </select>
-      <br></br>
 
-      {
-        formValues.map((element, index) => {
-          return (
-            <div key={index}>
-              <label>pick an ingredient</label>
-              <select name="ingredient" value={element.ingredient || ""} onChange={e => handleChange(index, e)}>
-                <option defaultValue>Select</option>
-                {ingredients.map((ingredient, ingredientIndex) => (
-                  <option key={ingredientIndex} value={ingredient.id}>
-                    {ingredient.name}
-                  </option>
-                ))}
-              </select>
-              <br></br>
-              <label>Weight</label>
-              <input type="text" name="weight" value={element.weight || ""} onChange={e => handleChange(index, e)} />
-              <br></br>
-              {
-                index ?
-                  <button type="button" className="button remove" onClick={() => removeFormFields(index)}>Remove</button>
-                  : null
-              }
-            </div>
+    <div>
+      <form onSubmit={handleMealSubmit}>
+        <span>create a new meal</span>
+        <label htmlFor="newmeal"></label>
+        <input type="text" name="newmeal" placeholder="name"></input>
+        <button>submit</button>
+      </form>
 
-          )
-        })
-      }
-      <div className="button-section">
-        <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
-        <button className="button submit" type="submit">Submit</button>
-      </div>
-    </form >
+      <span>or</span>
+      <form onSubmit={handleSubmit}>
+        <label>pick a meal</label>
+        <select name="meal" value={selectedMeal} onChange={e => setSelectedMeal(e.target.value)}>
+          <option defaultValue>Select</option>
+          {meals.map((item, index) => (
+            <option key={index} value={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+        <br></br>
+        <br />
+        <div>
+
+        </div>
+        {
+          formValues.map((element, index) => {
+            return (
+              <div key={index}>
+                <label>pick an ingredient</label>
+                <select name="ingredient" value={element.ingredient || ""} onChange={e => handleChange(index, e)}>
+                  <option defaultValue>Select</option>
+                  {ingredients.map((ingredient, ingredientIndex) => (
+                    <option key={ingredientIndex} value={ingredient.id}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </select>
+                <br></br>
+                <label>Weight</label>
+                <input type="text" name="weight" value={element.weight || ""} onChange={e => handleChange(index, e)} />
+                <br></br>
+                {
+                  index ?
+                    <button type="button" className="button remove" onClick={() => removeFormFields(index)}>Remove</button>
+                    : null
+                }
+              </div>
+
+            )
+          })
+        }
+        <div className="button-section">
+          <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
+          <button className="button submit" type="submit">Submit</button>
+        </div>
+      </form >
+    </div>
   )
 }
