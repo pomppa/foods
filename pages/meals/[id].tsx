@@ -5,8 +5,9 @@ import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import { getMealIds } from '../api/meals';
 import { calculateMacros } from '../../lib/calculator';
 import EditMeal from '../../components/editMeal';
+import { GetStaticProps, GetStaticPaths } from 'next'
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const mealIds = await getMealIds();
 
   const paths = mealIds.map((meal) => ({
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
   return { paths, fallback: false }
 }
 
-export async function getStaticProps(context) {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params.id
 
   const rawMealDataForId = await getMealDataForId(id);
@@ -34,11 +35,12 @@ export default function Meals({ allMealDataForId, mealMacros }) {
   const [mealData, setMealData] = useState(allMealDataForId)
   const [updatedMealMacros, setUpdatedMealMacros] = useState(mealMacros)
 
-  function handleMealChange(mealData) {
+  function handleMealChange(mealData: Object) {
     console.log("data was changed")
     setMealData(mealData)
     const newMealMacros = calculateMacros(JSON.stringify(mealData))
     setUpdatedMealMacros(newMealMacros)
+    return mealData;
   };
 
   const allMealDataForIdObj = JSON.parse(allMealDataForId);

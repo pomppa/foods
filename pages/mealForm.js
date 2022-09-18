@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 export default function MealForm() {
-
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 

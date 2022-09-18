@@ -45,17 +45,17 @@ export default function IngredientForm() {
   return (
     // We pass the event to the handleSubmit() function on submit.
     <form onSubmit={handleSubmit}>
-    <label htmlFor="name">Name:</label>
-    <input type="name" id="name" name="name" />
-    <label htmlFor="kcal">kcal:</label>
-    <input type="text" id="kcal" name="kcal" />
-    <label htmlFor="protein">prot:</label>
-    <input type="text" id="protein" name="protein" />
-    <label htmlFor="carbs">carbs:</label>
-    <input type="text" id="carbs" name="carbs" />
-    <label htmlFor="fat">fat:</label>
-    <input type="text" id="fat" name="fat" />
-    <button type="submit">Submit</button>
+      <label htmlFor="name">Name:</label>
+      <input type="name" id="name" name="name" />
+      <label htmlFor="kcal">kcal:</label>
+      <input type="text" id="kcal" name="kcal" />
+      <label htmlFor="protein">prot:</label>
+      <input type="text" id="protein" name="protein" />
+      <label htmlFor="carbs">carbs:</label>
+      <input type="text" id="carbs" name="carbs" />
+      <label htmlFor="fat">fat:</label>
+      <input type="text" id="fat" name="fat" />
+      <button type="submit">Submit</button>
     </form>
 
   )

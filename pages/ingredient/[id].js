@@ -3,26 +3,24 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 
-export default function Ingredient () {
-  const router = useRouter()
-  const { id } = router.query
-  if(!id) {
-    return <></>;
-  }
-  console.log(router.query)
-  console.log(id)
-  
+export default function Ingredient() {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
 
-  useEffect(() => {
+  const router = useRouter()
+  const { id } = router.query
+
+
+
+
+  useEffect((id) => {
     setLoading(true)
 
-    if(!id) {
+    if (!id) {
       setLoading(false)
       return;
     }
-    fetch('/api/ingredients/' +  id )
+    fetch('/api/ingredients/' + id)
       .then((res) => res.json())
       .then((data) => {
         setData(data)
@@ -31,10 +29,11 @@ export default function Ingredient () {
       })
   }, [])
 
+  if (!id) return <p>No ID</p>;
   if (isLoading) return <p>Loading...</p>
   if (!data) return <p>No data</p>
-  
-  return(
+
+  return (
     <div>
       <Head>
         <title>Food</title>
@@ -49,7 +48,7 @@ export default function Ingredient () {
         </p>
       </div>
       <pre>
-        { JSON.stringify(data, null, 2) }
+        {JSON.stringify(data, null, 2)}
       </pre>
     </div>
   )

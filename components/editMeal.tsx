@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { calculateMacros } from '../lib/calculator';
+import React, { useState } from 'react';
 
 export default function EditMeal({ meal, handler }) {
     const [mealData, setMealData] = useState(meal)
 
-    useEffect(() => {
-        console.log("used effect")
-        handler(mealData)
-    }, [])
-
-    function handleSetWeight(i, e) {
+    function handleSetWeight(i: string | number, e: React.ChangeEvent<HTMLInputElement>) {
         setMealData({ ...mealData, })
         console.log(`change detected, i was: ${i}, e value was: ${e.target.value} for e name ${e.target.name}`)
         let newMealData = [...mealData];
@@ -26,9 +20,9 @@ export default function EditMeal({ meal, handler }) {
             </div>
             <div>
                 <div>
-                    {mealData.map((data, i) => {
+                    {mealData.map((data: { id: React.Key; ingredient: { name: string; }; ingredient_weight: string; ingredient_id: React.Key; }, i: string | number) => {
                         return (
-                            <div>
+                            <div key={data.id}>
                                 <p>{data.ingredient.name + ' ' + data.ingredient_weight}</p>
                                 <label htmlFor="new_weight">New weight: </label>
                                 <input name="ingredient_weight" key={data.ingredient_id} value={data.ingredient_weight || ""} onChange={e => handleSetWeight(i, e)}></input >
