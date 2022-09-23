@@ -36,7 +36,6 @@ export default function Meals({ allMealDataForId, mealMacros }) {
   const [updatedMealMacros, setUpdatedMealMacros] = useState(mealMacros)
 
   function handleMealChange(mealData: Object) {
-    console.log("data was changed")
     setMealData(mealData)
     const newMealMacros = calculateMacros(JSON.stringify(mealData))
     setUpdatedMealMacros(newMealMacros)

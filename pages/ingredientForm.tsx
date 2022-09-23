@@ -40,7 +40,6 @@ export default function IngredientForm() {
     // Get the response data from server as JSON.
     // If server returns the name submitted, that means the form works.
     const result = await response.json()
-    console.log(`This was semt: ${result.data.name}`)
   }
   return (
     // We pass the event to the handleSubmit() function on submit.

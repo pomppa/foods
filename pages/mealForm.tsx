@@ -6,28 +6,28 @@ export default function MealForm() {
 
   const [ingredients, setIngredients] = useState([]);
   const [meals, setMeals] = useState([]);
-  const [formValues, setFormValues] = useState([{ ingredient: "", weight: "" }])
-  const [selectedMeal, setSelectedMeal] = useState(0)
+  const [formValues, setFormValues] = useState([{ ingredient: '', weight: ''}])
+  const [selectedMeal, setSelectedMeal] = useState('')
 
 
   useEffect(() => {
+    setLoading(true)
     fetch('/api/ingredients')
       .then((res) => res.json())
-      .then(setLoading(true))
       .then((data) => {
         setIngredients(data)
+        setLoading(false)
       })
 
     fetch('/api/meals')
       .then((res) => res.json())
       .then((data) => {
         setMeals(data)
+        setLoading(false)
       })
-      .then(setLoading(false))
   }, [])
 
   let handleChange = (i, e) => {
-    console.log(`change detected, i was: ${i}, e value was: ${e.target.value} for e name ${e.target.name}`)
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
@@ -47,7 +47,6 @@ export default function MealForm() {
   // Handles the submit event on form submit.
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(JSON.stringify(formValues, null, 2));
 
     //return;
     // Get data from the form.
@@ -57,7 +56,6 @@ export default function MealForm() {
     }
 
     const JSONdata = JSON.stringify(data)
-    console.log(JSONdata);
 
     const endpoint = '/api/meals/create'
 
@@ -71,7 +69,6 @@ export default function MealForm() {
 
     const response = await fetch(endpoint, options)
     const result = await response.json()
-    console.log('result ' + JSON.stringify(result, null, 2));
     setRefresh(true);
   }
   const handleMealSubmit = async (e) => {
@@ -93,7 +90,6 @@ export default function MealForm() {
 
     const response = await fetch(endpoint, options)
     const result = await response.json()
-    console.log('result ' + JSON.stringify(result, null, 2));
   }
 
   if (!loading) return (
@@ -110,7 +106,7 @@ export default function MealForm() {
       <form onSubmit={handleSubmit}>
         <label>pick a meal</label>
         <select name="meal" value={selectedMeal} onChange={e => setSelectedMeal(e.target.value)}>
-          <option defaultValue>Select</option>
+          <option>Select</option>
           {meals.map((item, index) => (
             <option key={index} value={item.id}>
               {item.name}
@@ -128,7 +124,7 @@ export default function MealForm() {
               <div key={index}>
                 <label>pick an ingredient</label>
                 <select name="ingredient" value={element.ingredient || ""} onChange={e => handleChange(index, e)}>
-                  <option defaultValue>Select</option>
+                  <option>Select</option>
                   {ingredients.map((ingredient, ingredientIndex) => (
                     <option key={ingredientIndex} value={ingredient.id}>
                       {ingredient.name}

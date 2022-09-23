@@ -54,7 +54,6 @@ export const calculateMacros = (data) => {
         macros.carbs = parseInt(value.ingredient.carbs) / 100 * parseInt(value.ingredient_weight) + macros.carbs;
         macros.fat = parseInt(value.ingredient.fat) / 100 * parseInt(value.ingredient_weight) + macros.fat;
         macros.totalWeight = parseInt(value.ingredient_weight) + macros.totalWeight
-        console.log(macros);
     })
 
     // calculate total macro calories

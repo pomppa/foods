@@ -5,7 +5,6 @@ export default function EditMeal({ meal, handler }) {
 
     function handleSetWeight(i: string | number, e: React.ChangeEvent<HTMLInputElement>) {
         setMealData({ ...mealData, })
-        console.log(`change detected, i was: ${i}, e value was: ${e.target.value} for e name ${e.target.name}`)
         let newMealData = [...mealData];
         newMealData[i][e.target.name] = e.target.value;
         setMealData(newMealData);

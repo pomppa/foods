@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "lib/calculator.js", "lib/calculator.js"  ],
+, "lib/calculator.ts", "lib/calculator.ts"  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async function handle(req, res) {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
       const createRecords = (data) => {
         const promises = data.ingredients.map(async (value) => {
-          await prisma.Meal_Ingredient.create({
+          await prisma.meal_Ingredient.create({
             data: {
               ingredient_weight: parseInt(value.weight),
               meal: {

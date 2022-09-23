@@ -1,6 +1,7 @@
 import prisma from '../../../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handle(req, res) {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const mealDataForId = await getMealDataForId(req.query.id);
   res.json(mealDataForId)
 }

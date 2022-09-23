@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import IngredientForm from './ingredientForm'
 
-export default function Ingredients () {  
+
+export default function Ingredient() {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
 
+  const router = useRouter()
+
+  async function fetchData() {
+    const { id } = router.query
+    if(!id) {
+      return
+    }
+    fetch('/api/ingredients/' + id)
+    .then((res) => res.json())
+    .then((data) => {
+      setData(data)
+      setLoading(false)
+
+    })
+  }
+
   useEffect(() => {
-    setLoading(true)
-
-    
-    fetch('/api/ingredients/')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-
-      })
-  }, [])
+    fetchData();
+  })
+  
   if (isLoading) return <p>Loading...</p>
   if (!data) return <p>No data</p>
-  return(
+
+  return (
     <div>
       <Head>
         <title>Food</title>
@@ -30,15 +39,13 @@ export default function Ingredients () {
 
 
       <div>
-        <h1>View ingredients</h1>
+        <h1>View meals</h1>
         <p>
-          Your ingredients
+          Your meals
         </p>
       </div>
-      <IngredientForm></IngredientForm>
-
       <pre>
-        { JSON.stringify(data, null, 2) }
+        {JSON.stringify(data, null, 2)}
       </pre>
     </div>
   )
