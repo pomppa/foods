@@ -1,43 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import IngredientForm from './ingredientForm'
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import IngredientForm from "./ingredientForm";
 
-export default function Ingredients () {  
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
+export default function Ingredients() {
+  const [data, setData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
-    fetch('/api/ingredients/')
+    setLoading(true);
+    fetch("/api/ingredients/")
       .then((res) => res.json())
       .then((data) => {
-        setData(data)
-        setLoading(false)
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
 
-      })
-  }, [])
-  if (isLoading) return <p>Loading...</p>
-  if (!data) return <p>No data</p>
-  return(
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>No data</p>;
+
+  return (
     <div>
       <Head>
-        <title>Food</title>
+        <title>Foods - Ingredients</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       <div>
-        <h1>View ingredients</h1>
-        <p>
-          Your ingredients
-        </p>
+        <h1>Ingredients</h1>
+        <p>Add a new ingredient</p>
       </div>
       <IngredientForm></IngredientForm>
-
-      <pre>
-        { JSON.stringify(data, null, 2) }
-      </pre>
+      <h2> All ingredients </h2>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
-  )
+  );
 }
