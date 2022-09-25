@@ -18,7 +18,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params.id;
-
   const rawMealDataForId = await getMealDataForId(id);
   const allMealDataForId = JSON.stringify(rawMealDataForId);
   const mealMacros = calculateMacros(allMealDataForId);

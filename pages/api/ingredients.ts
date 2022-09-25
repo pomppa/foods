@@ -1,6 +1,7 @@
 import prisma from '../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
@@ -18,10 +19,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
       break;
     case 'GET':
-      const ingredients = await prisma.ingredient.findMany()
-      await prisma.$disconnect()
+      const ingredients = await getIngredientsData()
       res.json(ingredients)
   }
-  await prisma.$disconnect()
 }
 
+export async function getIngredientsData() {
+  const ingredients = await prisma.ingredient.findMany()
+  return ingredients;
+}

@@ -15,42 +15,35 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { SetStateAction } from "react";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
-export default function ResponsiveDrawer({ handler }) {
+export default function ResponsiveDrawer() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  function pageSelected(page: SetStateAction<string>) {
-    handler(page);
-  }
-
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {["meals", "ingredients"].map((text, index) => (
-          <ListItem
-            key={text}
-            disablePadding
-            onClick={() => pageSelected(text)}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
+        {["meals", "ingredients", "plan", "mealList"].map((text, index) => (
+          <Link href={text}>
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
-      <Divider />
     </div>
   );
 

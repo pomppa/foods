@@ -36,8 +36,7 @@ export default function Ingredient() {
       </Head>
 
       <div>
-        <h1>View meals</h1>
-        <p>Your meals</p>
+        <h1>View ingredient</h1>
       </div>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>

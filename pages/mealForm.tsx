@@ -43,19 +43,15 @@ export default function MealForm() {
     setFormValues(newFormValues);
   };
 
-  // Handles the submit event on form submit.
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //return;
-    // Get data from the form.
     const data = {
       meal_id: selectedMeal,
       ingredients: formValues,
     };
 
     const JSONdata = JSON.stringify(data);
-
     const endpoint = "/api/meals/create";
 
     const options = {
@@ -66,10 +62,10 @@ export default function MealForm() {
       body: JSONdata,
     };
 
-    const response = await fetch(endpoint, options);
-    const result = await response.json();
+    await fetch(endpoint, options);
     setRefresh(true);
   };
+
   const handleMealSubmit = async (e) => {
     e.preventDefault();
     const mealName = e.target.newmeal.value;
