@@ -1,23 +1,18 @@
 import Head from "next/head";
-import React, { useState, useEffect } from "react";
-import MealForm from "./mealForm";
+import PlanMealForm from "../components/forms/plan-meal";
+import { getIngredientsData } from "./api/ingredients";
 
-export default function Plan() {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const data = await getIngredientsData();
+  const jsonData = JSON.stringify(data);
 
-  useEffect(() => {
-    fetch("/api/ingredients/")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
+  // Pass data to the page via props
+  return { props: { jsonData } };
+}
 
-  //   if (isLoading) return <p>Loading...</p>;
-  //   if (!data) return <p>No data</p>;
-
+export default function Plan({ jsonData }) {
+  const data = JSON.parse(jsonData);
   return (
     <>
       <Head>
@@ -25,9 +20,10 @@ export default function Plan() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>Plan</h2>
-      <pre>{JSON.stringify(data)}</pre>
-      {/* <pre>{ingredientsDataStatic}</pre> */}
-      <MealForm></MealForm>
+      {typeof jsonData}
+      {typeof data}
+      <pre>{jsonData}</pre>
+      <PlanMealForm data={data} jsonData={jsonData}></PlanMealForm>
     </>
   );
 }

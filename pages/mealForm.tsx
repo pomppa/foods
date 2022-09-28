@@ -8,6 +8,7 @@ export default function MealForm() {
   const [formValues, setFormValues] = useState([
     { ingredient: "", weight: "" },
   ]);
+
   const [selectedMeal, setSelectedMeal] = useState("");
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function MealForm() {
     const response = await fetch(endpoint, options);
     const result = await response.json();
   };
-
+  console.log(ingredients);
   if (!loading)
     return (
       <div>
