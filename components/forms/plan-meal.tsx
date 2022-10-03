@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { plannerMacroCalculator } from "../../lib/plan-calculator";
 
-export default function PlanMealForm(data, jsonData) {
+export default function PlanMealForm(data) {
+  const [mealMacros, setMealMacros] = useState({});
   const [formValues, setFormValues] = useState([
     { ingredient: "", weight: "0" },
   ]);
-  const [mealMacros, setMealMacros] = useState({});
 
   const handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -22,12 +22,11 @@ export default function PlanMealForm(data, jsonData) {
     let newFormValues = [...formValues];
     newFormValues.splice(i, 1);
     setFormValues(newFormValues);
+    setMealMacros(plannerMacroCalculator(formValues, data.data));
   };
 
   return (
     <>
-      <h2>Ingredients Form</h2>
-      <pre>{JSON.stringify(data)}</pre>
       {formValues.map((element, index) => {
         return (
           <div key={index}>

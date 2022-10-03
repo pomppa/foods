@@ -1,9 +1,12 @@
-import prisma from '../../../../lib/prisma';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import prisma from "../../../../lib/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const mealDataForId = await getMealDataForId(req.query.id);
-  res.json(mealDataForId)
+  res.json(mealDataForId);
 }
 
 export async function getMealDataForId(id) {
@@ -12,10 +15,10 @@ export async function getMealDataForId(id) {
       meal_id: Number(id),
     },
     include: {
-      ingredient: true
-    }
-  })
+      ingredient: true,
+    },
+  });
 
-  await prisma.$disconnect()
+  await prisma.$disconnect();
   return meal;
 }

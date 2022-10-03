@@ -1,10 +1,12 @@
-import prisma from '../../lib/prisma';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import prisma from "../../lib/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   switch (req.method) {
-    case 'POST':
+    case "POST":
       await prisma.ingredient.create({
         data: {
           name: req.body.name,
@@ -13,18 +15,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           fat: req.body.fat,
           carbs: req.body.carbs,
         },
-      })
-      res.status(200).json({ data: 'data' })
-      await prisma.$disconnect()
+      });
+      res.status(200).json({ data: "data" });
+      await prisma.$disconnect();
 
       break;
-    case 'GET':
-      const ingredients = await getIngredientsData()
-      res.json(ingredients)
+    case "GET":
+      const ingredients = await getIngredientsData();
+      res.json(ingredients);
   }
 }
 
 export async function getIngredientsData() {
-  const ingredients = await prisma.ingredient.findMany()
+  const ingredients = await prisma.ingredient.findMany();
   return ingredients;
 }
