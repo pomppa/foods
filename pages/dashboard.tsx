@@ -1,18 +1,16 @@
 import Head from "next/head";
 import Box from "@mui/material/Box";
-import Dashboard from "./dashboard";
-function Home() {
+
+function Dashboard() {
   return (
     <>
       <Head>
         <title>Foods</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <>
-        <Dashboard></Dashboard>
-      </>
+      <Box sx={{ flex: 1, px: 35 }}>Dashboard</Box>
     </>
   );
 }
 
-export default Home;
+export default Dashboard;

@@ -1,5 +1,7 @@
 import Head from "next/head";
 import PlanMealForm from "../components/forms/plan-meal";
+import PlanForm from "../components/forms/plan";
+
 import { getIngredientsData } from "./api/ingredients";
 
 export async function getServerSideProps() {
@@ -18,7 +20,8 @@ export default function Plan({ jsonData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>Plan</h2>
-      <PlanMealForm data={data}></PlanMealForm>
+      {/* <PlanMealForm data={data}></PlanMealForm> */}
+      <PlanForm data={data}></PlanForm>
     </>
   );
 }

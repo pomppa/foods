@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "@mui/material/Button";
 
 export default function MealForm() {
   const [loading, setLoading] = useState(true);
@@ -92,10 +93,10 @@ export default function MealForm() {
     return (
       <div>
         <form onSubmit={handleMealSubmit}>
-          <span>create a new meal</span>
+          <span>Create a new meal</span>
           <label htmlFor="newmeal"></label>
           <input type="text" name="newmeal" placeholder="name"></input>
-          <button>submit</button>
+          <Button>Submit</Button>
         </form>
 
         <span>or</span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import MealForm from "./mealForm";
+import MealForm from "../components/forms/mealForm";
 
 export default function Meals() {
   const [data, setData] = useState(null);

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { getMealDataForId } from "../api/meals/[id]/ingredients";
 import { getMealIds } from "../api/meals";
 import { calculateMacros } from "../../lib/calculator";
-import EditMeal from "../../components/editMeal";
+import EditMeal from "../../components/forms/editMeal";
 import { GetStaticProps, GetStaticPaths } from "next";
 
 export const getStaticPaths: GetStaticPaths = async () => {

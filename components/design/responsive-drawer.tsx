@@ -5,13 +5,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import TakeoutDiningIcon from "@mui/icons-material/TakeoutDining";
+import LocalDiningIcon from "@mui/icons-material/LocalDining";
+import ListIcon from "@mui/icons-material/List";
+import ScaleIcon from "@mui/icons-material/Scale";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -26,24 +30,39 @@ export default function ResponsiveDrawer() {
     setMobileOpen(!mobileOpen);
   };
 
+  const menu = [
+    { title: "Dashboard", icon: DashboardIcon, link: "dashboard" },
+    { title: "Create meal", icon: TakeoutDiningIcon, link: "meals" },
+    { title: "Meal List", icon: ListIcon, link: "mealList" },
+    { title: "Ingredients", icon: LocalDiningIcon, link: "ingredients" },
+    { title: "Plan", icon: ScaleIcon, link: "plan" },
+  ];
+
+  const Icon = (props) => {
+    const { icon } = props;
+    const TheIcon = icon;
+    return <TheIcon {...props} />;
+  };
+
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {["meals", "ingredients", "plan", "mealList"].map((text, index) => (
-          <Link href={text}>
-            <ListItem key={text} disablePadding>
+        {menu.map((element, index) => (
+          <Link key={element.link} href={element.link}>
+            <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <Icon icon={element.icon} />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={element.title} />
               </ListItemButton>
             </ListItem>
           </Link>
         ))}
       </List>
+      <Divider />
     </div>
   );
 

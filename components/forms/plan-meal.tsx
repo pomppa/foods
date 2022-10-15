@@ -56,7 +56,7 @@ export default function PlanMealForm(data) {
               <button
                 type="button"
                 className="button remove"
-                onClick={() => removeFormFields(index)}
+                onClick={() => deleteByIndex(index)}
               >
                 Remove
               </button>

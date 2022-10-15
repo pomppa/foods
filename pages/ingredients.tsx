@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import IngredientForm from "./ingredientForm";
+import IngredientForm from "../components/forms/ingredientForm";
 
 export default function Ingredients() {
   const [data, setData] = useState(null);
