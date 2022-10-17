@@ -21,7 +21,7 @@ export const plannerMacroCalculator = (formValues, data) => {
   };
 
   formValues.map((value) => {
-    let ingredientObject = data.find((x) => x.id == value.ingredient);
+    let ingredientObject = data.find((x) => x.id == value.id);
 
     macros.kcal =
       (parseInt(ingredientObject.kcal) / 100) * parseInt(value.weight) +

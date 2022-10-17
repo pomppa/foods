@@ -16,12 +16,19 @@ export default function Plan(data) {
 
   const [weightValues, setWeightValues] = useState([]);
 
+  const [values, setValues] = useState([]);
+
+  const [macros, setMacros] = useState({});
+
   const ingredientHandler = (value) => {
     setIngredientValues([...ingredientValues, value]);
+    console.log(ingredientValues);
   };
 
   const weightHandler = (value) => {
     setWeightValues([...weightValues, value]);
+    console.log(weightValues);
+    console.log(ingredientValues);
   };
 
   const deleteByUniqueKey = (uniqueKey) => {
@@ -70,7 +77,20 @@ export default function Plan(data) {
     ]);
   };
 
-  useEffect(() => {});
+  const merge = (ingredients, weights) => {
+    const values = ingredients.map((element, index) => {
+      return {
+        id: element.id,
+        weight: weights[index]?.weight,
+      };
+    });
+    return values;
+  };
+
+  useEffect(() => {
+    console.log(ingredientValues);
+    console.log(weightValues);
+  });
 
   return (
     <>
@@ -83,6 +103,7 @@ export default function Plan(data) {
           Add more
         </Button>
       </Box>
+      <pre>{JSON.stringify(macros, null, 2)}</pre>
     </>
   );
 }
