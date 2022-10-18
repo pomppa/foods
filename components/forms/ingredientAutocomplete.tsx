@@ -12,7 +12,7 @@ export default function IngredientAutocomplete(props) {
         value={value}
         onChange={(event: any, newValue: string | null) => {
           setValue(newValue);
-          props.ingredientHandler({
+          props.handleChange({
             ingredient: newValue,
             index: props.index,
           });
@@ -30,7 +30,7 @@ export default function IngredientAutocomplete(props) {
         variant="outlined"
         name="weight"
         onChange={(event) => {
-          props.weightHandler({
+          props.handleChange({
             weight: event.target.value,
             index: props.index,
           });

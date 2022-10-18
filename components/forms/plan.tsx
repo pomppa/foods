@@ -11,10 +11,6 @@ export default function Plan(data) {
 
   const [uniqueKey, setUniqueKey] = useState(0);
 
-  const [ingredientValues, setIngredientValues] = useState([]);
-
-  const [weightValues, setWeightValues] = useState([]);
-
   const [macros, setMacros] = useState({});
 
   const [values, setValues] = useState([{ ingredient: "0", weight: "0" }]);
@@ -24,21 +20,12 @@ export default function Plan(data) {
 
     // nice...
     if (value.ingredient) {
+      //rename ingredient -> id?
       newValues[value.index]["ingredient"] = value.ingredient.id;
     } else {
       newValues[value.index]["weight"] = value.weight;
     }
     setValues(newValues);
-  };
-
-  const ingredientHandler = (value) => {
-    setIngredientValues([...ingredientValues, value.ingredient]);
-    handleChange(value);
-  };
-
-  const weightHandler = (value) => {
-    setWeightValues([...weightValues, value]);
-    handleChange(value);
   };
 
   const deleteByUniqueKey = (uniqueKey) => {
@@ -62,9 +49,8 @@ export default function Plan(data) {
         uniqueKey: 0,
         options: options,
         index: 0,
-        ingredientHandler: ingredientHandler,
-        weightHandler: weightHandler,
         deleteByUniqueKey: deleteByUniqueKey,
+        handleChange: handleChange,
       }}
     />,
   ]);
@@ -79,9 +65,8 @@ export default function Plan(data) {
           uniqueKey: listKey,
           options: options,
           index: forms.length,
-          ingredientHandler: ingredientHandler,
-          weightHandler: weightHandler,
           deleteByUniqueKey: deleteByUniqueKey,
+          handleChange: handleChange,
         }}
       />,
     ]);
@@ -89,7 +74,7 @@ export default function Plan(data) {
 
   useEffect(() => {
     setMacros(plannerMacroCalculator(values, data.data));
-  }, [values]);
+  }, [values, forms]);
 
   return (
     <>
