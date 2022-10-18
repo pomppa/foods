@@ -7,7 +7,6 @@ export default function Plan(data) {
   const options = data.data.map((element) => {
     return { label: element.name, id: element.id };
   });
-
   options.unshift({ label: "", id: 0 });
 
   const [uniqueKey, setUniqueKey] = useState(0);
@@ -16,19 +15,30 @@ export default function Plan(data) {
 
   const [weightValues, setWeightValues] = useState([]);
 
-  const [values, setValues] = useState([]);
-
   const [macros, setMacros] = useState({});
 
+  const [values, setValues] = useState([{ ingredient: "0", weight: "0" }]);
+
+  const handleChange = (value) => {
+    let newValues = [...values, { ingredient: "0", weight: "0" }];
+
+    // nice...
+    if (value.ingredient) {
+      newValues[value.index]["ingredient"] = value.ingredient.id;
+    } else {
+      newValues[value.index]["weight"] = value.weight;
+    }
+    setValues(newValues);
+  };
+
   const ingredientHandler = (value) => {
-    setIngredientValues([...ingredientValues, value]);
-    console.log(ingredientValues);
+    setIngredientValues([...ingredientValues, value.ingredient]);
+    handleChange(value);
   };
 
   const weightHandler = (value) => {
     setWeightValues([...weightValues, value]);
-    console.log(weightValues);
-    console.log(ingredientValues);
+    handleChange(value);
   };
 
   const deleteByUniqueKey = (uniqueKey) => {
@@ -77,20 +87,9 @@ export default function Plan(data) {
     ]);
   };
 
-  const merge = (ingredients, weights) => {
-    const values = ingredients.map((element, index) => {
-      return {
-        id: element.id,
-        weight: weights[index]?.weight,
-      };
-    });
-    return values;
-  };
-
   useEffect(() => {
-    console.log(ingredientValues);
-    console.log(weightValues);
-  });
+    setMacros(plannerMacroCalculator(values, data.data));
+  }, [values]);
 
   return (
     <>

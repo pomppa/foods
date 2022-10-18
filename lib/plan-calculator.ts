@@ -1,4 +1,6 @@
 export const plannerMacroCalculator = (formValues, data) => {
+  console.log(formValues);
+  console.log(data);
   // initialize with shape
   let macros = {
     kcal: 0,
@@ -21,7 +23,12 @@ export const plannerMacroCalculator = (formValues, data) => {
   };
 
   formValues.map((value) => {
-    let ingredientObject = data.find((x) => x.id == value.id);
+    let ingredientObject = data.find((x) => x.ingredient == value.id);
+    console.log(ingredientObject);
+
+    if (ingredientObject == undefined) {
+      return macros;
+    }
 
     macros.kcal =
       (parseInt(ingredientObject.kcal) / 100) * parseInt(value.weight) +
