@@ -14,8 +14,8 @@ export default function IngredientAutocomplete(props) {
           setValue(newValue);
           props.handleChange({
             ingredient: newValue,
-            index: props.index,
-            uniqueKey: props.uniqueKey
+            uniqueKey: props.uniqueKey,
+            values: props.values
           });
         }}
         inputValue={inputValue}
@@ -24,7 +24,7 @@ export default function IngredientAutocomplete(props) {
         }}
         options={props.options}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label={"Ingredient" + props.uniqueKey} />}
+        renderInput={(params) => <TextField {...params} label={"Ingredient"} />}
       />
       <TextField
         label="Weight"
@@ -33,7 +33,8 @@ export default function IngredientAutocomplete(props) {
         onChange={(event) => {
           props.handleChange({
             weight: event.target.value,
-            index: props.index,
+            uniqueKey: props.uniqueKey,
+            values: props.values
           });
         }}
       />
@@ -41,7 +42,10 @@ export default function IngredientAutocomplete(props) {
         <Button
           variant="contained"
           onClick={() => {
-            props.deleteByUniqueKey(props.uniqueKey);
+            props.deleteByUniqueKey({
+              uniqueKey: props.uniqueKey,
+              values: props.values
+            });
           }}
         >
           Remove

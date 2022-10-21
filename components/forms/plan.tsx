@@ -4,58 +4,48 @@ import { Button, Box } from "@mui/material";
 import IngredientAutocomplete from "./ingredientAutocomplete";
 
 export default function Plan(data) {
+  
   const options = data.data.map((element) => {
     return { label: element.name, id: element.id };
   });
+
   options.unshift({ label: "", id: 0 });
 
   const [uniqueKey, setUniqueKey] = useState(0);
 
   const [macros, setMacros] = useState({});
-
-  const [values, setValues] = useState([{ ingredient: "0", weight: "0", uniqueKey: 0 }]);
+  
+  const [values, setValues] = useState([{ ingredient: 0, weight: 0, uniqueKey: 0 }]);
 
   const handleChange = (value) => {
-    let newValues = [...values];
-    const obj = newValues.find(element => element.uniqueKey == value.uniqueKey);
-    console.log(obj)
-    console.log(newValues)
-
+    let newValues = [...value.values];
+    const element = newValues.find(element => element.uniqueKey == value.uniqueKey);
+    
     // nice...
     if (value.ingredient) {
-      //rename ingredient -> id?
-      // newValues[value.index]["ingredient"] = value.ingredient.id;
-      obj["ingredient"] = value.ingredient.id;
-      console.log(obj)
-
+      element.ingredient = value.ingredient.id 
     } else {
-      obj["weight"] = value.weight;
-
-      // newValues[value.index]["weight"] = value.weight;
+      element.weight = value.weight
     }
-    // newValues[value.index]["uniqueKey"] = value.uniqueKey
-    console.log(newValues)
-
+  
     setValues(newValues);
   };
 
-  const deleteByUniqueKey = (uniqueKey) => {
-
-    console.log(uniqueKey);
-    
-    setForms((oldValues) => {
-      return oldValues.filter((obj) => {
-        return obj.props.uniqueKey !== uniqueKey;
+  const deleteByUniqueKey = (values) => {
+    setForms((prevValues) => {
+      return prevValues.filter((obj) => {
+        return obj.props.uniqueKey !== values.uniqueKey;
       });
     });
+
     setValues((oldValues) => {
       return oldValues.filter((obj) => {
-        return obj.uniqueKey !== uniqueKey;
+        return obj.uniqueKey !== values.uniqueKey;
       });
     });
   };
 
-  const incrementListKey = () => {
+  const incrementedUniqueKey = () => {
     const incrementedUniqueKey = uniqueKey + 1;
     setUniqueKey(incrementedUniqueKey);
     return incrementedUniqueKey;
@@ -70,34 +60,30 @@ export default function Plan(data) {
         index: 0,
         deleteByUniqueKey: deleteByUniqueKey,
         handleChange: handleChange,
+        values: values
       }}
     />,
   ]);
 
   const addIngredientAutoCompletes = () => {
-
-    const listKey = incrementListKey();
-
-    setValues([...values, { ingredient: "0", weight: "0", uniqueKey: listKey }])
-
+    const key = incrementedUniqueKey();
     setForms([
       ...forms,
       <IngredientAutocomplete
         {...{
-          key: listKey,
-          uniqueKey: listKey,
+          key: key,
+          uniqueKey: key,
           options: options,
           index: forms.length,
           deleteByUniqueKey: deleteByUniqueKey,
           handleChange: handleChange,
+          values: [...values, { ingredient: 0, weight: 0, uniqueKey: key }],
         }}
       />,
     ]);
   };
 
   useEffect(() => {
-    console.log(values);
-    
     setMacros(plannerMacroCalculator(values, data.data));
   }, [values, forms]);
 
