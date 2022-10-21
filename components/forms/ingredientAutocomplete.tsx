@@ -15,6 +15,7 @@ export default function IngredientAutocomplete(props) {
           props.handleChange({
             ingredient: newValue,
             index: props.index,
+            uniqueKey: props.uniqueKey
           });
         }}
         inputValue={inputValue}
@@ -23,7 +24,7 @@ export default function IngredientAutocomplete(props) {
         }}
         options={props.options}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label={"Ingredient"} />}
+        renderInput={(params) => <TextField {...params} label={"Ingredient" + props.uniqueKey} />}
       />
       <TextField
         label="Weight"

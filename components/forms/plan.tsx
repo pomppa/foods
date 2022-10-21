@@ -13,25 +13,44 @@ export default function Plan(data) {
 
   const [macros, setMacros] = useState({});
 
-  const [values, setValues] = useState([{ ingredient: "0", weight: "0" }]);
+  const [values, setValues] = useState([{ ingredient: "0", weight: "0", uniqueKey: 0 }]);
 
   const handleChange = (value) => {
-    let newValues = [...values, { ingredient: "0", weight: "0" }];
+    let newValues = [...values];
+    const obj = newValues.find(element => element.uniqueKey == value.uniqueKey);
+    console.log(obj)
+    console.log(newValues)
 
     // nice...
     if (value.ingredient) {
       //rename ingredient -> id?
-      newValues[value.index]["ingredient"] = value.ingredient.id;
+      // newValues[value.index]["ingredient"] = value.ingredient.id;
+      obj["ingredient"] = value.ingredient.id;
+      console.log(obj)
+
     } else {
-      newValues[value.index]["weight"] = value.weight;
+      obj["weight"] = value.weight;
+
+      // newValues[value.index]["weight"] = value.weight;
     }
+    // newValues[value.index]["uniqueKey"] = value.uniqueKey
+    console.log(newValues)
+
     setValues(newValues);
   };
 
   const deleteByUniqueKey = (uniqueKey) => {
+
+    console.log(uniqueKey);
+    
     setForms((oldValues) => {
       return oldValues.filter((obj) => {
         return obj.props.uniqueKey !== uniqueKey;
+      });
+    });
+    setValues((oldValues) => {
+      return oldValues.filter((obj) => {
+        return obj.uniqueKey !== uniqueKey;
       });
     });
   };
@@ -56,7 +75,11 @@ export default function Plan(data) {
   ]);
 
   const addIngredientAutoCompletes = () => {
+
     const listKey = incrementListKey();
+
+    setValues([...values, { ingredient: "0", weight: "0", uniqueKey: listKey }])
+
     setForms([
       ...forms,
       <IngredientAutocomplete
@@ -73,6 +96,8 @@ export default function Plan(data) {
   };
 
   useEffect(() => {
+    console.log(values);
+    
     setMacros(plannerMacroCalculator(values, data.data));
   }, [values, forms]);
 
