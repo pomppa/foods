@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { getMealDataForId } from "../api/meals/[id]/ingredients";
-import { getMealIds } from "../api/meals";
-import { calculateMacros } from "../../lib/calculator";
-import EditMeal from "../../components/forms/editMeal";
-import { GetStaticProps, GetStaticPaths } from "next";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { getMealDataForId } from '../api/meals/[id]/ingredients';
+import { getMealIds } from '../api/meals';
+import { calculateMacros } from '../../lib/calculator';
+import EditMeal from '../../components/forms/editMeal';
+import { GetStaticProps, GetStaticPaths } from 'next';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const mealIds = await getMealIds();
@@ -34,7 +34,7 @@ export default function Meals({ allMealDataForId, mealMacros }) {
   const [mealData, setMealData] = useState(allMealDataForId);
   const [updatedMealMacros, setUpdatedMealMacros] = useState(mealMacros);
 
-  function handleMealChange(mealData: Object) {
+  function handleMealChange(mealData) {
     setMealData(mealData);
     const newMealMacros = calculateMacros(JSON.stringify(mealData));
     setUpdatedMealMacros(newMealMacros);

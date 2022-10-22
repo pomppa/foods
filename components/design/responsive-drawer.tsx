@@ -1,25 +1,25 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TakeoutDiningIcon from "@mui/icons-material/TakeoutDining";
-import LocalDiningIcon from "@mui/icons-material/LocalDining";
-import ListIcon from "@mui/icons-material/List";
-import ScaleIcon from "@mui/icons-material/Scale";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import ListIcon from '@mui/icons-material/List';
+import ScaleIcon from '@mui/icons-material/Scale';
 
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -31,11 +31,11 @@ export default function ResponsiveDrawer() {
   };
 
   const menu = [
-    { title: "Dashboard", icon: DashboardIcon, link: "dashboard" },
-    { title: "Create meal", icon: TakeoutDiningIcon, link: "meals" },
-    { title: "Meal List", icon: ListIcon, link: "mealList" },
-    { title: "Ingredients", icon: LocalDiningIcon, link: "ingredients" },
-    { title: "Plan", icon: ScaleIcon, link: "plan" },
+    { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
+    { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
+    { title: 'Meal List', icon: ListIcon, link: 'mealList' },
+    { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
+    { title: 'Plan', icon: ScaleIcon, link: 'plan' },
   ];
 
   const Icon = (props) => {
@@ -67,7 +67,7 @@ export default function ResponsiveDrawer() {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -82,7 +82,7 @@ export default function ResponsiveDrawer() {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -105,9 +105,9 @@ export default function ResponsiveDrawer() {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}
@@ -117,9 +117,9 @@ export default function ResponsiveDrawer() {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
               width: drawerWidth,
             },
           }}

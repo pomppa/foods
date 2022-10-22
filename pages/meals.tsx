@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import MealForm from "../components/forms/mealForm";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import MealForm from '../components/forms/mealForm';
 
 export default function Meals() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("/api/meals")
+    fetch('/api/meals')
       .then((res) => res.json())
       .then((data) => {
         setData(data);

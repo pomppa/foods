@@ -1,20 +1,20 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
-import createEmotionCache from "../utils/createEmotionCache";
-import light from "../styles/theme/light";
-import dark from "../styles/theme/dark";
+import createEmotionCache from '../utils/createEmotionCache';
+import light from '../styles/theme/light';
+import dark from '../styles/theme/dark';
 
-import Layout from "../components/design/layout";
+import Layout from '../components/design/layout';
 
-import "../styles/globals.css";
+import '../styles/globals.css';
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;

@@ -1,12 +1,13 @@
-import prisma from "../../../lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from '../../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   switch (req.method) {
-    case "POST":
+    case 'POST':
+      // eslint-disable-next-line no-case-declarations
       const createRecords = (data) => {
         const promises = data.ingredients.map(async (value) => {
           await prisma.meal_Ingredient.create({
@@ -32,7 +33,8 @@ export default async function handle(
       createRecords(req.body);
       res.status(200).json({ data: req.body });
       break;
-    case "GET":
+    case 'GET':
+      // eslint-disable-next-line no-case-declarations
       const meals = await prisma.meal.findMany();
       await prisma.$disconnect();
       res.json(meals);

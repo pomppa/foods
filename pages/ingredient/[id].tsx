@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 export default function Ingredient() {
   const [data, setData] = useState(null);
@@ -13,7 +13,7 @@ export default function Ingredient() {
     if (!id) {
       return;
     }
-    fetch("/api/ingredients/" + id)
+    fetch('/api/ingredients/' + id)
       .then((res) => res.json())
       .then((data) => {
         setData(data);

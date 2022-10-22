@@ -1,8 +1,7 @@
-import Head from "next/head";
-import PlanMealForm from "../components/forms/plan-meal";
-import PlanForm from "../components/forms/plan";
+import Head from 'next/head';
+import PlanForm from '../components/forms/plan';
 
-import { getIngredientsData } from "./api/ingredients";
+import { getIngredientsData } from './api/ingredients';
 
 export async function getServerSideProps() {
   const data = await getIngredientsData();

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
+import { useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
 
 export default function MealForm() {
   const [loading, setLoading] = useState(true);
@@ -7,21 +7,21 @@ export default function MealForm() {
   const [ingredients, setIngredients] = useState([]);
   const [meals, setMeals] = useState([]);
   const [formValues, setFormValues] = useState([
-    { ingredient: "", weight: "" },
+    { ingredient: '', weight: '' },
   ]);
 
-  const [selectedMeal, setSelectedMeal] = useState("");
+  const [selectedMeal, setSelectedMeal] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/ingredients")
+    fetch('/api/ingredients')
       .then((res) => res.json())
       .then((data) => {
         setIngredients(data);
         setLoading(false);
       });
 
-    fetch("/api/meals")
+    fetch('/api/meals')
       .then((res) => res.json())
       .then((data) => {
         setMeals(data);
@@ -29,18 +29,18 @@ export default function MealForm() {
       });
   }, []);
 
-  let handleChange = (i, e) => {
-    let newFormValues = [...formValues];
+  const handleChange = (i, e) => {
+    const newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   };
 
-  let addFormFields = () => {
-    setFormValues([...formValues, { ingredient: "", weight: "" }]);
+  const addFormFields = () => {
+    setFormValues([...formValues, { ingredient: '', weight: '' }]);
   };
 
-  let removeFormFields = (i) => {
-    let newFormValues = [...formValues];
+  const removeFormFields = (i) => {
+    const newFormValues = [...formValues];
     newFormValues.splice(i, 1);
     setFormValues(newFormValues);
   };
@@ -54,12 +54,12 @@ export default function MealForm() {
     };
 
     const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/meals/create";
+    const endpoint = '/api/meals/create';
 
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSONdata,
     };
@@ -75,12 +75,12 @@ export default function MealForm() {
       name: mealName,
     };
 
-    const endpoint = "/api/meals/";
+    const endpoint = '/api/meals/';
 
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     };
@@ -123,7 +123,7 @@ export default function MealForm() {
                 <label>pick an ingredient</label>
                 <select
                   name="ingredient"
-                  value={element.ingredient || ""}
+                  value={element.ingredient || ''}
                   onChange={(e) => handleChange(index, e)}
                 >
                   <option>Select</option>
@@ -138,7 +138,7 @@ export default function MealForm() {
                 <input
                   type="text"
                   name="weight"
-                  value={element.weight || ""}
+                  value={element.weight || ''}
                   onChange={(e) => handleChange(index, e)}
                 />
                 <br></br>

@@ -1,12 +1,12 @@
-import Head from "next/head";
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import Head from 'next/head';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 export default function MealList() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/meals/")
+    fetch('/api/meals/')
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -27,6 +27,7 @@ export default function MealList() {
       <ul>
         {data.map((value, index) => {
           return (
+            // eslint-disable-next-line react/jsx-key
             <li>
               <Link href={`/meals/${value.id}`}>{value.name}</Link>
             </li>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react"; 
 import { plannerMacroCalculator } from "../../lib/plan-calculator";
 import { Button, Box } from "@mui/material";
 import IngredientAutocomplete from "./ingredientAutocomplete";
@@ -15,11 +15,11 @@ export default function Plan(data) {
     return { label: element.name, id: element.id };
   });
 
-  options.unshift({ label: "", id: 0 });
 
   const [macros, setMacros] = useState({});
 
   const handleChange = (value) => {
+
     if (value.ingredient === null && value.uniqueKey !== 0) {
       deleteByUniqueKey(value)
       return
@@ -48,6 +48,7 @@ export default function Plan(data) {
   };
 
   const [forms, setForms] = useState([
+    // eslint-disable-next-line react/jsx-key
     <IngredientAutocomplete
       {...{
         key: 0,
@@ -67,6 +68,7 @@ export default function Plan(data) {
 
     setForms([
       ...forms,
+      // eslint-disable-next-line react/jsx-key
       <IngredientAutocomplete
         {...{
           key: uniqueKey,

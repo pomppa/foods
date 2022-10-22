@@ -21,7 +21,7 @@ export const calculateMacros = (data) => {
   }
 
   // initialize with shape
-  let macros: macros = {
+  const macros: macros = {
     meal: 0,
     kcal: 0,
     fat: 0,

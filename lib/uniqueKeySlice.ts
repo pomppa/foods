@@ -1,21 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const uniqueKeySlice = createSlice({
-    name: 'uniqueKey',
-    initialState: {
-        value: 0
+  name: 'uniqueKey',
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    incremented: (state) => {
+      state.value += 1;
     },
-    reducers: {
-        incremented: state => {
-            state.value += 1
-        }
-    }
-})
+  },
+});
 
-export const { incremented } = uniqueKeySlice.actions
-export default uniqueKeySlice.reducer
-
-
-
-
-
+export const { incremented } = uniqueKeySlice.actions;
+export default uniqueKeySlice.reducer;

@@ -13,7 +13,9 @@ const valuesSlice = createSlice({
                 case "DELETE":
                     return state.filter(value => value.uniqueKey !== action.payload.data.uniqueKey)
                 case "UPDATE":
+                    // eslint-disable-next-line no-case-declarations
                     const { ingredient, weight, uniqueKey } = action.payload.data
+                    // eslint-disable-next-line no-case-declarations
                     const existingValue = state.find(value => value.uniqueKey === uniqueKey)
                     if (existingValue) {
                         if (ingredient) {

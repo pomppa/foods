@@ -1,9 +1,9 @@
 export default function IngredientForm() {
   const handleSubmit = async (event) => {
-    await fetch("/api/ingredients", {
-      method: "POST",
+    await fetch('/api/ingredients', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: event.target.name.value,

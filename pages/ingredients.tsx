@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import IngredientForm from "../components/forms/ingredientForm";
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import IngredientForm from '../components/forms/ingredientForm';
 
 export default function Ingredients() {
   const [data, setData] = useState(null);
@@ -8,7 +8,7 @@ export default function Ingredients() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/ingredients/")
+    fetch('/api/ingredients/')
       .then((res) => res.json())
       .then((data) => {
         setData(data);
