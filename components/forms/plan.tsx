@@ -8,6 +8,9 @@ import { valueUpdated, valueAdded } from "../../lib/valuesSlice";
 
 export default function Plan(data) {
 
+  const CASE_DELETE = "DELETE";
+  const CASE_UPDATE = "UPDATE";
+
   const options = data.data.map((element) => {
     return { label: element.name, id: element.id };
   });
@@ -21,14 +24,17 @@ export default function Plan(data) {
   const handleChange = (value) => {
     // nice...
     if (value.ingredient) {
-      store.dispatch(valueUpdated({ data: { ingredient: value.ingredient.id, uniqueKey: value.uniqueKey }, case: "UPDATE" }));
+      store.dispatch(valueUpdated({ data: { ingredient: value.ingredient.id, uniqueKey: value.uniqueKey }, case: CASE_UPDATE }));
     } else {
-      store.dispatch(valueUpdated({ data: { weight: value.weight, uniqueKey: value.uniqueKey }, case: "UPDATE" }));
+      store.dispatch(valueUpdated({ data: { weight: value.weight, uniqueKey: value.uniqueKey }, case: CASE_UPDATE }));
     }
+    setMacros(plannerMacroCalculator(store.getState().valueUpdated, data.data));
   };
 
   const deleteByUniqueKey = (values) => {
-    store.dispatch(valueUpdated({ data: { uniqueKey: values.uniqueKey }, case: "DELETE" }));
+    store.dispatch(valueUpdated({ data: { uniqueKey: values.uniqueKey }, case: CASE_DELETE }));
+
+    setMacros(plannerMacroCalculator(store.getState().valueUpdated, data.data));
 
     setForms((prevValues) => {
       return prevValues.filter((obj) => {
@@ -73,14 +79,6 @@ export default function Plan(data) {
       />,
     ]);
   };
-
-  // useEffect(() => {
-  //   console.log("useEffect")
-  //   console.log(store.getState().valueUpdated)
-
-  //   setMacros(plannerMacroCalculator(store.getState().valueUpdated, data.data));
-  // }, [forms]);
-
   return (
     <>
       {[...forms]}
@@ -92,7 +90,7 @@ export default function Plan(data) {
           Add more
         </Button>
       </Box>
-      <pre>{JSON.stringify(plannerMacroCalculator(store.getState().valueUpdated, data.data), null, 2)}</pre>
+      <pre>{JSON.stringify(macros, null, 2)}</pre>
     </>
   );
 }

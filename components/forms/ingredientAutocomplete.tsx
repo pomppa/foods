@@ -15,7 +15,6 @@ export default function IngredientAutocomplete(props) {
           props.handleChange({
             ingredient: newValue,
             uniqueKey: props.uniqueKey,
-            values: props.values
           });
         }}
         inputValue={inputValue}
@@ -34,7 +33,6 @@ export default function IngredientAutocomplete(props) {
           props.handleChange({
             weight: event.target.value,
             uniqueKey: props.uniqueKey,
-            values: props.values
           });
         }}
       />
@@ -43,8 +41,7 @@ export default function IngredientAutocomplete(props) {
           variant="contained"
           onClick={() => {
             props.deleteByUniqueKey({
-              uniqueKey: props.uniqueKey,
-              values: props.values
+              uniqueKey: props.uniqueKey
             });
           }}
         >
