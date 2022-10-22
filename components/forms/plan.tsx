@@ -19,15 +19,19 @@ export default function Plan(data) {
 
   const [macros, setMacros] = useState({});
 
-  const [values, setValues] = useState([{ ingredient: 0, weight: 0, uniqueKey: 0 }]);
-
   const handleChange = (value) => {
+    if (value.ingredient === null && value.uniqueKey !== 0) {
+      deleteByUniqueKey(value)
+      return
+    }
+
     // nice...
     if (value.ingredient) {
       store.dispatch(valueUpdated({ data: { ingredient: value.ingredient.id, uniqueKey: value.uniqueKey }, case: CASE_UPDATE }));
     } else {
       store.dispatch(valueUpdated({ data: { weight: value.weight, uniqueKey: value.uniqueKey }, case: CASE_UPDATE }));
     }
+
     setMacros(plannerMacroCalculator(store.getState().valueUpdated, data.data));
   };
 
@@ -49,10 +53,8 @@ export default function Plan(data) {
         key: 0,
         uniqueKey: 0,
         options: options,
-        index: 0,
         deleteByUniqueKey: deleteByUniqueKey,
         handleChange: handleChange,
-        values: values
       }}
     />,
   ]);
@@ -62,7 +64,6 @@ export default function Plan(data) {
     const uniqueKey = store.getState().uniqueKey.value
 
     store.dispatch(valueAdded({ ingredient: 0, weight: 0, uniqueKey: uniqueKey }));
-    console.log(store.getState())
 
     setForms([
       ...forms,
@@ -71,10 +72,8 @@ export default function Plan(data) {
           key: uniqueKey,
           uniqueKey: uniqueKey,
           options: options,
-          index: forms.length,
           deleteByUniqueKey: deleteByUniqueKey,
           handleChange: handleChange,
-          values: [...values, { ingredient: 0, weight: 0, uniqueKey: uniqueKey }],
         }}
       />,
     ]);
