@@ -22,9 +22,10 @@ export const plannerMacroCalculator = (formValues, data) => {
 
   formValues.map((value) => {
     //rename ingredient -> id?
-    let ingredientObject = data.find((x) => x.ingredient == value.id);
+    let ingredientObject = data.find((x) => x.id === value.ingredient);
+
     if (ingredientObject == undefined) {
-      return macros;
+      return macros
     }
 
     macros.kcal =

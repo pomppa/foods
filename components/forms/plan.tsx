@@ -4,7 +4,7 @@ import { Button, Box } from "@mui/material";
 import IngredientAutocomplete from "./ingredientAutocomplete";
 
 export default function Plan(data) {
-  
+
   const options = data.data.map((element) => {
     return { label: element.name, id: element.id };
   });
@@ -14,20 +14,20 @@ export default function Plan(data) {
   const [uniqueKey, setUniqueKey] = useState(0);
 
   const [macros, setMacros] = useState({});
-  
+
   const [values, setValues] = useState([{ ingredient: 0, weight: 0, uniqueKey: 0 }]);
 
   const handleChange = (value) => {
     let newValues = [...value.values];
     const element = newValues.find(element => element.uniqueKey == value.uniqueKey);
-    
+
     // nice...
     if (value.ingredient) {
-      element.ingredient = value.ingredient.id 
+      element.ingredient = value.ingredient.id
     } else {
       element.weight = value.weight
     }
-  
+
     setValues(newValues);
   };
 
@@ -67,6 +67,7 @@ export default function Plan(data) {
 
   const addIngredientAutoCompletes = () => {
     const key = incrementedUniqueKey();
+
     setForms([
       ...forms,
       <IngredientAutocomplete
