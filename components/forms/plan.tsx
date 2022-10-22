@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { plannerMacroCalculator } from "../../lib/plan-calculator";
 import { Button, Box } from "@mui/material";
 import IngredientAutocomplete from "./ingredientAutocomplete";
+import { store } from '../../lib/store';
+import { incremented } from "../../lib/uniqueKeySlice";
+import { valueUpdated, valueAdded } from "../../lib/valuesSlice";
 
 export default function Plan(data) {
 
@@ -11,44 +14,27 @@ export default function Plan(data) {
 
   options.unshift({ label: "", id: 0 });
 
-  const [uniqueKey, setUniqueKey] = useState(0);
-
   const [macros, setMacros] = useState({});
 
   const [values, setValues] = useState([{ ingredient: 0, weight: 0, uniqueKey: 0 }]);
 
   const handleChange = (value) => {
-    let newValues = [...value.values];
-    const element = newValues.find(element => element.uniqueKey == value.uniqueKey);
-
     // nice...
     if (value.ingredient) {
-      element.ingredient = value.ingredient.id
+      store.dispatch(valueUpdated({ data: { ingredient: value.ingredient.id, uniqueKey: value.uniqueKey }, case: "UPDATE" }));
     } else {
-      element.weight = value.weight
+      store.dispatch(valueUpdated({ data: { weight: value.weight, uniqueKey: value.uniqueKey }, case: "UPDATE" }));
     }
-
-    setValues(newValues);
   };
 
   const deleteByUniqueKey = (values) => {
+    store.dispatch(valueUpdated({ data: { uniqueKey: values.uniqueKey }, case: "DELETE" }));
+
     setForms((prevValues) => {
       return prevValues.filter((obj) => {
         return obj.props.uniqueKey !== values.uniqueKey;
       });
     });
-
-    setValues((oldValues) => {
-      return oldValues.filter((obj) => {
-        return obj.uniqueKey !== values.uniqueKey;
-      });
-    });
-  };
-
-  const incrementedUniqueKey = () => {
-    const incrementedUniqueKey = uniqueKey + 1;
-    setUniqueKey(incrementedUniqueKey);
-    return incrementedUniqueKey;
   };
 
   const [forms, setForms] = useState([
@@ -66,27 +52,34 @@ export default function Plan(data) {
   ]);
 
   const addIngredientAutoCompletes = () => {
-    const key = incrementedUniqueKey();
+    store.dispatch(incremented());
+    const uniqueKey = store.getState().uniqueKey.value
+
+    store.dispatch(valueAdded({ ingredient: 0, weight: 0, uniqueKey: uniqueKey }));
+    console.log(store.getState())
 
     setForms([
       ...forms,
       <IngredientAutocomplete
         {...{
-          key: key,
-          uniqueKey: key,
+          key: uniqueKey,
+          uniqueKey: uniqueKey,
           options: options,
           index: forms.length,
           deleteByUniqueKey: deleteByUniqueKey,
           handleChange: handleChange,
-          values: [...values, { ingredient: 0, weight: 0, uniqueKey: key }],
+          values: [...values, { ingredient: 0, weight: 0, uniqueKey: uniqueKey }],
         }}
       />,
     ]);
   };
 
-  useEffect(() => {
-    setMacros(plannerMacroCalculator(values, data.data));
-  }, [values, forms]);
+  // useEffect(() => {
+  //   console.log("useEffect")
+  //   console.log(store.getState().valueUpdated)
+
+  //   setMacros(plannerMacroCalculator(store.getState().valueUpdated, data.data));
+  // }, [forms]);
 
   return (
     <>
@@ -99,7 +92,7 @@ export default function Plan(data) {
           Add more
         </Button>
       </Box>
-      <pre>{JSON.stringify(macros, null, 2)}</pre>
+      <pre>{JSON.stringify(plannerMacroCalculator(store.getState().valueUpdated, data.data), null, 2)}</pre>
     </>
   );
 }
