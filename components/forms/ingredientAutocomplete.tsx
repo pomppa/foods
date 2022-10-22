@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete, Button } from '@mui/material';

@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 
 export default function MealForm() {
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refresh, setRefresh] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [meals, setMeals] = useState([]);
@@ -86,6 +87,7 @@ export default function MealForm() {
     };
 
     const response = await fetch(endpoint, options);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result = await response.json();
   };
 
