@@ -1,6 +1,26 @@
-export const plannerMacroCalculator = (formValues, data) => {
-  // initialize with shape
-  const macros = {
+interface Macros {
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  totalWeight: number;
+  kcalPerMacro: {
+    protein: number;
+    carbs: number;
+    fat: number;
+    total: number;
+  };
+  macroPercentages: {
+    protein: number;
+    carbs: number;
+    fat: number;
+    total: number;
+  };
+}
+
+export const planCalculator = (formValues, data) => {
+  // initialize with default values
+  const macros: Macros = {
     kcal: 0,
     fat: 0,
     carbs: 0,
@@ -21,7 +41,6 @@ export const plannerMacroCalculator = (formValues, data) => {
   };
 
   formValues.map((value) => {
-    //rename ingredient -> id?
     const ingredientObject = data.find((x) => x.id === value.ingredient);
 
     if (ingredientObject == undefined) {
