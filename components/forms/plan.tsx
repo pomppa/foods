@@ -106,7 +106,7 @@ export default function Plan(data) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid xs={6} md={6}>
+        <Grid item xs={6} md={6}>
           {[...forms]}
           <Box sx={{ mt: 2 }}>
             <Button
@@ -115,15 +115,13 @@ export default function Plan(data) {
             >
               Add more
             </Button>
+            <Button sx={{ ml: 1 }} variant="contained">
+              Save as a meal?
+            </Button>
           </Box>
         </Grid>
-        <Grid xs={6} md={4}>
+        <Grid item xs={6} md={4}>
           <pre>{JSON.stringify(macros, null, 2)}</pre>
-        </Grid>
-        <Grid xs={6} md={6}>
-          <Box sx={{ mt: 2 }}>
-            <Button variant="contained">Save as a meal?</Button>
-          </Box>
         </Grid>
       </Grid>
     </>
