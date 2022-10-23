@@ -1,18 +1,28 @@
 import { useEffect, useState } from 'react';
-import { TextField, Box, Button } from '@mui/material';
+import { Alert, Snackbar, TextField, Box, Button } from '@mui/material';
 
 interface FormData {
   name: string;
-  kcal: string;
-  fat: string;
-  carbs: string;
-  protein: string;
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
 }
 
 export default function IngredientForm() {
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const defaultValues = {
+    name: '',
+    kcal: 0,
+    fat: 0,
+    carbs: 0,
+    protein: 0,
+  };
+  const [formData, setFormData] = useState<FormData>(defaultValues);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = async (event) => {
+    //TODO handle 200 / 500
+
     await fetch('/api/ingredients', {
       method: 'POST',
       headers: {
@@ -20,84 +30,128 @@ export default function IngredientForm() {
       },
       body: JSON.stringify(formData),
     });
+
+    setFormData(defaultValues);
+    setOpen(true);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 2500);
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Box sx={{ m: 2 }}>
-        <TextField
-          label="Name"
-          variant="outlined"
-          name="name"
-          onChange={(event) => {
-            setFormData((prevState) => ({
-              ...prevState,
-              name: event.target.value,
-            }));
-          }}
-        />
-      </Box>
-      <Box sx={{ m: 2 }}>
-        <TextField
-          label="Calories"
-          variant="outlined"
-          name="kcal"
-          onChange={(event) => {
-            setFormData((prevState) => ({
-              ...prevState,
-              kcal: event.target.value,
-            }));
-          }}
-        />
-      </Box>
-      <Box sx={{ m: 2 }}>
-        <TextField
-          label="Fats"
-          variant="outlined"
-          name="fat"
-          onChange={(event) => {
-            setFormData((prevState) => ({
-              ...prevState,
-              fat: event.target.value,
-            }));
-          }}
-        />
-      </Box>
-      <Box sx={{ m: 2 }}>
-        <TextField
-          label="Carbs"
-          variant="outlined"
-          name="carbs"
-          onChange={(event) => {
-            setFormData((prevState) => ({
-              ...prevState,
-              carbs: event.target.value,
-            }));
-          }}
-        />
-      </Box>
-      <Box sx={{ m: 2 }}>
-        <TextField
-          label="Proteins"
-          variant="outlined"
-          name="protein"
-          onChange={(event) => {
-            setFormData((prevState) => ({
-              ...prevState,
-              protein: event.target.value,
-            }));
-          }}
-        />
-      </Box>
-      <Box sx={{ m: 2 }}>
-        <Button variant="contained" onClick={(event) => handleSubmit(event)}>
-          Submit
-        </Button>
-      </Box>
-    </form>
+    <>
+      <Snackbar open={open} autoHideDuration={6000}>
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Ingredient saved!
+        </Alert>
+      </Snackbar>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ m: 2 }}>
+          <TextField
+            required
+            label="Name"
+            variant="outlined"
+            name="name"
+            value={formData.name || ''}
+            onChange={(event) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                name: event.target.value,
+              }));
+            }}
+          />
+        </Box>
+        <Box sx={{ m: 2 }}>
+          <TextField
+            required
+            label="Calories"
+            variant="outlined"
+            name="kcal"
+            value={formData.kcal || ''}
+            inputProps={{
+              type: 'number',
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+            onChange={(event) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                kcal: parseFloat(event.target.value),
+              }));
+            }}
+          />
+        </Box>
+        <Box sx={{ m: 2 }}>
+          <TextField
+            required
+            label="Fats"
+            variant="outlined"
+            name="fat"
+            value={formData.fat || ''}
+            inputProps={{
+              type: 'number',
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+            onChange={(event) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                fat: parseFloat(event.target.value),
+              }));
+            }}
+          />
+        </Box>
+        <Box sx={{ m: 2 }}>
+          <TextField
+            required
+            label="Carbs"
+            variant="outlined"
+            name="carbs"
+            value={formData.carbs || ''}
+            inputProps={{
+              type: 'number',
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+            onChange={(event) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                carbs: parseFloat(event.target.value),
+              }));
+            }}
+          />
+        </Box>
+        <Box sx={{ m: 2 }}>
+          <TextField
+            required
+            label="Protein"
+            variant="outlined"
+            name="protein"
+            value={formData.protein || ''}
+            inputProps={{
+              type: 'number',
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+            }}
+            onChange={(event) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                protein: parseFloat(event.target.value),
+              }));
+            }}
+          />
+        </Box>
+        <Box sx={{ m: 2 }}>
+          <Button variant="contained" onClick={(event) => handleSubmit(event)}>
+            Submit
+          </Button>
+        </Box>
+      </form>
+    </>
   );
 }

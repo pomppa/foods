@@ -16,7 +16,7 @@ export default async function handle(
           carbs: req.body.carbs,
         },
       });
-      res.status(200).json({ data: 'data' });
+      res.status(200).json({ data: req.body });
       await prisma.$disconnect();
 
       break;
@@ -28,6 +28,12 @@ export default async function handle(
 }
 
 export async function getIngredientsData() {
-  const ingredients = await prisma.ingredient.findMany();
+  const ingredients = await prisma.ingredient.findMany({
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+  });
   return ingredients;
 }
