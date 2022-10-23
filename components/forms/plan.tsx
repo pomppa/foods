@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { planCalculator } from '../../lib/plan-calculator';
 import { Button, Box, Grid } from '@mui/material';
 import { store } from '../../lib/redux/store';
 import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
+import MealFromPlan from './mealFromPlan';
 
 interface Value {
   ingredient?: {
@@ -24,6 +25,8 @@ export default function Plan(data) {
   });
 
   const [macros, setMacros] = useState({});
+  const [displayMealSave, setDisplayMealSave] = useState(false);
+  const [mealName, setMealName] = useState('');
 
   const handleChange = (value: Value) => {
     if (value.ingredient === null && value.uniqueKey !== 0) {
@@ -103,6 +106,11 @@ export default function Plan(data) {
       />,
     ]);
   };
+
+  useEffect(() => {
+    console.log(mealName);
+  }, [mealName]);
+
   return (
     <>
       <Grid container spacing={2}>
@@ -115,15 +123,31 @@ export default function Plan(data) {
             >
               Add more
             </Button>
-            <Button sx={{ ml: 1 }} variant="contained">
-              Save as a meal?
-            </Button>
+            {!displayMealSave && (
+              <Button
+                sx={{ ml: 1 }}
+                variant="contained"
+                onClick={() => {
+                  setDisplayMealSave(true);
+                }}
+              >
+                Save as a meal?
+              </Button>
+            )}
           </Box>
         </Grid>
         <Grid item xs={6} md={4}>
           <pre>{JSON.stringify(macros, null, 2)}</pre>
         </Grid>
       </Grid>
+      {displayMealSave && (
+        <MealFromPlan
+          {...{
+            setDisplayMealSave: setDisplayMealSave,
+            setMealName: setMealName,
+          }}
+        ></MealFromPlan>
+      )}
     </>
   );
 }
