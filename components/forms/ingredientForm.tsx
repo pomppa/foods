@@ -51,7 +51,7 @@ export default function IngredientForm() {
         </Alert>
       </Snackbar>
       <form onSubmit={handleSubmit}>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             required
             label="Name"
@@ -66,7 +66,7 @@ export default function IngredientForm() {
             }}
           />
         </Box>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             required
             label="Calories"
@@ -86,7 +86,7 @@ export default function IngredientForm() {
             }}
           />
         </Box>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             required
             label="Fats"
@@ -106,7 +106,7 @@ export default function IngredientForm() {
             }}
           />
         </Box>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             required
             label="Carbs"
@@ -126,7 +126,7 @@ export default function IngredientForm() {
             }}
           />
         </Box>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <TextField
             required
             label="Protein"
@@ -146,7 +146,7 @@ export default function IngredientForm() {
             }}
           />
         </Box>
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <Button variant="contained" onClick={(event) => handleSubmit(event)}>
             Submit
           </Button>

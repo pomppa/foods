@@ -23,13 +23,14 @@ export default function IngredientAutocomplete(props) {
           setInputValue(newInputValue);
         }}
         options={props.options}
-        sx={{ width: 300 }}
+        sx={{ width: 300, mt: 2 }}
         renderInput={(params) => <TextField {...params} label={'Ingredient'} />}
       />
       <TextField
         label="Weight"
         variant="outlined"
         name="weight"
+        sx={{ width: 300, mt: 2 }}
         onChange={(event) => {
           props.handleChange({
             weight: event.target.value,

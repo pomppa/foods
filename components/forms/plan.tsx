@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { planCalculator } from '../../lib/plan-calculator';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Grid } from '@mui/material';
 import { store } from '../../lib/redux/store';
 import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
@@ -16,7 +16,6 @@ interface Value {
 }
 
 export default function Plan(data) {
-  console.log(data);
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
 
@@ -27,7 +26,6 @@ export default function Plan(data) {
   const [macros, setMacros] = useState({});
 
   const handleChange = (value: Value) => {
-    console.log(value);
     if (value.ingredient === null && value.uniqueKey !== 0) {
       deleteByUniqueKey(value);
       return;
@@ -107,16 +105,27 @@ export default function Plan(data) {
   };
   return (
     <>
-      {[...forms]}
-      <Box>
-        <Button
-          variant="contained"
-          onClick={() => addIngredientAutoCompletes()}
-        >
-          Add more
-        </Button>
-      </Box>
-      <pre>{JSON.stringify(macros, null, 2)}</pre>
+      <Grid container spacing={2}>
+        <Grid xs={6} md={6}>
+          {[...forms]}
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => addIngredientAutoCompletes()}
+            >
+              Add more
+            </Button>
+          </Box>
+        </Grid>
+        <Grid xs={6} md={4}>
+          <pre>{JSON.stringify(macros, null, 2)}</pre>
+        </Grid>
+        <Grid xs={6} md={6}>
+          <Box sx={{ mt: 2 }}>
+            <Button variant="contained">Save as a meal?</Button>
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 }
