@@ -1,20 +1,8 @@
 import { Button, Box, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { store } from '../../lib/redux/store';
+import { useState } from 'react';
 
 export default function MealFromPlan(props) {
   const [mealName, setMealName] = useState('');
-
-  //   useEffect(() => {
-  //     console.log(mealName);
-  //     console.log(store.getState().valueUpdated);
-  //   }, [mealName]);
-
-  const saveNewMeal = () => {
-    console.log('saving');
-    console.log(mealName);
-    console.log(store.getState().valueUpdated);
-  };
 
   return (
     <>
@@ -30,7 +18,7 @@ export default function MealFromPlan(props) {
         }}
       />
       <Box sx={{ mt: 2 }}>
-        <Button variant="contained" onClick={() => saveNewMeal()}>
+        <Button variant="contained" onClick={() => props.saveMealFromPlan()}>
           Save
         </Button>
         <Button

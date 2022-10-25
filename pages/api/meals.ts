@@ -7,8 +7,7 @@ export default async function handle(
 ) {
   switch (req.method) {
     case 'POST':
-      await createMeal(req.body.name);
-      res.status(200).json({ data: req.body });
+      res.status(200).json({ data: await createMeal(req.body.name) });
       break;
     case 'GET':
       // eslint-disable-next-line no-case-declarations
@@ -25,12 +24,13 @@ export async function getAllMeals() {
 }
 
 async function createMeal(name) {
-  await prisma.meal.create({
+  const meal = await prisma.meal.create({
     data: {
       name: name,
     },
   });
   await prisma.$disconnect();
+  return meal;
 }
 
 export async function getMealIds() {

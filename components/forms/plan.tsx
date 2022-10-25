@@ -61,7 +61,7 @@ export default function Plan(data) {
         case: CASE_DELETE,
       }),
     );
-
+    // todo save to redux for persisting on different pages
     setForms((prevValues) => {
       return prevValues.filter((obj) => {
         return obj.props.uniqueKey !== value.uniqueKey;
@@ -107,6 +107,50 @@ export default function Plan(data) {
     ]);
   };
 
+  const saveMealFromPlan = async () => {
+    const endpoint = '/api/meals/';
+
+    const data = {
+      name: mealName,
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch(endpoint, options);
+
+    const result = await response.json();
+    const mealId = result.data.id;
+    saveIngredientsToMeal(mealId);
+  };
+
+  const saveIngredientsToMeal = async (mealId) => {
+    const endpoint = '/api/meals/create';
+
+    const ingredients = store.getState().valueUpdated;
+
+    const data = {
+      meal_id: mealId,
+      ingredients: ingredients,
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    const result = await fetch(endpoint, options);
+    console.log(result);
+  };
+
   useEffect(() => {
     console.log(mealName);
   }, [mealName]);
@@ -145,6 +189,7 @@ export default function Plan(data) {
           {...{
             setDisplayMealSave: setDisplayMealSave,
             setMealName: setMealName,
+            saveMealFromPlan: saveMealFromPlan,
           }}
         ></MealFromPlan>
       )}
