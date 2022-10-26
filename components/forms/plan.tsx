@@ -147,6 +147,7 @@ export default function Plan(data) {
       body: JSON.stringify(data),
     };
 
+    //todo add error handling, success message on 200 and reset values
     const result = await fetch(endpoint, options);
     console.log(result);
   };
