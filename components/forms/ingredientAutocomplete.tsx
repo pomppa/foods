@@ -27,7 +27,7 @@ export default function IngredientAutocomplete(props) {
         renderInput={(params) => <TextField {...params} label={'Ingredient'} />}
       />
       <TextField
-        label="Weight"
+        label="Weight (g)"
         variant="outlined"
         name="weight"
         sx={{ width: 300, mt: 2 }}

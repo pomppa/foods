@@ -6,6 +6,7 @@ import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
+import { PieChart } from 'react-minimal-pie-chart';
 
 interface Value {
   ingredient?: {
@@ -16,15 +17,15 @@ interface Value {
   uniqueKey: number;
 }
 
-export default function Plan(data) {
+export default function Plan(props) {
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
 
-  const options = data.data.map((element) => {
+  const options = props.data.map((element) => {
     return { label: element.name, id: element.id };
   });
 
-  const [macros, setMacros] = useState({});
+  // const [macros, setMacros] = useState({});
   const [displayMealSave, setDisplayMealSave] = useState(false);
   const [mealName, setMealName] = useState('');
 
@@ -51,7 +52,7 @@ export default function Plan(data) {
       );
     }
 
-    setMacros(planCalculator(store.getState().valueUpdated, data.data));
+    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
   const deleteByUniqueKey = (value: Value) => {
@@ -68,7 +69,7 @@ export default function Plan(data) {
       });
     });
 
-    setMacros(planCalculator(store.getState().valueUpdated, data.data));
+    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
   const [forms, setForms] = useState([
@@ -158,32 +159,27 @@ export default function Plan(data) {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={6} md={6}>
-          {[...forms]}
-          <Box sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              onClick={() => addIngredientAutoCompletes()}
-            >
-              Add more
-            </Button>
-            {!displayMealSave && (
-              <Button
-                sx={{ ml: 1 }}
-                variant="contained"
-                onClick={() => {
-                  setDisplayMealSave(true);
-                }}
-              >
-                Save as a meal?
-              </Button>
-            )}
-          </Box>
-        </Grid>
-        <Grid item xs={6} md={4}>
-          <pre>{JSON.stringify(macros, null, 2)}</pre>
-        </Grid>
+      <Grid>
+        {[...forms]}
+        <Box sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={() => addIngredientAutoCompletes()}
+          >
+            Add more
+          </Button>
+        </Box>
+        {!displayMealSave && (
+          <Button
+            sx={{ mt: 1 }}
+            variant="contained"
+            onClick={() => {
+              setDisplayMealSave(true);
+            }}
+          >
+            Save as a meal?
+          </Button>
+        )}
       </Grid>
       {displayMealSave && (
         <MealFromPlan

@@ -18,6 +18,26 @@ interface Macros {
   };
 }
 
+export const defaultMacros: Macros = {
+  kcal: 0,
+  fat: 0,
+  carbs: 0,
+  protein: 0,
+  totalWeight: 0,
+  kcalPerMacro: {
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+    total: 0,
+  },
+  macroPercentages: {
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+    total: 0,
+  },
+};
+
 export const planCalculator = (formValues, data) => {
   // initialize with default values
   const macros: Macros = {
@@ -73,11 +93,11 @@ export const planCalculator = (formValues, data) => {
 
   // calculate macro ratio
   macros.macroPercentages.protein =
-    (macros.kcalPerMacro.protein / macros.kcalPerMacro.total) * 100;
+    (macros.kcalPerMacro.protein / macros.kcalPerMacro.total) * 100 || 0;
   macros.macroPercentages.carbs =
-    (macros.kcalPerMacro.carbs / macros.kcalPerMacro.total) * 100;
+    (macros.kcalPerMacro.carbs / macros.kcalPerMacro.total) * 100 || 0;
   macros.macroPercentages.fat =
-    (macros.kcalPerMacro.fat / macros.kcalPerMacro.total) * 100;
+    (macros.kcalPerMacro.fat / macros.kcalPerMacro.total) * 100 || 0;
   macros.macroPercentages.total =
     macros.macroPercentages.fat +
     macros.macroPercentages.carbs +

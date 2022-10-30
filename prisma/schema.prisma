@@ -37,5 +37,5 @@ model Meal_Ingredient {
   meal_id           Int
   ingredient        Ingredient @relation(fields: [ingredient_id], references: [id])
   ingredient_id     Int
-  ingredient_weight Decimal
+  ingredient_weight Decimal    @mysql.Decimal(65, 2)
 }
