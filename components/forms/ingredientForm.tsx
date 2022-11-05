@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert, Snackbar, TextField, Box, Button } from '@mui/material';
 
 interface FormData {

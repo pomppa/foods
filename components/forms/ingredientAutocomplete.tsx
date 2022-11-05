@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { Autocomplete, Button } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 
 export default function IngredientAutocomplete(props) {
   const [value, setValue] = useState<string>(null);
