@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { planCalculator } from '../../lib/plan-calculator';
-import { Button, Box, Grid } from '@mui/material';
+import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
 import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
-import { PieChart } from 'react-minimal-pie-chart';
 
 interface Value {
   ingredient?: {
@@ -28,6 +27,7 @@ export default function Plan(props) {
   // const [macros, setMacros] = useState({});
   const [displayMealSave, setDisplayMealSave] = useState(false);
   const [mealName, setMealName] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleChange = (value: Value) => {
     if (value.ingredient === null && value.uniqueKey !== 0) {
@@ -62,6 +62,7 @@ export default function Plan(props) {
         case: CASE_DELETE,
       }),
     );
+
     // todo save to redux for persisting on different pages
     setForms((prevValues) => {
       return prevValues.filter((obj) => {
@@ -72,18 +73,43 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
-  const [forms, setForms] = useState([
+  const deleteAll = () => {
+    store.dispatch(
+      valueUpdated({
+        data: { value: '' },
+      }),
+    );
+
+    store.dispatch(incremented());
+    setForms([
+      // eslint-disable-next-line react/jsx-key
+      <IngredientAutocomplete
+        {...{
+          key: store.getState().uniqueKey.value,
+          uniqueKey: store.getState().uniqueKey.value,
+          options: options,
+          deleteByUniqueKey: deleteByUniqueKey,
+          handleChange: handleChange,
+        }}
+      />,
+    ]);
+
+    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
+  };
+
+  const defaultForms = [
     // eslint-disable-next-line react/jsx-key
     <IngredientAutocomplete
       {...{
-        key: 0,
-        uniqueKey: 0,
+        key: store.getState().uniqueKey.value,
+        uniqueKey: store.getState().uniqueKey.value,
         options: options,
         deleteByUniqueKey: deleteByUniqueKey,
         handleChange: handleChange,
       }}
     />,
-  ]);
+  ];
+  const [forms, setForms] = useState(defaultForms);
 
   const addIngredientAutoCompletes = () => {
     store.dispatch(incremented());
@@ -109,6 +135,7 @@ export default function Plan(props) {
   };
 
   const saveMealFromPlan = async () => {
+    deleteAll();
     const endpoint = '/api/meals/';
 
     const data = {
@@ -147,10 +174,15 @@ export default function Plan(props) {
       },
       body: JSON.stringify(data),
     };
+    setOpen(true);
 
     //todo add error handling, success message on 200 and reset values
     const result = await fetch(endpoint, options);
     console.log(result);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 2500);
   };
 
   useEffect(() => {
@@ -180,6 +212,11 @@ export default function Plan(props) {
             Save as a meal?
           </Button>
         )}
+        <Snackbar open={open} autoHideDuration={6000}>
+          <Alert severity="success" sx={{ width: '100%' }}>
+            Meal saved!
+          </Alert>
+        </Snackbar>
       </Grid>
       {displayMealSave && (
         <MealFromPlan

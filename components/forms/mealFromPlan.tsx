@@ -18,7 +18,13 @@ export default function MealFromPlan(props) {
         }}
       />
       <Box sx={{ mt: 2 }}>
-        <Button variant="contained" onClick={() => props.saveMealFromPlan()}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setMealName('');
+            props.saveMealFromPlan();
+          }}
+        >
           Save
         </Button>
         <Button
