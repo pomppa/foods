@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Dashboard from './dashboard';
-function Home() {
+export default function Page() {
   return (
     <>
       <Head>
@@ -8,10 +8,8 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <Dashboard></Dashboard>
+        <h1>Hello</h1>
       </>
     </>
   );
 }
-
-export default Home;

@@ -17,13 +17,21 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "lib/calculator.ts", "lib/calculator.ts"  ],
+    "**/*.tsx",
+    "lib/calculator.ts",
+    "lib/calculator.ts",
+    ".next/types/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
