@@ -1,15 +1,8 @@
-import Head from 'next/head';
-import Dashboard from './dashboard';
+import Dashboard from './dashboard/page';
 export default function Page() {
   return (
     <>
-      <Head>
-        <title>Foods</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <>
-        <h1>Hello</h1>
-      </>
+      <Dashboard></Dashboard>
     </>
   );
 }

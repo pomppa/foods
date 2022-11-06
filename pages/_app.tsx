@@ -12,7 +12,7 @@ import createEmotionCache from '../utils/createEmotionCache';
 //import light from '../styles/theme/light';
 import dark from '../styles/theme/dark';
 
-import Layout from '../components/design/layout';
+import Layout from '../app/mui-layout';
 
 import '../styles/globals.css';
 
