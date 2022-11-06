@@ -3,6 +3,8 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { useServerInsertedHTML } from 'next/navigation';
 import { useState } from 'react';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import dark from '../styles/theme/dark';
 
 export default function RootStyleRegistry({
   children,
@@ -14,6 +16,7 @@ export default function RootStyleRegistry({
     cache.compat = true;
     return cache;
   });
+  const darkTheme = createTheme(dark);
 
   useServerInsertedHTML(() => {
     return (
@@ -26,5 +29,12 @@ export default function RootStyleRegistry({
     );
   });
 
-  return <CacheProvider value={cache}>{children}</CacheProvider>;
+  return (
+    <CacheProvider value={cache}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </CacheProvider>
+  );
 }

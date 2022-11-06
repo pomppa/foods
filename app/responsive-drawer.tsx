@@ -70,19 +70,13 @@ export default function ResponsiveDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
+      <AppBar component="nav">
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
             Foods
           </Typography>
         </Toolbar>
-      </AppBar> */}
+      </AppBar>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
