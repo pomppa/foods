@@ -37,6 +37,7 @@ export default function ResponsiveDrawer() {
     // { title: 'Meal List', icon: ListIcon, link: 'mealList' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Plan', icon: ScaleIcon, link: 'plan' },
+    { title: 'Test', icon: TakeoutDiningIcon, link: 'test' },
   ];
 
   const Icon = (props) => {

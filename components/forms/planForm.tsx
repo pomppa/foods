@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { planCalculator } from '../../lib/plan-calculator';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
