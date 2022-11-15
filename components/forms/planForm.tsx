@@ -135,7 +135,6 @@ export default function Plan(props) {
   };
 
   const saveMealFromPlan = async () => {
-    deleteAll();
     const endpoint = '/api/meals/';
 
     const data = {
@@ -155,6 +154,7 @@ export default function Plan(props) {
     const result = await response.json();
     const mealId = result.data.id;
     saveIngredientsToMeal(mealId);
+    deleteAll();
   };
 
   const saveIngredientsToMeal = async (mealId) => {

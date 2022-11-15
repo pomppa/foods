@@ -34,7 +34,7 @@ export default function ResponsiveDrawer() {
   const menu = [
     { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
     // { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
-    // { title: 'Meal List', icon: ListIcon, link: 'mealList' },
+    { title: 'Meals', icon: ListIcon, link: 'meals' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Plan', icon: ScaleIcon, link: 'plan' },
   ];
