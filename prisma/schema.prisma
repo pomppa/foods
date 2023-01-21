@@ -16,10 +16,10 @@ model Ingredient {
   created_at      DateTime          @default(now())
   updated_at      DateTime          @default(now())
   name            String            @db.VarChar(255)
-  kcal            Decimal
-  protein         Decimal
-  carbs           Decimal
-  fat             Decimal
+  kcal            Decimal           @db.Decimal(65, 2)
+  protein         Decimal           @db.Decimal(65, 2)
+  carbs           Decimal           @db.Decimal(65, 2)
+  fat             Decimal           @db.Decimal(65, 2)
   Meal_Ingredient Meal_Ingredient[]
 }
 
@@ -37,5 +37,17 @@ model Meal_Ingredient {
   meal_id           Int
   ingredient        Ingredient @relation(fields: [ingredient_id], references: [id])
   ingredient_id     Int
-  ingredient_weight Decimal    @mysql.Decimal(65, 2)
+  ingredient_weight Decimal    @db.Decimal(65, 2)
+}
+
+model Fineli_Ingredient {
+  id              Int               @id @default(autoincrement())
+  fineli_id       Int               @db.Int
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @default(now())
+  name            String            @db.VarChar(255)
+  kcal            Decimal           @db.Decimal(65, 2)
+  protein         Decimal           @db.Decimal(65, 2)
+  carbs           Decimal           @db.Decimal(65, 2)
+  fat             Decimal           @db.Decimal(65, 2)
 }
