@@ -7,11 +7,16 @@ export default async function handle(
 ) {
   const id = req.query.id;
 
-  const meal = await prisma.meal.findUnique({
+  const meal = findUniqueMealWithId(id);
+  await prisma.$disconnect();
+
+  res.json(meal);
+}
+
+export async function findUniqueMealWithId(id) {
+  return await prisma.meal.findUnique({
     where: {
       id: Number(id),
     },
   });
-  await prisma.$disconnect();
-  res.json(meal);
 }
