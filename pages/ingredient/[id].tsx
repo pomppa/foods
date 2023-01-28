@@ -1,44 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { findUniqueIngredient } from '../api/ingredients/[id]';
+import { Button } from '@mui/material';
+import router from 'next/router';
 
-export default function Ingredient() {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+export const getServerSideProps = async (req) => {
+  const ingredient = await findUniqueIngredient(req.query.id);
+  const ingredientJson = JSON.stringify(ingredient);
 
-  const router = useRouter();
+  return { props: { ingredientJson } };
+};
 
-  async function fetchData() {
-    const { id } = router.query;
-    if (!id) {
-      return;
-    }
-    fetch('/api/ingredients/' + id)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }
-
-  useEffect(() => {
-    fetchData();
-  });
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
-
+export default function Ingredient(props) {
+  const data = JSON.parse(props.ingredientJson);
   return (
-    <div>
+    <>
+      <Button variant="outlined" onClick={() => router.back()}>
+        Go back
+      </Button>
       <Head>
         <title>Food - Ingredient</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div>
         <h1>View ingredient</h1>
       </div>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
+    </>
   );
 }

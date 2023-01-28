@@ -1,38 +1,65 @@
+import prisma from '../lib/prisma';
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import IngredientForm from '../components/forms/ingredientForm';
+import {
+  Box,
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from '@mui/material';
+import Link from 'next/link';
 
-export default function Ingredients() {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+export const getServerSideProps = async () => {
+  const ingredients = await prisma.ingredient.findMany();
+  const ingredientsJson = JSON.stringify(ingredients);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch('/api/ingredients/')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
+  return { props: { ingredientsJson } };
+};
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
+export default function Ingredients(props) {
+  const data = JSON.parse(props.ingredientsJson);
 
   return (
-    <div>
+    <>
       <Head>
         <title>Foods - Ingredients</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <div>
-        <h1>Ingredients</h1>
-        <p>Add a new ingredient</p>
-      </div>
-      <IngredientForm></IngredientForm>
-      <h2> All ingredients </h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <div>
+            <h1>Ingredients</h1>
+            <p>Add a new ingredient</p>
+          </div>
+          <IngredientForm></IngredientForm>{' '}
+        </Grid>
+        <Grid item xs={6}>
+          <h2> All ingredients </h2>
+          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+          <Box
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          >
+            <List>
+              {data.map((x, i) => {
+                return (
+                  <>
+                    <Link href={'ingredient/' + x.id}>
+                      <ListItem disablePadding>
+                        <ListItemButton>
+                          <ListItemText primary={x.name} />
+                        </ListItemButton>
+                      </ListItem>
+                    </Link>
+                  </>
+                );
+              })}
+            </List>
+          </Box>{' '}
+        </Grid>
+      </Grid>
+    </>
   );
 }
