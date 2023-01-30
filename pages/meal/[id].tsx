@@ -110,10 +110,10 @@ export default function Meal(props) {
             >
               <TableCell>TOTAL</TableCell>
               <TableCell align="right">{totals.weight}</TableCell>
-              <TableCell align="right">{totals.kcal}</TableCell>
-              <TableCell align="right">{totals.fat}</TableCell>
-              <TableCell align="right">{totals.carbs}</TableCell>
-              <TableCell align="right">{totals.protein}</TableCell>
+              <TableCell align="right">{totals.kcal.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.fat.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
