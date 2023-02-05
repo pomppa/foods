@@ -33,7 +33,7 @@ model Meal {
 
 model Meal_Ingredient {
   id                Int        @id @default(autoincrement())
-  meal              Meal       @relation(fields: [meal_id], references: [id])
+  meal              Meal       @relation(fields: [meal_id], references: [id], onDelete: Cascade)
   meal_id           Int
   ingredient        Ingredient @relation(fields: [ingredient_id], references: [id])
   ingredient_id     Int
