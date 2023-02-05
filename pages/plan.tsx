@@ -5,6 +5,7 @@ import { PieChart } from 'react-minimal-pie-chart';
 import { getIngredientsData } from './api/ingredients';
 import { getFineliIngredientsData } from './api/fineli';
 import { defaultMacros } from '../lib/plan-calculator';
+import MealTable from '../components/mealTable';
 
 export async function getServerSideProps() {
   const data = await getIngredientsData();
@@ -38,7 +39,7 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
           ></PlanForm>
         </Grid>
 
-        <pre>{JSON.stringify(macros, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(macros, null, 2)}</pre> */}
 
         <Grid item>
           {macros.macroPercentages.protein ? (
@@ -67,6 +68,7 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
             ></PieChart>
           ) : null}
         </Grid>
+        <MealTable data={combinedData}></MealTable>
       </Grid>
     </>
   );

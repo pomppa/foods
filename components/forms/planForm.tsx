@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { planCalculator } from '../../lib/plan-calculator';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
@@ -6,6 +6,7 @@ import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
+import MealTable from '../mealTable';
 
 interface Value {
   ingredient?: {
@@ -184,10 +185,6 @@ export default function Plan(props) {
       setOpen(false);
     }, 2500);
   };
-
-  useEffect(() => {
-    console.log(mealName);
-  }, [mealName]);
 
   return (
     <>
