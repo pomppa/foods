@@ -4,8 +4,8 @@ import fs from 'fs';
 
 /* init prisma */
 const prisma = new PrismaClient();
-/* allows defining a start index if seed fails during fetch */
-const startFromId = 10000;
+/* allows defining a start index if seed fails during fetch. can skip seed script with this too */
+const startFromId = 0;
 /* holds all fineli_ids for requesting api */
 const ids = [];
 /* api base url */
