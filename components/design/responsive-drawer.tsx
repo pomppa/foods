@@ -52,7 +52,10 @@ export default function ResponsiveDrawer() {
       <Divider />
       <List>
         {menu.map((element, index) => (
-          <Link key={element.link} href={element.link}>
+          <Link
+            key={element.link}
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}
+          >
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon>
