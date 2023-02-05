@@ -5,7 +5,7 @@ import fs from 'fs';
 /* init prisma */
 const prisma = new PrismaClient();
 /* allows defining a start index if seed fails during fetch */
-const startFromId = 0;
+const startFromId = 10000;
 /* holds all fineli_ids for requesting api */
 const ids = [];
 /* api base url */
