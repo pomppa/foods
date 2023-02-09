@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PlanForm from '../components/forms/planForm';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { PieChart } from 'react-minimal-pie-chart';
 import { getIngredientsData } from './api/ingredients';
 import { getFineliIngredientsData } from './api/fineli';
@@ -41,34 +41,36 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
 
         {/* <pre>{JSON.stringify(macros, null, 2)}</pre> */}
 
-        <Grid item>
-          {macros.macroPercentages.protein ? (
-            <PieChart
-              data={[
-                {
-                  title: 'protein',
-                  value: macros.macroPercentages?.protein,
-                  color: '#123',
-                },
-                {
-                  title: 'carbs',
-                  value: macros.macroPercentages?.carbs,
-                  color: '#fff',
-                },
-                {
-                  title: 'fat',
-                  value: macros.macroPercentages?.fat,
-                  color: '#555',
-                },
-              ]}
-              label={({ dataEntry }) => dataEntry.title}
-              labelStyle={{
-                ...defaultLabelStyle,
-              }}
-            ></PieChart>
-          ) : null}
-        </Grid>
-        <MealTable data={combinedData}></MealTable>
+        {macros.macroPercentages.protein ? (
+          <>
+            <Grid item>
+              <PieChart
+                data={[
+                  {
+                    title: 'protein',
+                    value: macros.macroPercentages?.protein,
+                    color: '#90a4ae',
+                  },
+                  {
+                    title: 'carbs',
+                    value: macros.macroPercentages?.carbs,
+                    color: '#cfd8dc',
+                  },
+                  {
+                    title: 'fat',
+                    value: macros.macroPercentages?.fat,
+                    color: '#455a64',
+                  },
+                ]}
+                label={({ dataEntry }) => dataEntry.title}
+                labelStyle={{
+                  ...defaultLabelStyle,
+                }}
+              ></PieChart>
+            </Grid>
+            <MealTable data={combinedData}></MealTable>
+          </>
+        ) : null}
       </Grid>
     </>
   );
