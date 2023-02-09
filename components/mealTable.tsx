@@ -7,13 +7,13 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TableFooter,
 } from '@mui/material';
 
 function createData(data: object, id: number, weight: number) {
+  console.log(typeof data);
   const ingredientObject = data.find((x) => x.id === id);
   if (!ingredientObject) {
-    return { name: '', calories: 0.0, fat: 0, carbs: 0, prot: 0 };
+    return { name: '', calories: 0, fat: 0, carbs: 0, protein: 0 };
   }
   const name = ingredientObject.name ?? '';
   const calories = (ingredientObject.kcal / 100) * weight ?? 0;
@@ -26,12 +26,13 @@ function createData(data: object, id: number, weight: number) {
 
 export default function MealTable({ data }) {
   const props = store.getState().valueUpdated;
+
   const rows = props.map((x) => {
     return createData(data, x.ingredient, x.weight);
   });
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650, maxWidht: 650 }} aria-label="simple table">
+    <TableContainer sx={{ my: 4, mr: 4 }} component={Paper}>
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Ingredient</TableCell>
@@ -52,10 +53,10 @@ export default function MealTable({ data }) {
                 {row.name}
               </TableCell>
               <TableCell align="right">{row.weight}</TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{row.calories.toFixed(2)}</TableCell>
+              <TableCell align="right">{row.fat.toFixed(2)}</TableCell>
+              <TableCell align="right">{row.carbs.toFixed(2)}</TableCell>
+              <TableCell align="right">{row.protein.toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
