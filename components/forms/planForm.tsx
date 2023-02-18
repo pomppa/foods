@@ -6,7 +6,6 @@ import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
-import MealTable from '../mealTable';
 
 interface Value {
   ingredient?: {
@@ -179,7 +178,6 @@ export default function Plan(props) {
 
     //todo add error handling, success message on 200 and reset values
     const result = await fetch(endpoint, options);
-    console.log(result);
 
     setTimeout(() => {
       setOpen(false);

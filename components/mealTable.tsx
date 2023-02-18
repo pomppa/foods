@@ -1,4 +1,3 @@
-import { store } from '../lib/redux/store';
 import {
   TableContainer,
   Paper,
@@ -7,32 +6,50 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableFooter,
 } from '@mui/material';
 
-function createData(data: object, id: number, weight: number) {
-  console.log(typeof data);
-  const ingredientObject = data.find((x) => x.id === id);
-  if (!ingredientObject) {
-    return { name: '', calories: 0, fat: 0, carbs: 0, protein: 0 };
-  }
-  const name = ingredientObject.name ?? '';
-  const calories = (ingredientObject.kcal / 100) * weight ?? 0;
-  const fat = (ingredientObject.fat / 100) * weight ?? 0;
-  const carbs = (ingredientObject.carbs / 100) * weight ?? 0;
-  const protein = (ingredientObject.protein / 100) * weight ?? 0;
-
-  return { name, weight, calories, fat, carbs, protein };
+function createData(
+  name: string,
+  calories: number,
+  fat: number,
+  carbs: number,
+  protein: number,
+  weight: number,
+) {
+  return { name, calories, fat, carbs, protein, weight };
 }
 
 export default function MealTable({ data }) {
-  const props = store.getState().valueUpdated;
-
-  const rows = props.map((x) => {
-    return createData(data, x.ingredient, x.weight);
+  //create data for table rows
+  const rows = data.map((x) => {
+    return createData(
+      x.ingredient.name,
+      (x.ingredient.kcal / 100) * x.ingredient_weight,
+      (x.ingredient.fat / 100) * x.ingredient_weight,
+      (x.ingredient.carbs / 100) * x.ingredient_weight,
+      (x.ingredient.protein / 100) * x.ingredient_weight,
+      x.ingredient_weight,
+    );
   });
+
+  // create data for table's total row
+  const totals = rows.reduce(
+    (total, obj) => {
+      return {
+        weight: parseInt(obj.weight) + total.weight,
+        kcal: parseFloat(obj.calories) + total.kcal,
+        protein: parseFloat(obj.protein) + total.protein,
+        carbs: parseFloat(obj.carbs) + total.carbs,
+        fat: parseFloat(obj.fat) + total.fat,
+      };
+    },
+    { weight: 0, kcal: 0, protein: 0, carbs: 0, fat: 0 },
+  );
+
   return (
-    <TableContainer sx={{ my: 4, mr: 4 }} component={Paper}>
-      <Table aria-label="simple table">
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Ingredient</TableCell>
@@ -60,7 +77,7 @@ export default function MealTable({ data }) {
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
+        <TableFooter>
           <TableRow
             sx={{
               td: {
@@ -75,7 +92,7 @@ export default function MealTable({ data }) {
             <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
             <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
           </TableRow>
-        </TableFooter> */}
+        </TableFooter>
       </Table>
     </TableContainer>
   );
