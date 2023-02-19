@@ -16,6 +16,11 @@ interface Value {
   uniqueKey: number;
 }
 
+/**
+ * Planner view, inputs for selecting ingredients and saving as a meal
+ * @param props
+ * @returns
+ */
 export default function Plan(props) {
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
@@ -24,11 +29,11 @@ export default function Plan(props) {
     return { label: element.name, id: element.id };
   });
 
-  // const [macros, setMacros] = useState({});
   const [displayMealSave, setDisplayMealSave] = useState(false);
   const [mealName, setMealName] = useState('');
   const [open, setOpen] = useState(false);
 
+  //handle changes on autocomplete fields
   const handleChange = (value: Value) => {
     if (value.ingredient === null && value.uniqueKey !== 0) {
       deleteByUniqueKey(value);
@@ -55,6 +60,7 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
+  // delete autocomplete field by its unique key
   const deleteByUniqueKey = (value: Value) => {
     store.dispatch(
       valueUpdated({
@@ -73,6 +79,7 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
+  // delete all autocomplete forms
   const deleteAll = () => {
     store.dispatch(
       valueUpdated({
@@ -97,6 +104,7 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
+  // initialize default view with forms
   const defaultForms = [
     // eslint-disable-next-line react/jsx-key
     <IngredientAutocomplete
@@ -109,8 +117,11 @@ export default function Plan(props) {
       }}
     />,
   ];
+
+  // initial default forms to state
   const [forms, setForms] = useState(defaultForms);
 
+  // add new autocomplete fields
   const addIngredientAutoCompletes = () => {
     store.dispatch(incremented());
     const uniqueKey = store.getState().uniqueKey.value;
@@ -134,6 +145,7 @@ export default function Plan(props) {
     ]);
   };
 
+  // save planned meal
   const saveMealFromPlan = async () => {
     const endpoint = '/api/meals/';
 
@@ -157,6 +169,7 @@ export default function Plan(props) {
     deleteAll();
   };
 
+  // save selected ingredients after meal was saved
   const saveIngredientsToMeal = async (mealId) => {
     const endpoint = '/api/meals/create';
 
@@ -177,8 +190,9 @@ export default function Plan(props) {
     setOpen(true);
 
     //todo add error handling, success message on 200 and reset values
-    const result = await fetch(endpoint, options);
+    await fetch(endpoint, options);
 
+    // timer for snackbar to be open
     setTimeout(() => {
       setOpen(false);
     }, 2500);

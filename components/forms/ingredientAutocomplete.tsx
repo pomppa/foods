@@ -3,6 +3,11 @@ import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
 
+/**
+ * Ingredient autocomplete, contains ingredient dropdown + weight input
+ * @param props
+ * @returns
+ */
 export default function IngredientAutocomplete(props) {
   const [value, setValue] = useState<string>(null);
   const [inputValue, setInputValue] = useState('');

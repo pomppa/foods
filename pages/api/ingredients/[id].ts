@@ -9,6 +9,11 @@ export default async function handle(
   res.json(ingredient);
 }
 
+/**
+ * Find unique ingredient with ID
+ * @param id ingredient id
+ * @returns
+ */
 export async function findUniqueIngredient(id) {
   return await prisma.ingredient.findUnique({
     where: {

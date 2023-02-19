@@ -38,6 +38,12 @@ export const defaultMacros: Macros = {
   },
 };
 
+/**
+ * Calculator for planner, accepts ingredients and constructs macros
+ * @param formValues
+ * @param data
+ * @returns
+ */
 export const planCalculator = (formValues, data) => {
   // initialize with default values
   const macros: Macros = {

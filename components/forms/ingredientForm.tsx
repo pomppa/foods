@@ -9,6 +9,10 @@ interface FormData {
   protein: number;
 }
 
+/**
+ * Form for submitting new ingredient
+ * @returns
+ */
 export default function IngredientForm() {
   const defaultValues = {
     name: '',

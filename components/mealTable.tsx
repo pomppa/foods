@@ -19,7 +19,11 @@ function createData(
 ) {
   return { name, calories, fat, carbs, protein, weight };
 }
-
+/**
+ * Meal table component, takes meal data as a parameter and returns a table
+ * @param param0
+ * @returns
+ */
 export default function MealTable({ data }) {
   //create data for table rows
   const rows = data.map((x) => {
