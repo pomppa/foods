@@ -13,6 +13,10 @@ export default async function handle(
   }
 }
 
+/**
+ * Return all Fineli ingredients
+ * @returns
+ */
 export async function getFineliIngredientsData() {
   const ingredients = await prisma.fineli_Ingredient.findMany({
     orderBy: [
@@ -21,5 +25,5 @@ export async function getFineliIngredientsData() {
       },
     ],
   });
-  return ingredients;
+  return { ingredients };
 }

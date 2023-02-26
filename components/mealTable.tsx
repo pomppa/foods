@@ -8,6 +8,12 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
+import { MealIngredientInterface } from '../interfaces';
+
+type Props = {
+  data: MealIngredientInterface[];
+  plan: boolean;
+};
 
 function createData(
   name: string,
@@ -24,20 +30,29 @@ function createData(
  * @param param0
  * @returns
  */
-export default function MealTable({ data }) {
-  //create data for table rows
+export default function MealTable(props: Props) {
+  console.log(props);
+  if (props.plan) {
+    return;
+  }
+  console.log(props.data);
+  const data: MealIngredientInterface[] = props.data;
+
+  // create data for table rows
+  // todo casting to number?
   const rows = data.map((x) => {
     return createData(
       x.ingredient.name,
-      (x.ingredient.kcal / 100) * x.ingredient_weight,
-      (x.ingredient.fat / 100) * x.ingredient_weight,
-      (x.ingredient.carbs / 100) * x.ingredient_weight,
-      (x.ingredient.protein / 100) * x.ingredient_weight,
-      x.ingredient_weight,
+      (Number(x.ingredient.kcal) / 100) * Number(x.ingredient_weight),
+      (Number(x.ingredient.fat) / 100) * Number(x.ingredient_weight),
+      (Number(x.ingredient.carbs) / 100) * Number(x.ingredient_weight),
+      (Number(x.ingredient.protein) / 100) * Number(x.ingredient_weight),
+      Number(x.ingredient_weight),
     );
   });
 
   // create data for table's total row
+  // todo casting
   const totals = rows.reduce(
     (total, obj) => {
       return {

@@ -6,7 +6,7 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   const ingredient = await findUniqueIngredient(req.query.id);
-  res.json(ingredient);
+  res.json({ ingredient });
 }
 
 /**

@@ -1,19 +1,22 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { IngredientInterface } from '../interfaces';
 import prisma from '../lib/prisma';
 
-export const getServerSideProps = async ({ req }) => {
-  const ingredients = await prisma.fineli_Ingredient.findMany();
+type Props = {
+  ingredientsJson: string;
+};
 
-  const ingredientsJson = JSON.stringify(ingredients, null, 2);
+export const getServerSideProps = async () => {
+  const ingredients = await prisma.fineli_Ingredient.findMany();
+  const ingredientsJson = JSON.stringify(ingredients);
 
   return { props: { ingredientsJson } };
 };
 
-export default function Fineli(props) {
-  const data = JSON.parse(props.ingredientsJson);
-  //   console.log(props.ingredientsJson);
-  const fineliData = data.map((x, i) => {
+export default function Fineli(props: Props) {
+  const data: IngredientInterface[] = JSON.parse(props.ingredientsJson);
+  const fineliData = data.map((x) => {
     return { label: x.name, id: x.id };
   });
 

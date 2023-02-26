@@ -12,16 +12,22 @@ import {
   TableRow,
 } from '@mui/material';
 import router from 'next/router';
+import { NextApiRequest } from 'next';
+import { IngredientInterface } from '../../interfaces';
 
-export const getServerSideProps = async (req) => {
+type Props = {
+  ingredientJson: string;
+};
+
+export const getServerSideProps = async (req: NextApiRequest) => {
   const ingredient = await findUniqueIngredient(req.query.id);
   const ingredientJson = JSON.stringify(ingredient);
 
   return { props: { ingredientJson } };
 };
 
-export default function Ingredient(props) {
-  const data = JSON.parse(props.ingredientJson);
+export default function Ingredient(props: Props) {
+  const data: IngredientInterface = JSON.parse(props.ingredientJson);
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>
@@ -50,10 +56,10 @@ export default function Ingredient(props) {
               <TableCell component="th" scope="row">
                 {data.name}
               </TableCell>
-              <TableCell align="right">{data.kcal}</TableCell>
-              <TableCell align="right">{data.fat}</TableCell>
-              <TableCell align="right">{data.carbs}</TableCell>
-              <TableCell align="right">{data.protein}</TableCell>
+              <TableCell align="right">{String(data.kcal)}</TableCell>
+              <TableCell align="right">{String(data.fat)}</TableCell>
+              <TableCell align="right">{String(data.carbs)}</TableCell>
+              <TableCell align="right">{String(data.protein)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

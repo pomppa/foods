@@ -5,8 +5,8 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const mealDataForId = await getMealDataForId(req.query.id);
-  res.json(mealDataForId);
+  const mealIngredient = await getMealDataForId(req.query.id);
+  res.json({ mealIngredient });
 }
 
 export async function getMealDataForId(id) {

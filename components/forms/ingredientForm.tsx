@@ -43,10 +43,6 @@ export default function IngredientForm() {
     }, 2500);
   };
 
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
-
   return (
     <>
       <Snackbar open={open} autoHideDuration={6000}>

@@ -5,26 +5,28 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const newIngredient = req.body;
   switch (req.method) {
     case 'POST':
-      await prisma.ingredient.create({
+      // eslint-disable-next-line no-case-declarations
+      const ingredient = await prisma.ingredient.create({
         data: {
-          name: req.body.name,
-          kcal: req.body.kcal,
-          protein: req.body.protein,
-          fat: req.body.fat,
-          carbs: req.body.carbs,
+          name: newIngredient.name,
+          kcal: newIngredient.kcal,
+          protein: newIngredient.protein,
+          fat: newIngredient.fat,
+          carbs: newIngredient.carbs,
         },
       });
-      res.status(200).json({ data: req.body });
-      await prisma.$disconnect();
-
+      // todo maybe error handling just maybe
+      res.status(200).json({ ingredient });
       break;
     case 'GET':
       // eslint-disable-next-line no-case-declarations
       const ingredients = await getIngredientsData();
-      res.json(ingredients);
+      res.status(200).json({ ingredients });
   }
+  await prisma.$disconnect();
 }
 
 export async function getIngredientsData() {
@@ -35,5 +37,5 @@ export async function getIngredientsData() {
       },
     ],
   });
-  return ingredients;
+  return { ingredients };
 }

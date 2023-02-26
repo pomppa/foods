@@ -12,7 +12,7 @@ export default async function handle(
     case 'GET':
       // eslint-disable-next-line no-case-declarations
       const meals = await getAllMeals();
-      res.json(meals);
+      res.json({ meals });
       break;
   }
 }

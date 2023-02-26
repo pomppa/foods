@@ -1,26 +1,39 @@
 import { useState } from 'react';
-import PlanForm from '../components/forms/planForm';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { PieChart } from 'react-minimal-pie-chart';
 import { getIngredientsData } from './api/ingredients';
 import { getFineliIngredientsData } from './api/fineli';
 import { defaultMacros } from '../lib/plan-calculator';
+import { IngredientInterface, IngredientsInterface } from '../interfaces';
 import MealTable from '../components/mealTable';
+import PlanForm from '../components/forms/planForm';
+
+type Props = {
+  jsonData: string;
+  fineliIngredientsJson: string;
+};
 
 export async function getServerSideProps() {
   const data = await getIngredientsData();
-  const jsonData = JSON.stringify(data);
   const fineliIngredients = await getFineliIngredientsData();
+
+  const jsonData = JSON.stringify(data);
   const fineliIngredientsJson = JSON.stringify(fineliIngredients);
 
   return { props: { jsonData, fineliIngredientsJson } };
 }
 
-export default function Plan({ jsonData, fineliIngredientsJson }) {
+export default function Plan(props: Props) {
   const [macros, setMacros] = useState(defaultMacros);
-  const data = JSON.parse(jsonData);
-  const fineliData = JSON.parse(fineliIngredientsJson);
-  const combinedData = data.concat(fineliData);
+
+  const jsonData = props.jsonData;
+  const fineliIngredientsJson = props.fineliIngredientsJson;
+
+  const data: IngredientsInterface = JSON.parse(jsonData);
+  const fineliData: IngredientsInterface = JSON.parse(fineliIngredientsJson);
+  const combinedData: IngredientInterface[] = data.ingredients.concat(
+    fineliData.ingredients,
+  );
 
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -38,9 +51,6 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
             setMacros={setMacros}
           ></PlanForm>
         </Grid>
-
-        {/* <pre>{JSON.stringify(macros, null, 2)}</pre> */}
-
         {macros.macroPercentages.protein ? (
           <>
             <Grid item>
@@ -68,7 +78,7 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
                 }}
               ></PieChart>
             </Grid>
-            <MealTable data={combinedData}></MealTable>
+            <MealTable data={combinedData} plan={true}></MealTable>
           </>
         ) : null}
       </Grid>
