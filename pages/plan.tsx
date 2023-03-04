@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
-import { PieChart } from 'react-minimal-pie-chart';
 import { getIngredientsData } from './api/ingredients';
 import { getFineliIngredientsData } from './api/fineli';
 import { defaultMacros } from '../lib/plan-calculator';
 import { IngredientInterface, IngredientsInterface } from '../interfaces';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
+import MacroPieChart from '../components/macroPieChart';
 
 type Props = {
   jsonData: string;
@@ -35,11 +35,6 @@ export default function Plan(props: Props) {
     fineliData.ingredients,
   );
 
-  const defaultLabelStyle = {
-    fontSize: '5px',
-    fontFamily: 'sans-serif',
-  };
-
   return (
     <>
       <h2>Plan</h2>
@@ -54,29 +49,7 @@ export default function Plan(props: Props) {
         {macros.macroPercentages.protein ? (
           <>
             <Grid item>
-              <PieChart
-                data={[
-                  {
-                    title: 'protein',
-                    value: macros.macroPercentages?.protein,
-                    color: '#90a4ae',
-                  },
-                  {
-                    title: 'carbs',
-                    value: macros.macroPercentages?.carbs,
-                    color: '#cfd8dc',
-                  },
-                  {
-                    title: 'fat',
-                    value: macros.macroPercentages?.fat,
-                    color: '#455a64',
-                  },
-                ]}
-                label={({ dataEntry }) => dataEntry.title}
-                labelStyle={{
-                  ...defaultLabelStyle,
-                }}
-              ></PieChart>
+              <MacroPieChart macros={macros.macroPercentages}></MacroPieChart>
             </Grid>
             <MealTable data={combinedData} plan={true}></MealTable>
           </>

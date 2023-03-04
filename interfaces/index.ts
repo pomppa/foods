@@ -37,3 +37,35 @@ export type MealInterface = {
 export type MealsInterface = {
   meals: MealInterface[];
 };
+
+export interface KcalPerMacro {
+  protein: number;
+  carbs: number;
+  fat: number;
+  total: number;
+}
+
+export interface MacroPercentages {
+  carbs: number;
+  fat: number;
+  protein: number;
+  total: number;
+}
+
+export interface Macros {
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  totalWeight: number;
+  kcalPerMacro: KcalPerMacro;
+  macroPercentages: MacroPercentages;
+}
+
+export interface TableTotalsRow {
+  weight: number;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}

@@ -9,10 +9,20 @@ import {
   TableFooter,
 } from '@mui/material';
 import { MealIngredientInterface } from '../interfaces';
+import TableMacroCalculator from '../lib/tableMacroCalculator';
+import MacroPieChart from './macroPieChart';
 
 type Props = {
   data: MealIngredientInterface[];
   plan: boolean;
+};
+
+type TotalsRow = {
+  weight: number;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
 };
 
 function createData(
@@ -31,7 +41,10 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  console.log(props);
+  /**
+   * todo transform data from plan to type of meal_ingredient
+   * will then support dynamical table on plan page
+   */
   if (props.plan) {
     return;
   }
@@ -39,7 +52,7 @@ export default function MealTable(props: Props) {
   const data: MealIngredientInterface[] = props.data;
 
   // create data for table rows
-  // todo casting to number?
+  // todo casting to number valid?
   const rows = data.map((x) => {
     return createData(
       x.ingredient.name,
@@ -52,67 +65,70 @@ export default function MealTable(props: Props) {
   });
 
   // create data for table's total row
-  // todo casting
-  const totals = rows.reduce(
+  const totals: TotalsRow = rows.reduce(
     (total, obj) => {
       return {
-        weight: parseInt(obj.weight) + total.weight,
-        kcal: parseFloat(obj.calories) + total.kcal,
-        protein: parseFloat(obj.protein) + total.protein,
-        carbs: parseFloat(obj.carbs) + total.carbs,
-        fat: parseFloat(obj.fat) + total.fat,
+        weight: obj.weight + total.weight,
+        kcal: obj.calories + total.kcal,
+        protein: obj.protein + total.protein,
+        carbs: obj.carbs + total.carbs,
+        fat: obj.fat + total.fat,
       };
     },
     { weight: 0, kcal: 0, protein: 0, carbs: 0, fat: 0 },
   );
-
+  console.log(totals);
+  const macros = TableMacroCalculator(totals);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Ingredient</TableCell>
-            <TableCell align="right">Weight&nbsp;(g)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.weight}</TableCell>
-              <TableCell align="right">{row.calories.toFixed(2)}</TableCell>
-              <TableCell align="right">{row.fat.toFixed(2)}</TableCell>
-              <TableCell align="right">{row.carbs.toFixed(2)}</TableCell>
-              <TableCell align="right">{row.protein.toFixed(2)}</TableCell>
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Ingredient</TableCell>
+              <TableCell align="right">Weight&nbsp;(g)</TableCell>
+              <TableCell align="right">Calories</TableCell>
+              <TableCell align="right">Fat&nbsp;(g)</TableCell>
+              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+              <TableCell align="right">Protein&nbsp;(g)</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow
-            sx={{
-              td: {
-                fontSize: 15,
-              },
-            }}
-          >
-            <TableCell>TOTAL</TableCell>
-            <TableCell align="right">{totals.weight}</TableCell>
-            <TableCell align="right">{totals.kcal.toFixed(2)}</TableCell>
-            <TableCell align="right">{totals.fat.toFixed(2)}</TableCell>
-            <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
-            <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.weight}</TableCell>
+                <TableCell align="right">{row.calories.toFixed(2)}</TableCell>
+                <TableCell align="right">{row.fat.toFixed(2)}</TableCell>
+                <TableCell align="right">{row.carbs.toFixed(2)}</TableCell>
+                <TableCell align="right">{row.protein.toFixed(2)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow
+              sx={{
+                td: {
+                  fontSize: 15,
+                },
+              }}
+            >
+              <TableCell>TOTAL</TableCell>
+              <TableCell align="right">{totals.weight}</TableCell>
+              <TableCell align="right">{totals.kcal.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.fat.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
+              <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+      <MacroPieChart macros={macros}></MacroPieChart>
+    </>
   );
 }

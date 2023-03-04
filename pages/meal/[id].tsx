@@ -3,9 +3,15 @@ import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { findUniqueMealWithId } from '../api/meals/[id]';
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
-import { MealInterface, MealIngredientsInterface } from '../../interfaces';
+import {
+  MealInterface,
+  MealIngredientsInterface,
+  MacroPercentages,
+} from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
+import MacroPieChart from '../../components/macroPieChart';
+import TableMacroCalculator from '../../lib/tableMacroCalculator';
 
 type Props = {
   mealsJson: string;
@@ -26,6 +32,7 @@ export default function Meal(props: Props) {
   const router = useRouter();
   const data: MealInterface = JSON.parse(props.mealsJson);
   const mealData: MealIngredientsInterface = JSON.parse(props.mealDataJson);
+  console.log(mealData);
 
   return (
     <>
@@ -34,6 +41,7 @@ export default function Meal(props: Props) {
       </Button>
       <h2>{data.name}</h2>
       <MealTable data={mealData}></MealTable>
+      {/* <MacroPieChart macros={}></MacroPieChart> */}
     </>
   );
 }
