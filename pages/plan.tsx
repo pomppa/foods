@@ -25,6 +25,7 @@ export async function getServerSideProps() {
 
 export default function Plan(props: Props) {
   const [macros, setMacros] = useState(defaultMacros);
+  const [tableData, setTableData] = useState([]);
 
   const jsonData = props.jsonData;
   const fineliIngredientsJson = props.fineliIngredientsJson;
@@ -44,6 +45,7 @@ export default function Plan(props: Props) {
             data={combinedData}
             macros={macros}
             setMacros={setMacros}
+            setTableData={setTableData}
           ></PlanForm>
         </Grid>
         {macros.macroPercentages.protein ? (
@@ -51,7 +53,11 @@ export default function Plan(props: Props) {
             <Grid item>
               <MacroPieChart macros={macros.macroPercentages}></MacroPieChart>
             </Grid>
-            <MealTable data={combinedData} plan={true}></MealTable>
+            <MealTable
+              macros={macros}
+              plan={true}
+              tableData={tableData}
+            ></MealTable>
           </>
         ) : null}
       </Grid>

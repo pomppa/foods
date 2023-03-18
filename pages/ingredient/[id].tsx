@@ -33,7 +33,6 @@ export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
   const macros: MacroPercentages = IngredientMacroCalculator(data);
 
-  console.log(data);
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>

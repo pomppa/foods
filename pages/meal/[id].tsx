@@ -7,11 +7,14 @@ import {
   MealInterface,
   MealIngredientsInterface,
   MacroPercentages,
+  TableData,
 } from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macroPieChart';
 import TableMacroCalculator from '../../lib/tableMacroCalculator';
+import { ingredientsMacroPercentagesCalculator } from '../../lib/ingredientMacroCalculator';
+import { mealMacroCalculator } from '../../lib/plan-calculator';
 
 type Props = {
   mealsJson: string;
@@ -33,15 +36,33 @@ export default function Meal(props: Props) {
   const data: MealInterface = JSON.parse(props.mealsJson);
   const mealData: MealIngredientsInterface = JSON.parse(props.mealDataJson);
   console.log(mealData);
-
+  const tableData: TableData = prepareTableData(mealData);
+  const macros = ingredientsMacroPercentagesCalculator(mealData);
+  console.log(macros);
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>
         Go back
       </Button>
       <h2>{data.name}</h2>
-      <MealTable data={mealData}></MealTable>
-      {/* <MacroPieChart macros={}></MacroPieChart> */}
+      <MealTable tableData={tableData}></MealTable>
+      <MacroPieChart macros={macros}></MacroPieChart>
     </>
   );
+}
+
+export function prepareTableData(mealData: MealIngredientsInterface) {
+  const tableData: TableData = [];
+  mealData.map((x) => {
+    const rowData = {
+      ingredientName: x.ingredient.name,
+      kcal: x.ingredient.kcal,
+      protein: x.ingredient.protein,
+      fat: x.ingredient.fat,
+      carbs: x.ingredient.carbs,
+      weight: x.ingredient_weight,
+    };
+    tableData.push(rowData);
+  });
+  return tableData;
 }

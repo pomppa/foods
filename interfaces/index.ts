@@ -69,3 +69,36 @@ export interface TableTotalsRow {
   carbs: number;
   fat: number;
 }
+
+export interface FormValues {
+  ingredient: number;
+  weight: number;
+  uniqueKey: number;
+}
+
+export interface CombinedDataInterface {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  kcal: string;
+  protein: string;
+  carbs: string;
+  fat: string;
+  fineli_id?: number;
+}
+
+export interface FormValue {
+  ingredient: number;
+  weight: number;
+  uniqueKey: number;
+}
+
+export interface TableData {
+  ingredientName: string;
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  weight: number;
+}

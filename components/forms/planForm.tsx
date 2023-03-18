@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { planCalculator } from '../../lib/plan-calculator';
+import { planCalculator, planTableData } from '../../lib/plan-calculator';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
 import { incremented } from '../../lib/redux/uniqueKeySlice';
@@ -58,6 +58,10 @@ export default function Plan(props) {
     }
 
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
+    console.log(store.getState().valueUpdated);
+    props.setTableData(
+      planTableData(store.getState().valueUpdated, props.data),
+    );
   };
 
   // delete autocomplete field by its unique key

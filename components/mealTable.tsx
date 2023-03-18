@@ -8,13 +8,13 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
-import { MealIngredientInterface } from '../interfaces';
-import TableMacroCalculator from '../lib/tableMacroCalculator';
-import MacroPieChart from './macroPieChart';
+import { Macros, MealIngredientInterface, TableData } from '../interfaces';
 
 type Props = {
-  data: MealIngredientInterface[];
-  plan: boolean;
+  data?: MealIngredientInterface[];
+  plan?: boolean;
+  macros: Macros;
+  tableData?: TableData[];
 };
 
 type TotalsRow = {
@@ -41,28 +41,39 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
+  console.log(props);
   /**
    * todo transform data from plan to type of meal_ingredient
    * will then support dynamical table on plan page
    */
-  if (props.plan) {
-    return;
-  }
-  console.log(props.data);
-  const data: MealIngredientInterface[] = props.data;
+  // if (props.plan) {
+  const data: TableData[] = props.tableData;
+  console.log(data);
+  const rows = data.map((x) => {
+    return createData(
+      x.ingredientName,
+      Number(x.kcal / 100) * x.weight,
+      Number(x.fat / 100) * x.weight,
+      Number(x.carbs / 100) * x.weight,
+      Number(x.protein / 100) * x.weight,
+      Number(x.weight / 100) * x.weight,
+    );
+  });
+  // }
+  //const data: MealIngredientInterface[] = props.data;
 
   // create data for table rows
   // todo casting to number valid?
-  const rows = data.map((x) => {
-    return createData(
-      x.ingredient.name,
-      (Number(x.ingredient.kcal) / 100) * Number(x.ingredient_weight),
-      (Number(x.ingredient.fat) / 100) * Number(x.ingredient_weight),
-      (Number(x.ingredient.carbs) / 100) * Number(x.ingredient_weight),
-      (Number(x.ingredient.protein) / 100) * Number(x.ingredient_weight),
-      Number(x.ingredient_weight),
-    );
-  });
+  // const rows = data.map((x) => {
+  //   return createData(
+  //     x.ingredient.name,
+  //     (Number(x.ingredient.kcal) / 100) * Number(x.ingredient_weight),
+  //     (Number(x.ingredient.fat) / 100) * Number(x.ingredient_weight),
+  //     (Number(x.ingredient.carbs) / 100) * Number(x.ingredient_weight),
+  //     (Number(x.ingredient.protein) / 100) * Number(x.ingredient_weight),
+  //     Number(x.ingredient_weight),
+  //   );
+  // });
 
   // create data for table's total row
   const totals: TotalsRow = rows.reduce(
@@ -77,8 +88,6 @@ export default function MealTable(props: Props) {
     },
     { weight: 0, kcal: 0, protein: 0, carbs: 0, fat: 0 },
   );
-  console.log(totals);
-  const macros = TableMacroCalculator(totals);
   return (
     <>
       <TableContainer component={Paper}>
@@ -128,7 +137,6 @@ export default function MealTable(props: Props) {
           </TableFooter>
         </Table>
       </TableContainer>
-      <MacroPieChart macros={macros}></MacroPieChart>
     </>
   );
 }

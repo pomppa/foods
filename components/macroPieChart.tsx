@@ -11,9 +11,11 @@ const defaultLabelStyle = {
 };
 
 export default function MacroPieChart(props: Props) {
-  console.log(props);
   const macroPercentages: MacroPercentages = props.macros;
-  //return;
+
+  if (!macroPercentages) {
+    return <></>;
+  }
 
   return (
     <PieChart
