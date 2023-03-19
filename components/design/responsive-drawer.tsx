@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -51,7 +50,7 @@ export default function ResponsiveDrawer() {
       <Toolbar />
       <Divider />
       <List>
-        {menu.map((element, index) => (
+        {menu.map((element) => (
           <Link
             key={element.link}
             href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}

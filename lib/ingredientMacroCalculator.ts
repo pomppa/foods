@@ -1,13 +1,9 @@
 import { Macros } from '../interfaces';
-import {
-  IngredientInterface,
-  MacroPercentages,
-  MealIngredientsInterface,
-} from '../interfaces';
+import { MealIngredientInterface } from '../interfaces';
 import { defaultMacros } from './plan-calculator';
 
 export function ingredientsMacroPercentagesCalculator(
-  props: MealIngredientsInterface,
+  props: MealIngredientInterface[],
 ) {
   console.log(props);
   const macros: Macros = defaultMacros;

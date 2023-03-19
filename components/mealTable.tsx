@@ -41,14 +41,7 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  console.log(props);
-  /**
-   * todo transform data from plan to type of meal_ingredient
-   * will then support dynamical table on plan page
-   */
-  // if (props.plan) {
   const data: TableData[] = props.tableData;
-  console.log(data);
   const rows = data.map((x) => {
     return createData(
       x.ingredientName,
@@ -56,24 +49,9 @@ export default function MealTable(props: Props) {
       Number(x.fat / 100) * x.weight,
       Number(x.carbs / 100) * x.weight,
       Number(x.protein / 100) * x.weight,
-      Number(x.weight / 100) * x.weight,
+      Number(x.weight),
     );
   });
-  // }
-  //const data: MealIngredientInterface[] = props.data;
-
-  // create data for table rows
-  // todo casting to number valid?
-  // const rows = data.map((x) => {
-  //   return createData(
-  //     x.ingredient.name,
-  //     (Number(x.ingredient.kcal) / 100) * Number(x.ingredient_weight),
-  //     (Number(x.ingredient.fat) / 100) * Number(x.ingredient_weight),
-  //     (Number(x.ingredient.carbs) / 100) * Number(x.ingredient_weight),
-  //     (Number(x.ingredient.protein) / 100) * Number(x.ingredient_weight),
-  //     Number(x.ingredient_weight),
-  //   );
-  // });
 
   // create data for table's total row
   const totals: TotalsRow = rows.reduce(
@@ -88,6 +66,7 @@ export default function MealTable(props: Props) {
     },
     { weight: 0, kcal: 0, protein: 0, carbs: 0, fat: 0 },
   );
+
   return (
     <>
       <TableContainer component={Paper}>

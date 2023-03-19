@@ -9,24 +9,25 @@ interface FormData {
   protein: number;
 }
 
+// todo is it necessary to initialize like this
+const defaultValues = {
+  name: '',
+  kcal: 0,
+  fat: 0,
+  carbs: 0,
+  protein: 0,
+};
+
 /**
  * Form for submitting new ingredient
  * @returns
  */
 export default function IngredientForm() {
-  const defaultValues = {
-    name: '',
-    kcal: 0,
-    fat: 0,
-    carbs: 0,
-    protein: 0,
-  };
   const [formData, setFormData] = useState<FormData>(defaultValues);
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = async (event) => {
-    //TODO handle 200 / 500
-
+  const handleSubmit = async () => {
+    // todo handle 200 / 500
     await fetch('/api/ingredients', {
       method: 'POST',
       headers: {
@@ -147,7 +148,7 @@ export default function IngredientForm() {
           />
         </Box>
         <Box sx={{ mt: 2 }}>
-          <Button variant="contained" onClick={(event) => handleSubmit(event)}>
+          <Button variant="contained" onClick={() => handleSubmit()}>
             Submit
           </Button>
         </Box>

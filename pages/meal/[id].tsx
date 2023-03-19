@@ -6,15 +6,12 @@ import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import {
   MealInterface,
   MealIngredientsInterface,
-  MacroPercentages,
   TableData,
 } from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macroPieChart';
-import TableMacroCalculator from '../../lib/tableMacroCalculator';
 import { ingredientsMacroPercentagesCalculator } from '../../lib/ingredientMacroCalculator';
-import { mealMacroCalculator } from '../../lib/plan-calculator';
 
 type Props = {
   mealsJson: string;
@@ -35,10 +32,8 @@ export default function Meal(props: Props) {
   const router = useRouter();
   const data: MealInterface = JSON.parse(props.mealsJson);
   const mealData: MealIngredientsInterface = JSON.parse(props.mealDataJson);
-  console.log(mealData);
   const tableData: TableData = prepareTableData(mealData);
   const macros = ingredientsMacroPercentagesCalculator(mealData);
-  console.log(macros);
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>

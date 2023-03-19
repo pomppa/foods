@@ -6,6 +6,7 @@ import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
+import { IngredientInterface, Macros, TableData } from '../../interfaces';
 
 interface Value {
   ingredient?: {
@@ -16,12 +17,19 @@ interface Value {
   uniqueKey: number;
 }
 
+interface Props {
+  data: IngredientInterface[];
+  macros: Macros;
+  setMacros: React.Dispatch<React.SetStateAction<Macros>>;
+  setTableData: React.Dispatch<React.SetStateAction<TableData[]>>;
+}
+
 /**
  * Planner view, inputs for selecting ingredients and saving as a meal
  * @param props
  * @returns
  */
-export default function Plan(props) {
+export default function Plan(props: Props) {
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
 
@@ -58,7 +66,6 @@ export default function Plan(props) {
     }
 
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
-    console.log(store.getState().valueUpdated);
     props.setTableData(
       planTableData(store.getState().valueUpdated, props.data),
     );

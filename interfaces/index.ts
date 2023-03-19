@@ -1,7 +1,7 @@
 import { Decimal } from '@prisma/client/runtime';
 
 export type IngredientInterface = {
-  id?: number;
+  id: number;
   created_at?: Date;
   updated_at?: Date;
   name: string;
@@ -9,6 +9,7 @@ export type IngredientInterface = {
   protein: Decimal;
   carbs: Decimal;
   fat: Decimal;
+  fineli_id?: number;
 };
 
 export type IngredientsInterface = {
