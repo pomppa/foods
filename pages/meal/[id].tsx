@@ -1,11 +1,10 @@
-import React from 'react';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { findUniqueMealWithId } from '../api/meals/[id]';
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import {
   MealInterface,
-  MealIngredientsInterface,
+  MealIngredientInterface,
   TableData,
 } from '../../interfaces';
 import { NextApiRequest } from 'next';
@@ -31,8 +30,8 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 export default function Meal(props: Props) {
   const router = useRouter();
   const data: MealInterface = JSON.parse(props.mealsJson);
-  const mealData: MealIngredientsInterface = JSON.parse(props.mealDataJson);
-  const tableData: TableData = prepareTableData(mealData);
+  const mealData: MealIngredientInterface[] = JSON.parse(props.mealDataJson);
+  const tableData: TableData[] = prepareTableData(mealData);
   const macros = ingredientsMacroPercentagesCalculator(mealData);
   return (
     <>
@@ -46,8 +45,9 @@ export default function Meal(props: Props) {
   );
 }
 
-export function prepareTableData(mealData: MealIngredientsInterface) {
-  const tableData: TableData = [];
+export function prepareTableData(mealData: MealIngredientInterface[]) {
+  const tableData: TableData[] = [];
+
   mealData.map((x) => {
     const rowData = {
       ingredientName: x.ingredient.name,
@@ -59,5 +59,6 @@ export function prepareTableData(mealData: MealIngredientsInterface) {
     };
     tableData.push(rowData);
   });
+
   return tableData;
 }

@@ -2,21 +2,17 @@ import { Macros } from '../interfaces';
 import { MealIngredientInterface } from '../interfaces';
 import { defaultMacros } from './plan-calculator';
 
-export function ingredientsMacroPercentagesCalculator(
+export default function ingredientsMacroPercentagesCalculator(
   props: MealIngredientInterface[],
 ) {
-  console.log(props);
   const macros: Macros = defaultMacros;
   props.map((x) => {
-    macros.kcal =
-      Number((x.ingredient.kcal / 100) * x.ingredient_weight) + macros.kcal;
+    macros.kcal = (x.ingredient.kcal / 100) * x.ingredient_weight + macros.kcal;
     macros.protein =
-      Number((x.ingredient.protein / 100) * x.ingredient_weight) +
-      macros.protein;
-    macros.fat =
-      Number((x.ingredient.fat / 100) * x.ingredient_weight) + macros.fat;
+      (x.ingredient.protein / 100) * x.ingredient_weight + macros.protein;
+    macros.fat = (x.ingredient.fat / 100) * x.ingredient_weight + macros.fat;
     macros.carbs =
-      Number((x.ingredient.carbs / 100) * x.ingredient_weight) + macros.carbs;
+      (x.ingredient.carbs / 100) * x.ingredient_weight + macros.carbs;
   });
 
   // calculate total macro calories

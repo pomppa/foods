@@ -1,8 +1,8 @@
 import { PieChart } from 'react-minimal-pie-chart';
-import { MacroPercentages } from '../interfaces';
+import { Macros, MacroPercentages } from '../interfaces';
 
 type Props = {
-  macros: MacroPercentages;
+  macros: Macros;
 };
 
 const defaultLabelStyle = {
@@ -11,7 +11,7 @@ const defaultLabelStyle = {
 };
 
 export default function MacroPieChart(props: Props) {
-  const macroPercentages: MacroPercentages = props.macros;
+  const macroPercentages: MacroPercentages = props.macros.macroPercentages;
 
   if (!macroPercentages) {
     return <></>;

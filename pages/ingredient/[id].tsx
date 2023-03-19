@@ -16,7 +16,7 @@ import router from 'next/router';
 import { NextApiRequest } from 'next';
 import { IngredientInterface, MacroPercentages } from '../../interfaces';
 import MacroPieChart from '../../components/macroPieChart';
-import IngredientMacroCalculator from '../../lib/ingredientMacroCalculator';
+import ingredientsMacroPercentagesCalculator from '../../lib/ingredientMacroCalculator';
 
 type Props = {
   ingredientJson: string;
@@ -31,7 +31,7 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 
 export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
-  const macros: MacroPercentages = IngredientMacroCalculator(data);
+  const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
 
   return (
     <>

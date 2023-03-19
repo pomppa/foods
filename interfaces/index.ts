@@ -1,14 +1,12 @@
-import { Decimal } from '@prisma/client/runtime';
-
 export type IngredientInterface = {
   id: number;
   created_at?: Date;
   updated_at?: Date;
   name: string;
-  kcal: Decimal;
-  protein: Decimal;
-  carbs: Decimal;
-  fat: Decimal;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
   fineli_id?: number;
 };
 
@@ -20,7 +18,7 @@ export type MealIngredientInterface = {
   id: number;
   meal_id: number;
   ingredient_id: number;
-  ingredient_weight: string;
+  ingredient_weight: number;
   ingredient: IngredientInterface;
 };
 
@@ -43,14 +41,14 @@ export interface KcalPerMacro {
   protein: number;
   carbs: number;
   fat: number;
-  total: number;
+  total?: number;
 }
 
 export interface MacroPercentages {
   carbs: number;
   fat: number;
   protein: number;
-  total: number;
+  total?: number;
 }
 
 export interface Macros {
@@ -102,4 +100,16 @@ export interface TableData {
   carbs: number;
   protein: number;
   weight: number;
+}
+
+export interface Macros {
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  totalWeight: number;
+  kcalPerMacro: KcalPerMacro;
+  macroPercentages: MacroPercentages;
+  ingredientId: number;
+  ingredientName: string;
 }

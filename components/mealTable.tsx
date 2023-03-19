@@ -8,12 +8,11 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
-import { Macros, MealIngredientInterface, TableData } from '../interfaces';
+import { MealIngredientInterface, TableData } from '../interfaces';
 
 type Props = {
   data?: MealIngredientInterface[];
   plan?: boolean;
-  macros: Macros;
   tableData?: TableData[];
 };
 

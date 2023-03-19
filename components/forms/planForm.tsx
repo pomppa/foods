@@ -181,7 +181,7 @@ export default function Plan(props: Props) {
   };
 
   // save selected ingredients after meal was saved
-  const saveIngredientsToMeal = async (mealId) => {
+  const saveIngredientsToMeal = async (mealId: number) => {
     const endpoint = '/api/meals/create';
 
     const ingredients = store.getState().valueUpdated;
