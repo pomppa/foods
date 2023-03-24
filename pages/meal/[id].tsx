@@ -10,7 +10,7 @@ import {
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macroPieChart';
-import { ingredientsMacroPercentagesCalculator } from '../../lib/ingredientMacroCalculator';
+import ingredientsMacroPercentagesCalculator from '../../lib/ingredientMacroCalculator';
 
 type Props = {
   mealsJson: string;
@@ -39,7 +39,7 @@ export default function Meal(props: Props) {
         Go back
       </Button>
       <h2>{data.name}</h2>
-      <MealTable tableData={tableData}></MealTable>
+      <MealTable tableData={tableData} macros={macros}></MealTable>
       <MacroPieChart macros={macros}></MacroPieChart>
     </>
   );
