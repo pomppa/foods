@@ -1,7 +1,9 @@
 import prisma from '../lib/prisma';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import IngredientForm from '../components/forms/ingredientForm';
+import Link from 'next/link';
+import { IngredientInterface } from '../interfaces';
 import {
   Box,
   Grid,
@@ -10,7 +12,10 @@ import {
   ListItemButton,
   ListItemText,
 } from '@mui/material';
-import Link from 'next/link';
+
+type Props = {
+  ingredientsJson: string;
+};
 
 export const getServerSideProps = async () => {
   const ingredients = await prisma.ingredient.findMany();
@@ -19,8 +24,8 @@ export const getServerSideProps = async () => {
   return { props: { ingredientsJson } };
 };
 
-export default function Ingredients(props) {
-  const data = JSON.parse(props.ingredientsJson);
+export default function Ingredients(props: Props) {
+  const data: IngredientInterface[] = JSON.parse(props.ingredientsJson);
 
   return (
     <>
@@ -30,20 +35,12 @@ export default function Ingredients(props) {
       </Head>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <div>
-            <h1>Ingredients</h1>
-            <p>Add a new ingredient</p>
-          </div>
-          <IngredientForm></IngredientForm>{' '}
-        </Grid>
-        <Grid item xs={6}>
-          <h2> All ingredients </h2>
-          {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+          <h2> Ingredients </h2>
           <Box
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
           >
             <List>
-              {data.map((x, i) => {
+              {data.map((x) => {
                 return (
                   <>
                     <Link href={'ingredient/' + x.id}>
@@ -57,7 +54,13 @@ export default function Ingredients(props) {
                 );
               })}
             </List>
-          </Box>{' '}
+          </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <div>
+            <p>Add a new ingredient</p>
+          </div>
+          <IngredientForm></IngredientForm>
         </Grid>
       </Grid>
     </>

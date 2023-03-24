@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
+/**
+ * Ingredient autocomplete, contains ingredient dropdown + weight input
+ * @param props
+ * @returns
+ */
 export default function IngredientAutocomplete(props) {
   const [value, setValue] = useState<string>(null);
   const [inputValue, setInputValue] = useState('');
@@ -11,7 +14,7 @@ export default function IngredientAutocomplete(props) {
     <>
       <Autocomplete
         value={value}
-        onChange={(event: any, newValue: string | null) => {
+        onChange={(_event: React.ChangeEvent, newValue: string | null) => {
           setValue(newValue);
           props.handleChange({
             ingredient: newValue,

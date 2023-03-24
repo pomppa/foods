@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,7 +10,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ListIcon from '@mui/icons-material/List';
@@ -32,7 +30,7 @@ export default function ResponsiveDrawer() {
   };
 
   const menu = [
-    { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
+    // { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
     { title: 'Plan', icon: ScaleIcon, link: 'plan' },
     // { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
@@ -51,7 +49,7 @@ export default function ResponsiveDrawer() {
       <Toolbar />
       <Divider />
       <List>
-        {menu.map((element, index) => (
+        {menu.map((element) => (
           <Link
             key={element.link}
             href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}

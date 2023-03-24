@@ -5,30 +5,34 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { List } from '@mui/material';
+import { MealInterface } from '../interfaces';
+
+type Props = {
+  mealsJson: string;
+};
 
 export const getServerSideProps = async () => {
   const meals = await prisma.meal.findMany();
   const mealsJson = JSON.stringify(meals);
 
-  const rows = [];
-  return { props: { mealsJson, rows } };
+  return { props: { mealsJson } };
 };
 
-export default function Meals(props) {
-  const data = JSON.parse(props.mealsJson);
+export default function Meals(props: Props) {
+  const data: MealInterface[] = JSON.parse(props.mealsJson);
 
   return (
     <>
       <h1>Meals</h1>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <List>
-          {data.map((x, i) => {
+          {data.map((x) => {
             return (
               <>
-                <Link key={x.id} href={'meal/' + x.id}>
-                  <ListItem disablePadding key={i}>
+                <Link href={'meal/' + x.id}>
+                  <ListItem disablePadding>
                     <ListItemButton>
-                      <ListItemText primary={x.name} />
+                      <ListItemText key={x.id} primary={x.name} />
                     </ListItemButton>
                   </ListItem>
                 </Link>
@@ -37,7 +41,6 @@ export default function Meals(props) {
           })}
         </List>
       </Box>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </>
   );
 }

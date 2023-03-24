@@ -1,31 +1,40 @@
 import { useState } from 'react';
-import PlanForm from '../components/forms/planForm';
-import { Box, Grid } from '@mui/material';
-import { PieChart } from 'react-minimal-pie-chart';
+import { Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
 import { getFineliIngredientsData } from './api/fineli';
 import { defaultMacros } from '../lib/plan-calculator';
+import { IngredientInterface, IngredientsInterface } from '../interfaces';
 import MealTable from '../components/mealTable';
+import PlanForm from '../components/forms/planForm';
+import MacroPieChart from '../components/macroPieChart';
+
+type Props = {
+  jsonData: string;
+  fineliIngredientsJson: string;
+};
 
 export async function getServerSideProps() {
   const data = await getIngredientsData();
-  const jsonData = JSON.stringify(data);
   const fineliIngredients = await getFineliIngredientsData();
+
+  const jsonData = JSON.stringify(data);
   const fineliIngredientsJson = JSON.stringify(fineliIngredients);
 
   return { props: { jsonData, fineliIngredientsJson } };
 }
 
-export default function Plan({ jsonData, fineliIngredientsJson }) {
+export default function Plan(props: Props) {
   const [macros, setMacros] = useState(defaultMacros);
-  const data = JSON.parse(jsonData);
-  const fineliData = JSON.parse(fineliIngredientsJson);
-  const combinedData = data.concat(fineliData);
+  const [tableData, setTableData] = useState([]);
 
-  const defaultLabelStyle = {
-    fontSize: '5px',
-    fontFamily: 'sans-serif',
-  };
+  const jsonData = props.jsonData;
+  const fineliIngredientsJson = props.fineliIngredientsJson;
+
+  const data: IngredientsInterface = JSON.parse(jsonData);
+  const fineliData: IngredientsInterface = JSON.parse(fineliIngredientsJson);
+  const combinedData: IngredientInterface[] = data.ingredients.concat(
+    fineliData.ingredients,
+  );
 
   return (
     <>
@@ -36,41 +45,15 @@ export default function Plan({ jsonData, fineliIngredientsJson }) {
             data={combinedData}
             macros={macros}
             setMacros={setMacros}
+            setTableData={setTableData}
           ></PlanForm>
         </Grid>
-
-        {/* <pre>{JSON.stringify(macros, null, 2)}</pre> */}
-
-        {macros.macroPercentages.protein ? (
-          <>
-            <Grid item>
-              <PieChart
-                data={[
-                  {
-                    title: 'protein',
-                    value: macros.macroPercentages?.protein,
-                    color: '#90a4ae',
-                  },
-                  {
-                    title: 'carbs',
-                    value: macros.macroPercentages?.carbs,
-                    color: '#cfd8dc',
-                  },
-                  {
-                    title: 'fat',
-                    value: macros.macroPercentages?.fat,
-                    color: '#455a64',
-                  },
-                ]}
-                label={({ dataEntry }) => dataEntry.title}
-                labelStyle={{
-                  ...defaultLabelStyle,
-                }}
-              ></PieChart>
-            </Grid>
-            <MealTable data={combinedData}></MealTable>
-          </>
-        ) : null}
+        <>
+          <Grid item>
+            <MacroPieChart macros={macros}></MacroPieChart>
+          </Grid>
+          <MealTable tableData={tableData} macros={macros}></MealTable>
+        </>
       </Grid>
     </>
   );

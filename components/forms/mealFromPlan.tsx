@@ -1,6 +1,11 @@
 import { Button, Box, TextField } from '@mui/material';
 import { useState } from 'react';
 
+/**
+ * Save meal from plan, input meal name only
+ * @param props
+ * @returns
+ */
 export default function MealFromPlan(props) {
   const [mealName, setMealName] = useState('');
 

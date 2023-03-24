@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { findUniqueIngredient } from '../api/ingredients/[id]';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -12,16 +13,26 @@ import {
   TableRow,
 } from '@mui/material';
 import router from 'next/router';
+import { NextApiRequest } from 'next';
+import { IngredientInterface, MacroPercentages } from '../../interfaces';
+import MacroPieChart from '../../components/macroPieChart';
+import ingredientsMacroPercentagesCalculator from '../../lib/ingredientMacroCalculator';
 
-export const getServerSideProps = async (req) => {
+type Props = {
+  ingredientJson: string;
+};
+
+export const getServerSideProps = async (req: NextApiRequest) => {
   const ingredient = await findUniqueIngredient(req.query.id);
   const ingredientJson = JSON.stringify(ingredient);
 
   return { props: { ingredientJson } };
 };
 
-export default function Ingredient(props) {
-  const data = JSON.parse(props.ingredientJson);
+export default function Ingredient(props: Props) {
+  const data: IngredientInterface = JSON.parse(props.ingredientJson);
+  const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
+
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>
@@ -50,14 +61,17 @@ export default function Ingredient(props) {
               <TableCell component="th" scope="row">
                 {data.name}
               </TableCell>
-              <TableCell align="right">{data.kcal}</TableCell>
-              <TableCell align="right">{data.fat}</TableCell>
-              <TableCell align="right">{data.carbs}</TableCell>
-              <TableCell align="right">{data.protein}</TableCell>
+              <TableCell align="right">{String(data.kcal)}</TableCell>
+              <TableCell align="right">{String(data.fat)}</TableCell>
+              <TableCell align="right">{String(data.carbs)}</TableCell>
+              <TableCell align="right">{String(data.protein)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+      <Box sx={{ width: 1 / 3, py: 5, ml: 5 }}>
+        <MacroPieChart macros={macros}></MacroPieChart>
+      </Box>
     </>
   );
 }

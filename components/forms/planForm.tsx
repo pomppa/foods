@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { planCalculator } from '../../lib/plan-calculator';
+import { planCalculator, planTableData } from '../../lib/plan-calculator';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
 import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
-import MealTable from '../mealTable';
+import { IngredientInterface, Macros, TableData } from '../../interfaces';
 
 interface Value {
   ingredient?: {
@@ -17,7 +17,19 @@ interface Value {
   uniqueKey: number;
 }
 
-export default function Plan(props) {
+interface Props {
+  data: IngredientInterface[];
+  macros: Macros;
+  setMacros: React.Dispatch<React.SetStateAction<Macros>>;
+  setTableData: React.Dispatch<React.SetStateAction<TableData[]>>;
+}
+
+/**
+ * Planner view, inputs for selecting ingredients and saving as a meal
+ * @param props
+ * @returns
+ */
+export default function Plan(props: Props) {
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
 
@@ -25,11 +37,11 @@ export default function Plan(props) {
     return { label: element.name, id: element.id };
   });
 
-  // const [macros, setMacros] = useState({});
   const [displayMealSave, setDisplayMealSave] = useState(false);
   const [mealName, setMealName] = useState('');
   const [open, setOpen] = useState(false);
 
+  //handle changes on autocomplete fields
   const handleChange = (value: Value) => {
     if (value.ingredient === null && value.uniqueKey !== 0) {
       deleteByUniqueKey(value);
@@ -54,8 +66,12 @@ export default function Plan(props) {
     }
 
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
+    props.setTableData(
+      planTableData(store.getState().valueUpdated, props.data),
+    );
   };
 
+  // delete autocomplete field by its unique key
   const deleteByUniqueKey = (value: Value) => {
     store.dispatch(
       valueUpdated({
@@ -74,6 +90,7 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
+  // delete all autocomplete forms
   const deleteAll = () => {
     store.dispatch(
       valueUpdated({
@@ -98,6 +115,7 @@ export default function Plan(props) {
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
+  // initialize default view with forms
   const defaultForms = [
     // eslint-disable-next-line react/jsx-key
     <IngredientAutocomplete
@@ -110,8 +128,11 @@ export default function Plan(props) {
       }}
     />,
   ];
+
+  // initial default forms to state
   const [forms, setForms] = useState(defaultForms);
 
+  // add new autocomplete fields
   const addIngredientAutoCompletes = () => {
     store.dispatch(incremented());
     const uniqueKey = store.getState().uniqueKey.value;
@@ -135,6 +156,7 @@ export default function Plan(props) {
     ]);
   };
 
+  // save planned meal
   const saveMealFromPlan = async () => {
     const endpoint = '/api/meals/';
 
@@ -158,7 +180,8 @@ export default function Plan(props) {
     deleteAll();
   };
 
-  const saveIngredientsToMeal = async (mealId) => {
+  // save selected ingredients after meal was saved
+  const saveIngredientsToMeal = async (mealId: number) => {
     const endpoint = '/api/meals/create';
 
     const ingredients = store.getState().valueUpdated;
@@ -178,9 +201,9 @@ export default function Plan(props) {
     setOpen(true);
 
     //todo add error handling, success message on 200 and reset values
-    const result = await fetch(endpoint, options);
-    console.log(result);
+    await fetch(endpoint, options);
 
+    // timer for snackbar to be open
     setTimeout(() => {
       setOpen(false);
     }, 2500);
