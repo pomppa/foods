@@ -51,16 +51,6 @@ export interface MacroPercentages {
   total?: number;
 }
 
-export interface Macros {
-  kcal: number;
-  fat: number;
-  carbs: number;
-  protein: number;
-  totalWeight: number;
-  kcalPerMacro: KcalPerMacro;
-  macroPercentages: MacroPercentages;
-}
-
 export interface TableTotalsRow {
   weight: number;
   kcal: number;

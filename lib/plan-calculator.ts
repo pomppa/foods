@@ -34,7 +34,6 @@ export const planCalculator = (
   data: IngredientInterface[],
 ) => {
   const macros: Macros = defaultMacros;
-  console.log(data);
 
   formValues.map((value) => {
     const ingredientObject: IngredientInterface = data.find(
@@ -93,8 +92,10 @@ export function planTableData(
 ) {
   const tableData: TableData[] = [];
   formValues.map((value) => {
-    console.log(data);
     const ingredientObject = data.find((x) => x.id === value.ingredient);
+    if (!ingredientObject) {
+      return tableData;
+    }
     const rowData = {
       ingredientName: ingredientObject.name,
       kcal: ingredientObject.kcal,

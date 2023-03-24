@@ -35,14 +35,7 @@ export default function Ingredients(props: Props) {
       </Head>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <div>
-            <h1>Ingredients</h1>
-            <p>Add a new ingredient</p>
-          </div>
-          <IngredientForm></IngredientForm>
-        </Grid>
-        <Grid item xs={6}>
-          <h2> All ingredients </h2>
+          <h2> Ingredients </h2>
           <Box
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
           >
@@ -62,6 +55,12 @@ export default function Ingredients(props: Props) {
               })}
             </List>
           </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <div>
+            <p>Add a new ingredient</p>
+          </div>
+          <IngredientForm></IngredientForm>
         </Grid>
       </Grid>
     </>

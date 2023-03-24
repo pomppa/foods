@@ -31,7 +31,7 @@ export default function ResponsiveDrawer() {
   };
 
   const menu = [
-    { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
+    // { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
     { title: 'Plan', icon: ScaleIcon, link: 'plan' },
     // { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },

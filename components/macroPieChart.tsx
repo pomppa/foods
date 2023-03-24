@@ -13,7 +13,7 @@ const defaultLabelStyle = {
 export default function MacroPieChart(props: Props) {
   const macroPercentages: MacroPercentages = props.macros.macroPercentages;
 
-  if (!macroPercentages) {
+  if (!macroPercentages.total) {
     return <></>;
   }
 

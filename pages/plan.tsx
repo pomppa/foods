@@ -48,18 +48,12 @@ export default function Plan(props: Props) {
             setTableData={setTableData}
           ></PlanForm>
         </Grid>
-        {macros.macroPercentages.protein ? (
-          <>
-            <Grid item>
-              <MacroPieChart macros={macros.macroPercentages}></MacroPieChart>
-            </Grid>
-            <MealTable
-              macros={macros}
-              plan={true}
-              tableData={tableData}
-            ></MealTable>
-          </>
-        ) : null}
+        <>
+          <Grid item>
+            <MacroPieChart macros={macros}></MacroPieChart>
+          </Grid>
+          <MealTable tableData={tableData} macros={macros}></MealTable>
+        </>
       </Grid>
     </>
   );
