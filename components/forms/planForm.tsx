@@ -6,7 +6,12 @@ import { incremented } from '../../lib/redux/uniqueKeySlice';
 import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
-import { IngredientInterface, Macros, TableData } from '../../interfaces';
+import {
+  IngredientInterface,
+  Macros,
+  TableData,
+  AutocompleteOptions,
+} from '../../interfaces';
 
 interface Value {
   ingredient?: {
@@ -20,6 +25,7 @@ interface Value {
 interface Props {
   data: IngredientInterface[];
   macros: Macros;
+  preSelected: AutocompleteOptions[];
   setMacros: React.Dispatch<React.SetStateAction<Macros>>;
   setTableData: React.Dispatch<React.SetStateAction<TableData[]>>;
 }
@@ -29,7 +35,7 @@ interface Props {
  * @param props
  * @returns
  */
-export default function Plan(props: Props) {
+export default function PlanForm(props: Props) {
   const CASE_DELETE = 'DELETE';
   const CASE_UPDATE = 'UPDATE';
 
@@ -43,6 +49,9 @@ export default function Plan(props: Props) {
 
   //handle changes on autocomplete fields
   const handleChange = (value: Value) => {
+    console.log('handling change');
+    console.log(value);
+
     if (value.ingredient === null && value.uniqueKey !== 0) {
       deleteByUniqueKey(value);
       return;
@@ -64,7 +73,6 @@ export default function Plan(props: Props) {
         }),
       );
     }
-
     props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
     props.setTableData(
       planTableData(store.getState().valueUpdated, props.data),
@@ -116,21 +124,85 @@ export default function Plan(props: Props) {
   };
 
   // initialize default view with forms
-  const defaultForms = [
-    // eslint-disable-next-line react/jsx-key
-    <IngredientAutocomplete
-      {...{
-        key: store.getState().uniqueKey.value,
-        uniqueKey: store.getState().uniqueKey.value,
-        options: options,
-        deleteByUniqueKey: deleteByUniqueKey,
-        handleChange: handleChange,
-      }}
-    />,
-  ];
+  const preSelectedForms = [];
+  console.log(props.preSelected);
+  props.preSelected.map((element) => {
+    const value = {
+      label: element.label,
+      id: element.id,
+    };
+    preSelectedForms.push(
+      <IngredientAutocomplete
+        {...{
+          key: store.getState().uniqueKey.value,
+          uniqueKey: store.getState().uniqueKey.value,
+          options: options,
+          deleteByUniqueKey: deleteByUniqueKey,
+          handleChange: handleChange,
+          value: value,
+          ingredient_weight: element.ingredient_weight,
+        }}
+      />,
+    );
+    store.dispatch(incremented());
+    // console.log(preSelectedForms);
+    // console.log(element);
+    // if (element.id) {
+    //   store.dispatch(
+    //     valueUpdated({
+    //       data: {
+    //         ingredient: element.id,
+    //         uniqueKey: store.getState().uniqueKey.value,
+    //       },
+    //       case: CASE_UPDATE,
+    //     }),
+    //   );
+    // }
+    // if (element.ingredient_weight) {
+    //   store.dispatch(
+    //     valueUpdated({
+    //       data: {
+    //         weight: element.ingredient_weight,
+    //         uniqueKey: store.getState().uniqueKey.value,
+    //       },
+    //       case: CASE_UPDATE,
+    //     }),
+    //   );
+    // }
+    // console.log(store.getState().valueUpdated);
+    // console.log(planCalculator(store.getState().valueUpdated, props.data));
+
+    // props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
+    // props.setTableData(
+    //   planTableData(store.getState().valueUpdated, props.data),
+    // );
+    // const macros = planCalculator({})
+
+    /**
+     * export interface FormValues {
+  ingredient: number;
+  weight: number;
+  uniqueKey: number;
+}
+     */
+  });
+
+  // const defaultForms = [
+  //   // eslint-disable-next-line react/jsx-key
+  //   <IngredientAutocomplete
+  //     {...{
+  //       key: store.getState().uniqueKey.value,
+  //       uniqueKey: store.getState().uniqueKey.value,
+  //       options: options,
+  //       deleteByUniqueKey: deleteByUniqueKey,
+  //       handleChange: handleChange,
+  //       value: value,
+  //     }}
+  //   />,
+  // ];
 
   // initial default forms to state
-  const [forms, setForms] = useState(defaultForms);
+  const [forms, setForms] = useState(preSelectedForms);
 
   // add new autocomplete fields
   const addIngredientAutoCompletes = () => {

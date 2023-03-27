@@ -103,3 +103,9 @@ export interface Macros {
   ingredientId: number;
   ingredientName: string;
 }
+
+export interface AutocompleteOptions {
+  label: string;
+  id: number;
+  ingredient_weight?: number;
+}
