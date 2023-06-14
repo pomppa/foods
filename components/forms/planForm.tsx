@@ -1,235 +1,84 @@
 import { useState } from 'react';
-import { planCalculator, planTableData } from '../../lib/plan-calculator';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
-import { incremented } from '../../lib/redux/uniqueKeySlice';
-import { valueUpdated, valueAdded } from '../../lib/redux/valuesSlice';
+import { valueUpdated } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
-import {
-  IngredientInterface,
-  Macros,
-  TableData,
-  AutocompleteOptions,
-} from '../../interfaces';
-
-interface Value {
-  ingredient?: {
-    label: string;
-    id: number;
-  };
-  weight?: number;
-  uniqueKey: number;
-}
-
-interface Props {
-  data: IngredientInterface[];
-  macros: Macros;
-  preSelected: AutocompleteOptions[];
-  setMacros: React.Dispatch<React.SetStateAction<Macros>>;
-  setTableData: React.Dispatch<React.SetStateAction<TableData[]>>;
-}
+import { FormValues } from '../../interfaces';
 
 /**
  * Planner view, inputs for selecting ingredients and saving as a meal
  * @param props
  * @returns
  */
-export default function PlanForm(props: Props) {
-  const CASE_DELETE = 'DELETE';
-  const CASE_UPDATE = 'UPDATE';
+export default function PlanForm(props) {
+  const CASE_INSERT = 'INSERT';
 
   const options = props.data.map((element) => {
     return { label: element.name, id: element.id };
   });
 
   const [displayMealSave, setDisplayMealSave] = useState(false);
-  const [mealName, setMealName] = useState('');
+  const [setMealName] = useState('');
   const [open, setOpen] = useState(false);
+  const [childCount, setChildCount] = useState(1);
+  const [childComponents, setChildComponents] = useState([]);
 
-  //handle changes on autocomplete fields
-  const handleChange = (value: Value) => {
-    console.log('handling change');
-    console.log(value);
-
-    if (value.ingredient === null && value.uniqueKey !== 0) {
-      deleteByUniqueKey(value);
-      return;
-    }
-
-    if (value.ingredient) {
-      store.dispatch(
-        valueUpdated({
-          data: { ingredient: value.ingredient.id, uniqueKey: value.uniqueKey },
-          case: CASE_UPDATE,
-        }),
-      );
-    }
-    if (value.weight) {
-      store.dispatch(
-        valueUpdated({
-          data: { weight: value.weight, uniqueKey: value.uniqueKey },
-          case: CASE_UPDATE,
-        }),
-      );
-    }
-    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
-    props.setTableData(
-      planTableData(store.getState().valueUpdated, props.data),
-    );
-  };
-
-  // delete autocomplete field by its unique key
-  const deleteByUniqueKey = (value: Value) => {
+  /**
+   * if there is already value with this unique key in state
+   * do not add
+   * @param value
+   */
+  const savePreSelectedToState = (value) => {
     store.dispatch(
       valueUpdated({
-        data: { uniqueKey: value.uniqueKey },
-        case: CASE_DELETE,
+        data: {
+          ingredient: value.id,
+          weight: value.weight,
+          uniqueKey: value.uniqueKey,
+          mealIngredientId: value.mealIngredientId,
+        },
+        case: CASE_INSERT,
       }),
     );
-
-    // todo save to redux for persisting on different pages
-    setForms((prevValues) => {
-      return prevValues.filter((obj) => {
-        return obj.props.uniqueKey !== value.uniqueKey;
-      });
-    });
-
-    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
   };
 
-  // delete all autocomplete forms
-  const deleteAll = () => {
-    store.dispatch(
-      valueUpdated({
-        data: { value: '' },
-      }),
-    );
-
-    store.dispatch(incremented());
-    setForms([
-      // eslint-disable-next-line react/jsx-key
-      <IngredientAutocomplete
-        {...{
-          key: store.getState().uniqueKey.value,
-          uniqueKey: store.getState().uniqueKey.value,
-          options: options,
-          deleteByUniqueKey: deleteByUniqueKey,
-          handleChange: handleChange,
-        }}
-      />,
-    ]);
-
-    props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
+  //MAIN handle changes on autocomplete fields
+  const handleChange = (value) => {
+    props.onIngredientWeightChange(value);
   };
 
-  // initialize default view with forms
   const preSelectedForms = [];
-  console.log(props.preSelected);
-  props.preSelected.map((element) => {
-    const value = {
-      label: element.label,
-      id: element.id,
-    };
-    preSelectedForms.push(
-      <IngredientAutocomplete
-        {...{
-          key: store.getState().uniqueKey.value,
-          uniqueKey: store.getState().uniqueKey.value,
-          options: options,
-          deleteByUniqueKey: deleteByUniqueKey,
-          handleChange: handleChange,
-          value: value,
-          ingredient_weight: element.ingredient_weight,
-        }}
-      />,
-    );
-    store.dispatch(incremented());
-    // console.log(preSelectedForms);
-    // console.log(element);
-    // if (element.id) {
-    //   store.dispatch(
-    //     valueUpdated({
-    //       data: {
-    //         ingredient: element.id,
-    //         uniqueKey: store.getState().uniqueKey.value,
-    //       },
-    //       case: CASE_UPDATE,
-    //     }),
-    //   );
-    // }
-    // if (element.ingredient_weight) {
-    //   store.dispatch(
-    //     valueUpdated({
-    //       data: {
-    //         weight: element.ingredient_weight,
-    //         uniqueKey: store.getState().uniqueKey.value,
-    //       },
-    //       case: CASE_UPDATE,
-    //     }),
-    //   );
-    // }
-    // console.log(store.getState().valueUpdated);
-    // console.log(planCalculator(store.getState().valueUpdated, props.data));
+  if (props.preSelected.length > 0) {
+    props.preSelected.map((element) => {
+      const value = {
+        label: element.label,
+        id: element.id,
+        weight: element.ingredient_weight,
+        uniqueKey: element.uniqueKey,
+        mealIngredientId: element.mealIngredientId,
+      };
+      savePreSelectedToState(value);
+      preSelectedForms.push(
+        <IngredientAutocomplete
+          {...{
+            key: value.uniqueKey,
+            uniqueKey: value.uniqueKey,
+            options: options,
+            handleChange: handleChange,
+            value: value,
+            ingredient_weight: element.ingredient_weight,
+          }}
+        />,
+      );
+    });
+  }
 
-    // props.setMacros(planCalculator(store.getState().valueUpdated, props.data));
-    // props.setTableData(
-    //   planTableData(store.getState().valueUpdated, props.data),
-    // );
-    // const macros = planCalculator({})
-
-    /**
-     * export interface FormValues {
-  ingredient: number;
-  weight: number;
-  uniqueKey: number;
-}
-     */
-  });
-
-  // const defaultForms = [
-  //   // eslint-disable-next-line react/jsx-key
-  //   <IngredientAutocomplete
-  //     {...{
-  //       key: store.getState().uniqueKey.value,
-  //       uniqueKey: store.getState().uniqueKey.value,
-  //       options: options,
-  //       deleteByUniqueKey: deleteByUniqueKey,
-  //       handleChange: handleChange,
-  //       value: value,
-  //     }}
-  //   />,
-  // ];
-
-  // initial default forms to state
   const [forms, setForms] = useState(preSelectedForms);
 
-  // add new autocomplete fields
-  const addIngredientAutoCompletes = () => {
-    store.dispatch(incremented());
-    const uniqueKey = store.getState().uniqueKey.value;
-
-    store.dispatch(
-      valueAdded({ ingredient: 0, weight: 0, uniqueKey: uniqueKey }),
-    );
-
-    setForms([
-      ...forms,
-      // eslint-disable-next-line react/jsx-key
-      <IngredientAutocomplete
-        {...{
-          key: uniqueKey,
-          uniqueKey: uniqueKey,
-          options: options,
-          deleteByUniqueKey: deleteByUniqueKey,
-          handleChange: handleChange,
-        }}
-      />,
-    ]);
-  };
-
   // save planned meal
-  const saveMealFromPlan = async () => {
+  const saveMealFromPlan = async (mealName) => {
+    alert('save meal from plan');
     const endpoint = '/api/meals/';
 
     const data = {
@@ -256,8 +105,7 @@ export default function PlanForm(props: Props) {
   const saveIngredientsToMeal = async (mealId: number) => {
     const endpoint = '/api/meals/create';
 
-    const ingredients = store.getState().valueUpdated;
-
+    const ingredients: FormValues[] = store.getState().valueUpdated.ingredients;
     const data = {
       meal_id: mealId,
       ingredients: ingredients,
@@ -281,19 +129,40 @@ export default function PlanForm(props: Props) {
     }, 2500);
   };
 
+  const handleAddChild = () => {
+    setChildCount(childCount + 1);
+    setChildComponents((prevComponents) => [...prevComponents, childCount]);
+  };
+
+  const handleDeleteChild = (id) => {
+    setChildComponents((prevComponents) =>
+      prevComponents.filter((componentId) => componentId !== id),
+    );
+  };
+
   return (
     <>
       <Grid>
-        {[...forms]}
+        <div>
+          {childComponents.map((id) => (
+            <IngredientAutocomplete
+              key={id}
+              uniqueKey={id} // can we remove?
+              options={options}
+              handleChange={handleChange}
+              disabledOptions={props.disabledOptions}
+              ingredientWeightValues={props.ingredientWeightValues}
+              onDeleteChild={() => handleDeleteChild(id)}
+            />
+          ))}
+        </div>
+
         <Box sx={{ mt: 2 }}>
-          <Button
-            variant="contained"
-            onClick={() => addIngredientAutoCompletes()}
-          >
+          <Button variant="contained" onClick={handleAddChild}>
             Add more
           </Button>
         </Box>
-        {!displayMealSave && (
+        {!displayMealSave && props.displaySaveOption && (
           <Button
             sx={{ mt: 1 }}
             variant="contained"

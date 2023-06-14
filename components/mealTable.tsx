@@ -8,19 +8,10 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
-import { Macros, TableData } from '../interfaces';
+import { TableTotalsRow, TableData, Totals } from '../interfaces';
 
 type Props = {
-  tableData?: TableData[];
-  macros?: Macros;
-};
-
-type TotalsRow = {
-  weight: number;
-  kcal: number;
-  protein: number;
-  carbs: number;
-  fat: number;
+  macros?: Totals;
 };
 
 function createData(
@@ -39,14 +30,14 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  const macros: Macros = props.macros;
-  if (!macros.macroPercentages.total) {
+  if (!props.macros.totalWeight) {
     return <></>;
   }
-  const data: TableData[] = props.tableData;
+
+  const data: TableData[] = props.macros.tableData;
   const rows = data.map((x) => {
     return createData(
-      x.ingredientName,
+      x.ingredient,
       Number(x.kcal / 100) * x.weight,
       Number(x.fat / 100) * x.weight,
       Number(x.carbs / 100) * x.weight,
@@ -56,7 +47,7 @@ export default function MealTable(props: Props) {
   });
 
   // create data for table's total row
-  const totals: TotalsRow = rows.reduce(
+  const totals: TableTotalsRow = rows.reduce(
     (total, obj) => {
       return {
         weight: obj.weight + total.weight,

@@ -1,7 +1,7 @@
 export type IngredientInterface = {
   id: number;
-  created_at?: Date;
-  updated_at?: Date;
+  created_at: Date;
+  updated_at: Date;
   name: string;
   kcal: number;
   protein: number;
@@ -19,7 +19,7 @@ export type MealIngredientInterface = {
   meal_id: number;
   ingredient_id: number;
   ingredient_weight: number;
-  ingredient: IngredientInterface;
+  ingredient?: IngredientInterface;
 };
 
 export type MealIngredientsInterface = {
@@ -28,9 +28,18 @@ export type MealIngredientsInterface = {
 
 export type MealInterface = {
   id: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
   name: string;
+};
+
+export type IngredientI = {
+  id: number;
+  name: string;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
 };
 
 export type MealsInterface = {
@@ -62,34 +71,36 @@ export interface TableTotalsRow {
 export interface FormValues {
   ingredient: number;
   weight: number;
-  uniqueKey: number;
+  uniqueKey?: number;
+  mealIngredientId?: number;
 }
 
-export interface CombinedDataInterface {
+export type CombinedIngredientMeal = {
   id: number;
-  created_at: string;
-  updated_at: string;
+  meal_id: number;
+  ingredient_id: number;
+  ingredient_weight: number;
   name: string;
-  kcal: string;
-  protein: string;
-  carbs: string;
-  fat: string;
-  fineli_id?: number;
-}
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  mealIngredientId?: number;
+};
 
 export interface FormValue {
   ingredient: number;
   weight: number;
-  uniqueKey: number;
+  uniqueKey?: number;
 }
 
 export interface TableData {
-  ingredientName: string;
-  kcal: number;
-  fat: number;
-  carbs: number;
-  protein: number;
+  ingredient: string;
   weight: number;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
 }
 
 export interface Macros {
@@ -104,8 +115,54 @@ export interface Macros {
   ingredientName: string;
 }
 
+export interface Totals {
+  totalKcal: number;
+  totalProtein: number;
+  totalCarbs: number;
+  totalFat: number;
+  totalWeight: number;
+  kcalPerProtein: number;
+  kcalPerCarbs: number;
+  kcalPerFat: number;
+  proteinRatio: number;
+  carbsRatio: number;
+  fatRatio: number;
+  tableData: TableData[];
+}
+
 export interface AutocompleteOptions {
   label: string;
   id: number;
+  uniqueKey: number;
   ingredient_weight?: number;
+  mealIngredientId?: number;
 }
+
+export interface MealEditInterface {
+  id: number;
+  name: string;
+  ingredients: FormValues[];
+  deletedMealIngredientIds: number[];
+}
+
+export type IngredientFormData = {
+  name: string;
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+};
+
+export type MealI = {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  name: string;
+};
+
+export type DataMap = {
+  [key: number]: {
+    weight?: number;
+    ingredient?: number;
+  };
+};

@@ -5,8 +5,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const ingredient = await findUniqueIngredient(req.query.id);
-  res.json({ ingredient });
+  res.json(await findUniqueIngredient(req.query.id));
 }
 
 /**
@@ -14,7 +13,7 @@ export default async function handle(
  * @param id ingredient id
  * @returns
  */
-export async function findUniqueIngredient(id) {
+export async function findUniqueIngredient(id: string | string[]) {
   return await prisma.ingredient.findUnique({
     where: {
       id: Number(id),

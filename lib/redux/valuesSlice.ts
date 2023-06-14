@@ -1,35 +1,76 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  ingredients: [],
+  deletedKeys: [],
+  deletedMealIngredientIds: [],
+};
+
 const valuesSlice = createSlice({
   name: 'values',
-  initialState: [{ ingredient: 0, weight: 0, uniqueKey: 0 }],
+  initialState: initialState,
   reducers: {
     valueAdded(state, action) {
-      state.push(action.payload);
+      return {
+        ...state,
+        ingredients: [
+          ...state.ingredients,
+          {
+            ...action.payload,
+          },
+        ],
+      };
     },
     valueUpdated(state, action) {
+      const { ingredient, weight, uniqueKey } = action.payload.data;
+      console.log(action.payload.data);
+      const existingValue = state.ingredients.find(
+        (value) => value.uniqueKey === uniqueKey,
+      );
+      const existingIndex = state.ingredients.findIndex(
+        (value) => value.uniqueKey === uniqueKey,
+      );
       switch (action.payload.case) {
         case 'DELETE':
-          return state.filter(
-            (value) => value.uniqueKey !== action.payload.data.uniqueKey,
-          );
+          //todo remove with existingValue?
+          return {
+            ...state,
+            ingredients: state.ingredients.filter(
+              (item) => item.uniqueKey !== uniqueKey,
+            ),
+            deletedKeys: [...state.deletedKeys, uniqueKey],
+            deletedMealIngredientIds: [
+              ...state.deletedMealIngredientIds,
+              existingValue.mealIngredientId ?? 0,
+            ],
+          };
         case 'UPDATE':
-          // eslint-disable-next-line no-case-declarations
-          const { ingredient, weight, uniqueKey } = action.payload.data;
-
-          // eslint-disable-next-line no-case-declarations
-          const existingValue = state.find(
-            (value) => value.uniqueKey === uniqueKey,
-          );
-
           if (existingValue) {
-            ingredient && (existingValue.ingredient = ingredient);
-            weight && (existingValue.weight = weight);
-            existingValue.uniqueKey = uniqueKey;
+            return {
+              ...state,
+              ingredients: [
+                ...state.ingredients.slice(0, existingIndex),
+                {
+                  ingredient: ingredient ?? existingValue.ingredient,
+                  weight: weight ?? existingValue.weight,
+                  mealIngredientId: existingValue.mealIngredientId,
+                  uniqueKey: uniqueKey,
+                },
+                ...state.ingredients.slice(existingIndex + 1),
+              ],
+            };
+          }
+          return state;
+        case 'INSERT':
+          if (!existingValue && !state.deletedKeys.includes(uniqueKey)) {
+            console.log('inserting');
+            return {
+              ...state,
+              ingredients: [...state.ingredients, { ...action.payload.data }],
+            };
           }
           break;
         default:
-          state = [{ ingredient: 0, weight: 0, uniqueKey: 0 }];
           return state;
       }
     },

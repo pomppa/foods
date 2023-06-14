@@ -3,99 +3,96 @@ import { useRouter } from 'next/router';
 import { findUniqueMealWithId } from '../api/meals/[id]';
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import {
-  IngredientInterface,
   MealInterface,
-  MealIngredientInterface,
-  TableData,
-  AutocompleteOptions,
+  FormValues,
+  IngredientI,
+  MealI,
+  CombinedIngredientMeal,
 } from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macroPieChart';
-import ingredientsMacroPercentagesCalculator from '../../lib/ingredientMacroCalculator';
-import { getIngredientsData } from '../api/ingredients';
-import PlanForm from '../../components/forms/planForm';
-import { defaultMacros } from '../../lib/plan-calculator';
+import { getIngredientDataForIds } from '../api/ingredients';
 import { useState } from 'react';
+import { calculateTotals } from '../../lib/plan-calculator';
 
 type Props = {
-  mealsJson: string;
-  mealDataJson: string;
-  ingredientsJson: string;
+  meal: MealInterface;
+  ingredients: CombinedIngredientMeal[];
 };
 
+/**
+ * todo move to index of interfaces?
+ */
+interface MealIngredientI {
+  id: number;
+  meal_id: number;
+  ingredient_id: number;
+  ingredient_weight: number;
+}
+
+/**
+ * todo return all in one object?
+ * @param req
+ * @returns
+ */
 export const getServerSideProps = async (req: NextApiRequest) => {
-  const ingredients = await getIngredientsData();
+  const meal: Omit<MealI, 'created_at' | 'updated_at'> =
+    await findUniqueMealWithId(req.query.id);
 
-  const meal = await findUniqueMealWithId(req.query.id);
-  const mealDataForId = await getMealDataForId(req.query.id);
+  const mealIngredients: MealIngredientI[] = await getMealDataForId(
+    req.query.id,
+  );
 
-  const ingredientsJson = JSON.stringify(ingredients.ingredients);
-  const mealDataJson = JSON.stringify(mealDataForId);
-  const mealsJson = JSON.stringify(meal);
+  const valuesArray: number[] = mealIngredients.map((obj) => obj.ingredient_id);
 
-  return { props: { mealsJson, mealDataJson, ingredientsJson } };
+  const ingredientData: IngredientI[] = await getIngredientDataForIds(
+    valuesArray,
+  );
+
+  const ingredients: CombinedIngredientMeal[] = mealIngredients.map((item) => {
+    const ingredient: IngredientI = ingredientData.find(
+      (obj) => obj.id === item.ingredient_id,
+    );
+    // ingredientData.find((obj) => obj.id === item.ingredient_id) || {};
+    return {
+      ...item,
+      ...ingredient,
+    };
+  });
+  // console.log({ mealData, mealIngredients, ingredients });
+  return {
+    props: { meal, ingredients },
+  };
 };
 
 /**
  * Meal page component.
- * todo get rid of this stupid stringify / parse to support decimals and dates
- * map / superjson?
+ * todo do we need all props?
+ * serialization not needed for this data, it is converted already
+ * @see https://github.com/prisma/prisma/issues/9170
+ * @see https://github.com/vercel/next.js/issues/11993#issuecomment-1504415523
+ *
  * @param props
  * @returns
  */
 export default function Meal(props: Props) {
   const router = useRouter();
-  const data: MealInterface = JSON.parse(props.mealsJson);
-  const mealData: MealIngredientInterface[] = JSON.parse(props.mealDataJson);
-  const ingredients: IngredientInterface[] = JSON.parse(props.ingredientsJson);
-  const [macros, setMacros] = useState(
-    ingredientsMacroPercentagesCalculator(mealData),
-  );
-  const [tableData, setTableData] = useState(prepareTableData(mealData));
+  const ingredients: CombinedIngredientMeal[] = props.ingredients;
+  const formValues: FormValues[] = ingredients.map((item) => ({
+    ingredient: item.ingredient_id, //todo change to ingredient_id???
+    weight: Number(item.ingredient_weight),
+  }));
 
-  // autocomplete pre-selected options from mealData
-  const preSelected: AutocompleteOptions[] = mealData.map((element) => {
-    return {
-      label: element.ingredient.name,
-      id: element.ingredient.id,
-      ingredient_weight: element.ingredient_weight,
-    };
-  });
-
+  const [macros] = useState(calculateTotals(formValues, ingredients));
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>
         Go back
       </Button>
-      <h2>{data.name}</h2>
-      <PlanForm
-        data={ingredients}
-        macros={macros}
-        setMacros={setMacros}
-        setTableData={setTableData}
-        preSelected={preSelected}
-      ></PlanForm>
-      <MealTable tableData={tableData} macros={macros}></MealTable>
+      <h2>{props.meal.name}</h2>
+      <MealTable macros={macros}></MealTable>
       <MacroPieChart macros={macros}></MacroPieChart>
     </>
   );
-}
-
-export function prepareTableData(mealData: MealIngredientInterface[]) {
-  const tableData: TableData[] = [];
-
-  mealData.map((x) => {
-    const rowData = {
-      ingredientName: x.ingredient.name,
-      kcal: x.ingredient.kcal,
-      protein: x.ingredient.protein,
-      fat: x.ingredient.fat,
-      carbs: x.ingredient.carbs,
-      weight: x.ingredient_weight,
-    };
-    tableData.push(rowData);
-  });
-
-  return tableData;
 }
