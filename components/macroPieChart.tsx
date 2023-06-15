@@ -2,7 +2,7 @@ import { PieChart } from 'react-minimal-pie-chart';
 import { Totals } from '../interfaces';
 
 type Props = {
-  macros: Totals;
+  totals: Totals;
 };
 
 const defaultLabelStyle = {
@@ -11,7 +11,7 @@ const defaultLabelStyle = {
 };
 
 export default function MacroPieChart(props: Props) {
-  if (!props.macros.totalWeight) {
+  if (!props.totals.totalWeight) {
     return <></>;
   }
 
@@ -20,17 +20,17 @@ export default function MacroPieChart(props: Props) {
       data={[
         {
           title: 'protein',
-          value: props.macros.proteinRatio,
+          value: props.totals.proteinRatio,
           color: '#90a4ae',
         },
         {
           title: 'carbs',
-          value: props.macros.carbsRatio,
+          value: props.totals.carbsRatio,
           color: '#cfd8dc',
         },
         {
           title: 'fat',
-          value: props.macros.fatRatio,
+          value: props.totals.fatRatio,
           color: '#455a64',
         },
       ]}

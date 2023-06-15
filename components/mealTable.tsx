@@ -11,7 +11,7 @@ import {
 import { TableTotalsRow, TableData, Totals } from '../interfaces';
 
 type Props = {
-  macros?: Totals;
+  totals: Totals;
 };
 
 function createData(
@@ -30,11 +30,11 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  if (!props.macros.totalWeight) {
+  if (!props.totals.totalWeight) {
     return <></>;
   }
 
-  const data: TableData[] = props.macros.tableData;
+  const data: TableData[] = props.totals.tableData;
   const rows = data.map((x) => {
     return createData(
       x.ingredient,

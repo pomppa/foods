@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
 import { store } from '../../lib/redux/store';
-import { valueUpdated } from '../../lib/redux/valuesSlice';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import MealFromPlan from './mealFromPlan';
 import { FormValues } from '../../interfaces';
@@ -12,8 +11,6 @@ import { FormValues } from '../../interfaces';
  * @returns
  */
 export default function PlanForm(props) {
-  const CASE_INSERT = 'INSERT';
-
   const options = props.data.map((element) => {
     return { label: element.name, id: element.id };
   });
@@ -21,60 +18,10 @@ export default function PlanForm(props) {
   const [displayMealSave, setDisplayMealSave] = useState(false);
   const [setMealName] = useState('');
   const [open, setOpen] = useState(false);
-  const [childCount, setChildCount] = useState(1);
-  const [childComponents, setChildComponents] = useState([]);
 
-  /**
-   * if there is already value with this unique key in state
-   * do not add
-   * @param value
-   */
-  const savePreSelectedToState = (value) => {
-    store.dispatch(
-      valueUpdated({
-        data: {
-          ingredient: value.id,
-          weight: value.weight,
-          uniqueKey: value.uniqueKey,
-          mealIngredientId: value.mealIngredientId,
-        },
-        case: CASE_INSERT,
-      }),
-    );
-  };
-
-  //MAIN handle changes on autocomplete fields
-  const handleChange = (value) => {
-    props.onIngredientWeightChange(value);
-  };
-
-  const preSelectedForms = [];
-  if (props.preSelected.length > 0) {
-    props.preSelected.map((element) => {
-      const value = {
-        label: element.label,
-        id: element.id,
-        weight: element.ingredient_weight,
-        uniqueKey: element.uniqueKey,
-        mealIngredientId: element.mealIngredientId,
-      };
-      savePreSelectedToState(value);
-      preSelectedForms.push(
-        <IngredientAutocomplete
-          {...{
-            key: value.uniqueKey,
-            uniqueKey: value.uniqueKey,
-            options: options,
-            handleChange: handleChange,
-            value: value,
-            ingredient_weight: element.ingredient_weight,
-          }}
-        />,
-      );
-    });
-  }
-
-  const [forms, setForms] = useState(preSelectedForms);
+  // const [childCount, setChildCount] = useState(0);
+  // const [childComponents, setChildComponents] = useState([]);
+  const { childComponents } = props;
 
   // save planned meal
   const saveMealFromPlan = async (mealName) => {
@@ -129,15 +76,16 @@ export default function PlanForm(props) {
     }, 2500);
   };
 
+  const handleChange = (value, id) => {
+    props.onIngredientWeightChange({ ...value, uniqueKey: id });
+  };
+
   const handleAddChild = () => {
-    setChildCount(childCount + 1);
-    setChildComponents((prevComponents) => [...prevComponents, childCount]);
+    props.onAddChild();
   };
 
   const handleDeleteChild = (id) => {
-    setChildComponents((prevComponents) =>
-      prevComponents.filter((componentId) => componentId !== id),
-    );
+    props.onDeleteChild(id);
   };
 
   return (
@@ -147,16 +95,15 @@ export default function PlanForm(props) {
           {childComponents.map((id) => (
             <IngredientAutocomplete
               key={id}
-              uniqueKey={id} // can we remove?
               options={options}
-              handleChange={handleChange}
+              ingredientWeightValues={props.dataMap}
+              handleChange={(value) => handleChange(value, id)}
               disabledOptions={props.disabledOptions}
               ingredientWeightValues={props.ingredientWeightValues}
               onDeleteChild={() => handleDeleteChild(id)}
             />
           ))}
         </div>
-
         <Box sx={{ mt: 2 }}>
           <Button variant="contained" onClick={handleAddChild}>
             Add more

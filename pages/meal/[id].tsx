@@ -91,8 +91,8 @@ export default function Meal(props: Props) {
         Go back
       </Button>
       <h2>{props.meal.name}</h2>
-      <MealTable macros={macros}></MealTable>
-      <MacroPieChart macros={macros}></MacroPieChart>
+      <MealTable totals={macros}></MealTable>
+      <MacroPieChart totals={macros}></MacroPieChart>
     </>
   );
 }

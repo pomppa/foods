@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
-import { IngredientI, Totals } from '../interfaces';
+import { FormValues, IngredientI, Totals } from '../interfaces';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
 import MacroPieChart from '../components/macroPieChart';
@@ -19,13 +19,6 @@ export async function getServerSideProps() {
 
 export default function Plan(props: Props) {
   const combinedData: IngredientI[] = props.ingredients;
-  const totals: Totals = calculateTotals(
-    [{ ingredient: 0, weight: 0 }],
-    combinedData,
-  );
-
-  const [macros, setMacros] = useState(totals);
-
   const [dataMap, setDataMap] = useState<DataMap>({});
 
   const handleIngredientWeightChange = (obj: {
@@ -34,7 +27,6 @@ export default function Plan(props: Props) {
     ingredient?: number;
   }) => {
     const { uniqueKey, weight, ingredient } = obj;
-
     setDataMap((prevDataMap) => ({
       ...prevDataMap,
       [uniqueKey]: {
@@ -48,7 +40,31 @@ export default function Plan(props: Props) {
     }));
   };
 
-  const disabledOptions = Object.values(dataMap).map((item) => item.ingredient);
+  const removeItemFromDataMap = (id) => {
+    setDataMap((prevDataMap) => {
+      const newDataMap = { ...prevDataMap };
+      delete newDataMap[id];
+      return newDataMap;
+    });
+    setChildComponents((prevComponents) =>
+      prevComponents.filter((componentId) => componentId !== id),
+    );
+  };
+
+  const disabledOptions: number[] = Object.values(dataMap).map(
+    (item) => item.ingredient,
+  );
+
+  const dataArr: FormValues[] = Object.values(dataMap);
+  const totals: Totals = calculateTotals(dataArr, combinedData);
+
+  const [childCount, setChildCount] = useState(0);
+  const [childComponents, setChildComponents] = useState([]);
+
+  const addChild = () => {
+    setChildCount(childCount + 1);
+    setChildComponents((prevComponents) => [...prevComponents, childCount]);
+  };
 
   return (
     <>
@@ -57,19 +73,19 @@ export default function Plan(props: Props) {
         <Grid item xs={8} md={6} lg={4}>
           <PlanForm
             data={combinedData}
-            macros={macros}
-            setMacros={setMacros}
             displaySaveOption={true}
-            preSelected={[]}
             disabledOptions={disabledOptions}
-            ingredientWeightValues={dataMap}
+            ingredientWeightValues={dataArr}
             onIngredientWeightChange={handleIngredientWeightChange}
+            onDeleteChild={removeItemFromDataMap}
+            onAddChild={addChild}
+            childComponents={childComponents}
           ></PlanForm>
         </Grid>
         <Grid item>
-          <MacroPieChart macros={macros}></MacroPieChart>
+          <MacroPieChart totals={totals}></MacroPieChart>
         </Grid>
-        <MealTable macros={macros}></MealTable>
+        <MealTable totals={totals}></MealTable>
       </Grid>
     </>
   );

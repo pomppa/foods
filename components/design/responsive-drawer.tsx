@@ -10,7 +10,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import ListIcon from '@mui/icons-material/List';

@@ -162,7 +162,7 @@ export type MealI = {
 
 export type DataMap = {
   [key: number]: {
-    weight?: number;
-    ingredient?: number;
+    weight: number;
+    ingredient: number;
   };
 };

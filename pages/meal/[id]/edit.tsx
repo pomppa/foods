@@ -7,6 +7,7 @@ import MealTable from '../../../components/mealTable';
 import {
   AutocompleteOptions,
   CombinedIngredientMeal,
+  DataMap,
   FormValues,
   IngredientI,
   MealEditInterface,
@@ -108,19 +109,67 @@ export default function Edit(props) {
     await fetch(endpoint, options);
   };
 
-  /**
-   * todo clean passed props
-   */
+  const [childCount, setChildCount] = useState(0);
+  const [childComponents, setChildComponents] = useState([]);
+
+  const addChild = () => {
+    setChildCount(childCount + 1);
+    setChildComponents((prevComponents) => [...prevComponents, childCount]);
+  };
+
+  const [dataMap, setDataMap] = useState<DataMap>(formValues);
+
+  const disabledOptions: number[] = Object.values(dataMap).map(
+    (item) => item.ingredient,
+  );
+
+  const handleIngredientWeightChange = (obj: {
+    uniqueKey: number;
+    weight?: number;
+    ingredient?: number;
+  }) => {
+    const { uniqueKey, weight, ingredient } = obj;
+    setDataMap((prevDataMap) => ({
+      ...prevDataMap,
+      [uniqueKey]: {
+        ingredient:
+          ingredient !== undefined
+            ? ingredient
+            : prevDataMap[uniqueKey]?.ingredient || 0,
+        weight:
+          weight !== undefined ? weight : prevDataMap[uniqueKey]?.weight || 0,
+      },
+    }));
+  };
+
+  const removeItemFromDataMap = (id) => {
+    setDataMap((prevDataMap) => {
+      const newDataMap = { ...prevDataMap };
+      delete newDataMap[id];
+      return newDataMap;
+    });
+    setChildComponents((prevComponents) =>
+      prevComponents.filter((componentId) => componentId !== id),
+    );
+  };
+
+  console.log(dataMap);
+
   return (
     <>
       <h1>Edit meal</h1>
       <h2>{meal.name}</h2>
+
       <PlanForm
         data={props.allIngredients}
-        macros={macros}
-        preSelected={preSelectedValues}
-        setMacros={setMacros}
-        displaySaveOption={false}
+        displaySaveOption={true}
+        formValues={formValues}
+        childComponents={childComponents}
+        onAddChild={addChild}
+        disabledOptions={disabledOptions}
+        ingredientWeightValues={dataMap}
+        onIngredientWeightChange={handleIngredientWeightChange}
+        onDeleteChild={removeItemFromDataMap}
       ></PlanForm>
       <MealFromPlan
         {...{
@@ -131,8 +180,8 @@ export default function Edit(props) {
           mealId: meal.id,
         }}
       ></MealFromPlan>
-      <MealTable macros={macros}></MealTable>
-      <MacroPieChart macros={macros}></MacroPieChart>
+      <MealTable totals={macros}></MealTable>
+      <MacroPieChart totals={macros}></MacroPieChart>
     </>
   );
 }
