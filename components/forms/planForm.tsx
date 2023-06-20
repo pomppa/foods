@@ -1,115 +1,79 @@
 import { useState } from 'react';
-import { Button, Box, Grid, Snackbar, Alert } from '@mui/material';
-import { store } from '../../lib/redux/store';
+import { Button, Box, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
-import MealFromPlan from './mealFromPlan';
 import { FormValues } from '../../interfaces';
-
+import { Option } from '../../interfaces';
+import { Ingredient } from '@prisma/client';
 /**
  * Planner view, inputs for selecting ingredients and saving as a meal
  * @param props
  * @returns
  */
 export default function PlanForm(props) {
-  const options = props.data.map((element) => {
+  const { data } = props;
+  const options: Option[] = data.map((element: Ingredient) => {
     return { label: element.name, id: element.id };
   });
 
-  const [displayMealSave, setDisplayMealSave] = useState(false);
-  const [setMealName] = useState('');
-  const [open, setOpen] = useState(false);
+  const [ingredients, setIngredients] = useState<FormValues[]>(
+    props.formValues || [{ ingredient: 0, weight: undefined }],
+  );
 
-  // const [childCount, setChildCount] = useState(0);
-  // const [childComponents, setChildComponents] = useState([]);
-  const { childComponents } = props;
+  const disabledOptions: number[] = Object.values(ingredients).map(
+    (item) => item.ingredient,
+  );
 
-  // save planned meal
-  const saveMealFromPlan = async (mealName) => {
-    alert('save meal from plan');
-    const endpoint = '/api/meals/';
-
-    const data = {
-      name: mealName,
-    };
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-
-    const response = await fetch(endpoint, options);
-
-    const result = await response.json();
-    const mealId = result.data.id;
-    saveIngredientsToMeal(mealId);
-    deleteAll();
+  const addIngredient = () => {
+    setIngredients([...ingredients, { ingredient: 0, weight: undefined }]);
   };
 
-  // save selected ingredients after meal was saved
-  const saveIngredientsToMeal = async (mealId: number) => {
-    const endpoint = '/api/meals/create';
-
-    const ingredients: FormValues[] = store.getState().valueUpdated.ingredients;
-    const data = {
-      meal_id: mealId,
-      ingredients: ingredients,
-    };
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-    setOpen(true);
-
-    //todo add error handling, success message on 200 and reset values
-    await fetch(endpoint, options);
-
-    // timer for snackbar to be open
-    setTimeout(() => {
-      setOpen(false);
-    }, 2500);
+  const removeIngredient = (index) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients.splice(index, 1);
+    setIngredients(updatedIngredients);
   };
 
-  const handleChange = (value, id) => {
-    props.onIngredientWeightChange({ ...value, uniqueKey: id });
+  const handleIngredientChange = (index, ingredient) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index].ingredient = ingredient;
+    setIngredients(updatedIngredients);
   };
 
-  const handleAddChild = () => {
-    props.onAddChild();
-  };
-
-  const handleDeleteChild = (id) => {
-    props.onDeleteChild(id);
+  const handleWeightChange = (index, weight) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index].weight = weight;
+    setIngredients(updatedIngredients);
   };
 
   return (
     <>
       <Grid>
         <div>
-          {childComponents.map((id) => (
+          {ingredients.map((ingredient, index) => (
             <IngredientAutocomplete
-              key={id}
+              key={index}
+              value={ingredient.ingredient}
+              weight={ingredient.weight}
               options={options}
-              ingredientWeightValues={props.dataMap}
-              handleChange={(value) => handleChange(value, id)}
-              disabledOptions={props.disabledOptions}
-              ingredientWeightValues={props.ingredientWeightValues}
-              onDeleteChild={() => handleDeleteChild(id)}
+              onIngredientChange={(ingredient) =>
+                handleIngredientChange(index, ingredient)
+              }
+              onWeightChange={(weight) => handleWeightChange(index, weight)}
+              disabledOptions={disabledOptions}
             />
           ))}
+          {ingredients.length > 0 && (
+            <button onClick={() => removeIngredient(ingredients.length - 1)}>
+              Remove Last Ingredient
+            </button>
+          )}
         </div>
         <Box sx={{ mt: 2 }}>
-          <Button variant="contained" onClick={handleAddChild}>
+          <Button variant="contained" onClick={addIngredient}>
             Add more
           </Button>
         </Box>
-        {!displayMealSave && props.displaySaveOption && (
+        {/* {!displayMealSave && props.displaySaveOption && (
           <Button
             sx={{ mt: 1 }}
             variant="contained"
@@ -134,7 +98,8 @@ export default function PlanForm(props) {
             saveMealFromPlan: saveMealFromPlan,
           }}
         ></MealFromPlan>
-      )}
+      )} */}
+      </Grid>
     </>
   );
 }

@@ -71,8 +71,6 @@ export interface TableTotalsRow {
 export interface FormValues {
   ingredient: number;
   weight: number;
-  uniqueKey?: number;
-  mealIngredientId?: number;
 }
 
 export type CombinedIngredientMeal = {
@@ -165,4 +163,14 @@ export type DataMap = {
     weight: number;
     ingredient: number;
   };
+};
+
+export type Option = {
+  label: string;
+  id: number;
+};
+
+export type IngredientWeightValues = {
+  ingredient: number;
+  weight: number;
 };

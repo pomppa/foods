@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
+import { Option } from '../../interfaces';
 
 /**
  * Ingredient autocomplete, contains ingredient dropdown + weight input
@@ -8,65 +9,64 @@ import { Autocomplete, TextField } from '@mui/material';
  * @returns
  */
 export default function IngredientAutocomplete(props) {
-  console.log(props.ingredientWeightValues);
-  const [value, setValue] = useState(props.value ?? null);
+  const { onIngredientChange, onWeightChange } = props;
   const [inputValue, setInputValue] = useState('');
 
-  const [weight, setWeight] = useState(props.ingredient_weight ?? '');
+  const options: Option[] = props.options;
+
+  const selected: Option =
+    options.find((option) => option.id === props.value) ?? undefined;
+
+  const weight: number = props.weight;
+
+  /* from plan this should be undefined, from edit we should have as controlled */
+  console.log(selected);
 
   return (
     <>
-      {props.ingredientWeightValues.map((element) => (
-        <>
-          <Autocomplete
-            value={element.ingredient}
-            isOptionEqualToValue={(option, value) => option.id == value.id}
-            onChange={(
-              _event: React.ChangeEvent,
-              newValue: { label: string; id: number } | null,
-            ) => {
-              setValue(newValue);
-              props.handleChange({
-                ingredient: newValue.id,
-              });
-            }}
-            inputValue={inputValue}
-            onInputChange={(_event, newInputValue) => {
-              setInputValue(newInputValue);
-            }}
-            getOptionDisabled={(option) =>
-              props.disabledOptions.some(
-                (selectedOption) => selectedOption === option.id,
-              )
-            }
-            options={props.options}
-            sx={{ width: 300, mt: 2 }}
-            renderInput={(params) => (
-              <TextField {...params} label={'Ingredients'} />
-            )}
-          />
-          <TextField
-            label="Weight (g)"
-            variant="outlined"
-            name="weight"
-            value={weight ?? props.ingredient_weight}
-            inputProps={{
-              type: 'number',
-              inputMode: 'numeric',
-              pattern: '[0-9]*',
-            }}
-            sx={{ width: 300, mt: 2 }}
-            onChange={(event) => {
-              setWeight(event.target.value);
-              props.handleChange({
-                weight: parseFloat(event.target.value),
-              });
-            }}
-          />
-        </>
-      ))}
-
-      <button onClick={props.onDeleteChild}>Delete</button>
+      <>
+        <Autocomplete
+          value={selected}
+          isOptionEqualToValue={(option, value) =>
+            option.id == value?.id || value?.id === 0
+          }
+          onChange={(
+            _event: React.ChangeEvent,
+            newValue: { label: string; id: number } | null,
+          ) => {
+            onIngredientChange(newValue?.id || null);
+          }}
+          inputValue={inputValue}
+          onInputChange={(_event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          getOptionDisabled={(option) =>
+            props.disabledOptions.some(
+              (selectedOption) => selectedOption === option.id,
+            )
+          }
+          options={options}
+          sx={{ width: 300, mt: 2 }}
+          renderInput={(params) => (
+            <TextField {...params} label={'Ingredients'} />
+          )}
+        />
+        <TextField
+          value={weight}
+          label="Weight (g)"
+          variant="outlined"
+          name="weight"
+          inputProps={{
+            type: 'number',
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+          }}
+          sx={{ width: 300, mt: 2 }}
+          onChange={(event) => {
+            onWeightChange(parseFloat(event.target.value));
+          }}
+        />
+      </>
     </>
   );
 }
