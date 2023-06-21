@@ -10,7 +10,7 @@ import { Ingredient } from '@prisma/client';
  * @returns
  */
 export default function PlanForm(props) {
-  const { data } = props;
+  const { data, onChange } = props;
   const options: Option[] = data.map((element: Ingredient) => {
     return { label: element.name, id: element.id };
   });
@@ -44,6 +44,8 @@ export default function PlanForm(props) {
     updatedIngredients[index].weight = weight;
     setIngredients(updatedIngredients);
   };
+
+  onChange(ingredients);
 
   return (
     <>

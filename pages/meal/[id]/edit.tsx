@@ -6,6 +6,7 @@ import MacroPieChart from '../../../components/macroPieChart';
 import MealTable from '../../../components/mealTable';
 import {
   CombinedIngredientMeal,
+  FormValue,
   FormValues,
   IngredientI,
   MealI,
@@ -59,22 +60,35 @@ export default function Edit(props) {
   const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
   const ingredients: CombinedIngredientMeal[] = props.ingredients;
 
+  const [mealName, setMealName] = useState(meal.name);
+  const [macros, setMacros] = useState([]);
+
+  const dataArr: FormValues[] = Object.values(macros);
+  const totals: Totals = calculateTotals(dataArr, ingredients);
+
   const { allIngredients } = props;
 
-  const formValues: FormValues[] = ingredients.map((item) => ({
-    ingredient: item.ingredient_id,
-    weight: item.ingredient_weight,
-  }));
+  const [formValues] = useState<FormValue[]>(
+    ingredients.map((item) => ({
+      ingredient: item.ingredient_id,
+      weight: item.ingredient_weight,
+    })),
+  );
 
-  const [macros] = useState<Totals>(calculateTotals(formValues, ingredients));
-  const [mealName, setMealName] = useState(meal.name);
+  const handleChange = (formValues) => {
+    setMacros(formValues);
+  };
 
   return (
     <>
       <h1>Edit meal</h1>
       <h2>{meal.name}</h2>
 
-      <PlanForm data={allIngredients} formValues={formValues}></PlanForm>
+      <PlanForm
+        data={allIngredients}
+        formValues={formValues}
+        onChange={handleChange}
+      ></PlanForm>
       <MealFromPlan
         {...{
           setDisplayMealSave: false,
@@ -83,8 +97,8 @@ export default function Edit(props) {
           mealId: meal.id,
         }}
       ></MealFromPlan>
-      <MealTable totals={macros}></MealTable>
-      <MacroPieChart totals={macros}></MacroPieChart>
+      <MealTable totals={totals}></MealTable>
+      <MacroPieChart totals={totals}></MacroPieChart>
     </>
   );
 }

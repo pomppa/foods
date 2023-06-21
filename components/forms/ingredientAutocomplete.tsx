@@ -20,7 +20,7 @@ export default function IngredientAutocomplete(props) {
   const weight: number = props.weight;
 
   /* from plan this should be undefined, from edit we should have as controlled */
-  console.log(selected);
+  // console.log(selected);
 
   return (
     <>
