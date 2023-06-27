@@ -7,7 +7,6 @@ import MealTable from '../../../components/mealTable';
 import {
   CombinedIngredientMeal,
   FormValue,
-  FormValues,
   IngredientI,
   MealI,
   Totals,
@@ -58,25 +57,22 @@ export const getServerSideProps = async (req: NextApiRequest) => {
  */
 export default function Edit(props) {
   const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
-  const ingredients: CombinedIngredientMeal[] = props.ingredients;
+  const initialIngredients: CombinedIngredientMeal[] = props.ingredients;
 
   const [mealName, setMealName] = useState(meal.name);
-  const [macros, setMacros] = useState([]);
-
-  const dataArr: FormValues[] = Object.values(macros);
-  const totals: Totals = calculateTotals(dataArr, ingredients);
 
   const { allIngredients } = props;
 
-  const [formValues] = useState<FormValue[]>(
-    ingredients.map((item) => ({
+  const [formValues, setFormValues] = useState<FormValue[]>(
+    initialIngredients.map((item) => ({
       ingredient: item.ingredient_id,
       weight: item.ingredient_weight,
     })),
   );
+  const totals: Totals = calculateTotals(formValues, allIngredients);
 
-  const handleChange = (formValues) => {
-    setMacros(formValues);
+  const handleChange = (formValues: FormValue[]) => {
+    setFormValues(formValues);
   };
 
   return (

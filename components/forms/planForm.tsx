@@ -16,7 +16,7 @@ export default function PlanForm(props) {
   });
 
   const [ingredients, setIngredients] = useState<FormValues[]>(
-    props.formValues || [{ ingredient: 0, weight: undefined }],
+    props.formValues || [{ ingredient: 0, weight: 0 }],
   );
 
   const disabledOptions: number[] = Object.values(ingredients).map(
@@ -24,28 +24,29 @@ export default function PlanForm(props) {
   );
 
   const addIngredient = () => {
-    setIngredients([...ingredients, { ingredient: 0, weight: undefined }]);
+    setIngredients([...ingredients, { ingredient: 0, weight: 0 }]);
   };
 
   const removeIngredient = (index) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients.splice(index, 1);
     setIngredients(updatedIngredients);
+    onChange(updatedIngredients);
   };
 
   const handleIngredientChange = (index, ingredient) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients[index].ingredient = ingredient;
     setIngredients(updatedIngredients);
+    onChange(updatedIngredients);
   };
 
   const handleWeightChange = (index, weight) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients[index].weight = weight;
     setIngredients(updatedIngredients);
+    onChange(updatedIngredients);
   };
-
-  onChange(ingredients);
 
   return (
     <>
@@ -57,8 +58,8 @@ export default function PlanForm(props) {
               value={ingredient.ingredient}
               weight={ingredient.weight}
               options={options}
-              onIngredientChange={(ingredient) =>
-                handleIngredientChange(index, ingredient)
+              onIngredientChange={(updatedIngredient) =>
+                handleIngredientChange(index, updatedIngredient)
               }
               onWeightChange={(weight) => handleWeightChange(index, weight)}
               disabledOptions={disabledOptions}
