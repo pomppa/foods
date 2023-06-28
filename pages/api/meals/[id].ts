@@ -10,12 +10,28 @@ export default async function handle(
   res.json(meal);
 }
 
-export async function findUniqueMealWithId(id) {
+/**
+ *
+ * @param id
+ * @returns
+ */
+export async function findUniqueMealWithId(id: string | string[]) {
   const meal = await prisma.meal.findUnique({
     where: {
       id: Number(id),
     },
   });
   await prisma.$disconnect();
+  //return meal;
+  return exclude(meal, ['created_at', 'updated_at']);
+}
+
+function exclude<Meal, Key extends keyof Meal>(
+  meal: Meal,
+  keys: Key[],
+): Omit<Meal, Key> {
+  for (const key of keys) {
+    delete meal[key];
+  }
   return meal;
 }

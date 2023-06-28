@@ -1,5 +1,6 @@
 import prisma from '../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { MealInterface } from '../../interfaces';
 
 export default async function handle(
   req: NextApiRequest,
@@ -13,6 +14,9 @@ export default async function handle(
       // eslint-disable-next-line no-case-declarations
       const meals = await getAllMeals();
       res.json({ meals });
+      break;
+    case 'PUT':
+      res.status(200).json({ data: await updateMeal(req.body) });
       break;
   }
 }
@@ -31,6 +35,13 @@ async function createMeal(name) {
   });
   await prisma.$disconnect();
   return meal;
+}
+
+async function updateMeal(meal: MealInterface) {
+  return await prisma.meal.update({
+    where: { id: meal.id },
+    data: { name: meal.name },
+  });
 }
 
 export async function getMealIds() {

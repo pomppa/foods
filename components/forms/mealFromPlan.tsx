@@ -7,8 +7,7 @@ import { useState } from 'react';
  * @returns
  */
 export default function MealFromPlan(props) {
-  const [mealName, setMealName] = useState('');
-
+  const [mealName, setMealName] = useState(props.mealName);
   return (
     <>
       <TextField
@@ -19,15 +18,14 @@ export default function MealFromPlan(props) {
         sx={{ width: 300, mt: 4 }}
         onChange={(event) => {
           setMealName(event.target.value);
-          props.setMealName(event.target.value);
         }}
       />
       <Box sx={{ mt: 2 }}>
         <Button
           variant="contained"
           onClick={() => {
-            setMealName('');
-            props.saveMealFromPlan();
+            props.saveMealFromPlan(mealName);
+            props.setMealName('');
           }}
         >
           Save

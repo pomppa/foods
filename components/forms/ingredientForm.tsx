@@ -1,16 +1,9 @@
 import { useState } from 'react';
 import { Alert, Snackbar, TextField, Box, Button } from '@mui/material';
-
-interface FormData {
-  name: string;
-  kcal: number;
-  fat: number;
-  carbs: number;
-  protein: number;
-}
+import { IngredientFormData } from '../../interfaces';
 
 // todo is it necessary to initialize like this
-const defaultValues = {
+const defaultValues: IngredientFormData = {
   name: '',
   kcal: 0,
   fat: 0,
@@ -23,7 +16,7 @@ const defaultValues = {
  * @returns
  */
 export default function IngredientForm() {
-  const [formData, setFormData] = useState<FormData>(defaultValues);
+  const [formData, setFormData] = useState<IngredientFormData>(defaultValues);
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {

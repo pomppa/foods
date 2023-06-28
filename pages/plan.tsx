@@ -1,59 +1,46 @@
-import { useState } from 'react';
 import { Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
-import { getFineliIngredientsData } from './api/fineli';
-import { defaultMacros } from '../lib/plan-calculator';
-import { IngredientInterface, IngredientsInterface } from '../interfaces';
+import { FormValues, IngredientI, Totals } from '../interfaces';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
 import MacroPieChart from '../components/macroPieChart';
+import { calculateTotals } from '../lib/plan-calculator';
+import { useState } from 'react';
 
 type Props = {
-  jsonData: string;
-  fineliIngredientsJson: string;
+  allIngredients: IngredientI[];
 };
 
 export async function getServerSideProps() {
-  const data = await getIngredientsData();
-  const fineliIngredients = await getFineliIngredientsData();
-
-  const jsonData = JSON.stringify(data);
-  const fineliIngredientsJson = JSON.stringify(fineliIngredients);
-
-  return { props: { jsonData, fineliIngredientsJson } };
+  const allIngredients: IngredientI[] = await getIngredientsData();
+  return { props: { allIngredients } };
 }
 
+/**
+ * @param props
+ * @returns
+ */
 export default function Plan(props: Props) {
-  const [macros, setMacros] = useState(defaultMacros);
-  const [tableData, setTableData] = useState([]);
+  const [formValues, setFormValues] = useState([]);
 
-  const jsonData = props.jsonData;
-  const fineliIngredientsJson = props.fineliIngredientsJson;
+  const allIngredients: IngredientI[] = props.allIngredients;
+  const totals: Totals = calculateTotals(formValues, allIngredients);
 
-  const data: IngredientsInterface = JSON.parse(jsonData);
-  const fineliData: IngredientsInterface = JSON.parse(fineliIngredientsJson);
-  const combinedData: IngredientInterface[] = data.ingredients.concat(
-    fineliData.ingredients,
-  );
+  const handleChange = (formValues: FormValues[]) => {
+    setFormValues(formValues);
+  };
 
   return (
     <>
       <h2>Plan</h2>
       <Grid container spacing={2}>
         <Grid item xs={8} md={6} lg={4}>
-          <PlanForm
-            data={combinedData}
-            macros={macros}
-            setMacros={setMacros}
-            setTableData={setTableData}
-          ></PlanForm>
+          <PlanForm data={allIngredients} onChange={handleChange}></PlanForm>
         </Grid>
-        <>
-          <Grid item>
-            <MacroPieChart macros={macros}></MacroPieChart>
-          </Grid>
-          <MealTable tableData={tableData} macros={macros}></MealTable>
-        </>
+        <Grid item>
+          <MacroPieChart totals={totals}></MacroPieChart>
+        </Grid>
+        <MealTable totals={totals}></MealTable>
       </Grid>
     </>
   );

@@ -31,8 +31,8 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 
 export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
-  const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
-
+  //todo macro pie chart
+  // const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
   return (
     <>
       <Button variant="outlined" onClick={() => router.back()}>
@@ -70,7 +70,7 @@ export default function Ingredient(props: Props) {
         </Table>
       </TableContainer>
       <Box sx={{ width: 1 / 3, py: 5, ml: 5 }}>
-        <MacroPieChart macros={macros}></MacroPieChart>
+        {/* <MacroPieChart macros={macros}></MacroPieChart> */}
       </Box>
     </>
   );

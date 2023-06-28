@@ -8,19 +8,10 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
-import { Macros, TableData } from '../interfaces';
+import { TableTotalsRow, TableData, Totals } from '../interfaces';
 
 type Props = {
-  tableData?: TableData[];
-  macros?: Macros;
-};
-
-type TotalsRow = {
-  weight: number;
-  kcal: number;
-  protein: number;
-  carbs: number;
-  fat: number;
+  totals: Totals;
 };
 
 function createData(
@@ -39,14 +30,14 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  const macros: Macros = props.macros;
-  if (!macros.macroPercentages.total) {
+  if (!props.totals.totalWeight) {
     return <></>;
   }
-  const data: TableData[] = props.tableData;
+
+  const data: TableData[] = props.totals.tableData;
   const rows = data.map((x) => {
     return createData(
-      x.ingredientName,
+      x.ingredient,
       Number(x.kcal / 100) * x.weight,
       Number(x.fat / 100) * x.weight,
       Number(x.carbs / 100) * x.weight,
@@ -56,7 +47,7 @@ export default function MealTable(props: Props) {
   });
 
   // create data for table's total row
-  const totals: TotalsRow = rows.reduce(
+  const totals: TableTotalsRow = rows.reduce(
     (total, obj) => {
       return {
         weight: obj.weight + total.weight,
@@ -76,11 +67,11 @@ export default function MealTable(props: Props) {
           <TableHead>
             <TableRow>
               <TableCell>Ingredient</TableCell>
+              <TableCell align="right">Weight&nbsp;(g)</TableCell>
               <TableCell align="right">Calories</TableCell>
               <TableCell align="right">Fat&nbsp;(g)</TableCell>
               <TableCell align="right">Carbs&nbsp;(g)</TableCell>
               <TableCell align="right">Protein&nbsp;(g)</TableCell>
-              <TableCell align="right">Weight&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -92,11 +83,11 @@ export default function MealTable(props: Props) {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
+                <TableCell align="right">{row.weight}</TableCell>
                 <TableCell align="right">{row.calories.toFixed(2)}</TableCell>
                 <TableCell align="right">{row.fat.toFixed(2)}</TableCell>
                 <TableCell align="right">{row.carbs.toFixed(2)}</TableCell>
                 <TableCell align="right">{row.protein.toFixed(2)}</TableCell>
-                <TableCell align="right">{row.weight}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -109,11 +100,11 @@ export default function MealTable(props: Props) {
               }}
             >
               <TableCell>TOTAL</TableCell>
+              <TableCell align="right">{totals.weight}</TableCell>
               <TableCell align="right">{totals.kcal.toFixed(2)}</TableCell>
               <TableCell align="right">{totals.fat.toFixed(2)}</TableCell>
               <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
               <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
-              <TableCell align="right">{totals.weight}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
