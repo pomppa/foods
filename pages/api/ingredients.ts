@@ -30,13 +30,16 @@ export default async function handle(
 }
 
 export async function getIngredientsData() {
-  const ingredients: Ingredient[] = await prisma.ingredient.findMany({
-    orderBy: [
-      {
-        created_at: 'desc',
-      },
-    ],
-  });
+  const ingredients: Ingredient[] = await prisma.fineli_Ingredient
+    .findMany
+    //   {
+    //   orderBy: [
+    //     {
+    //       created_at: 'desc',
+    //     },
+    //   ],
+    // }
+    ();
   const ingredientsExcluded = ingredients.map((ingredient) =>
     exclude(ingredient, ['created_at', 'updated_at']),
   );

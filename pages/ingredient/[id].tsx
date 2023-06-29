@@ -14,9 +14,7 @@ import {
 } from '@mui/material';
 import router from 'next/router';
 import { NextApiRequest } from 'next';
-import { IngredientInterface, MacroPercentages } from '../../interfaces';
-import MacroPieChart from '../../components/macroPieChart';
-import ingredientsMacroPercentagesCalculator from '../../lib/ingredientMacroCalculator';
+import { IngredientInterface } from '../../interfaces';
 
 type Props = {
   ingredientJson: string;
@@ -29,13 +27,21 @@ export const getServerSideProps = async (req: NextApiRequest) => {
   return { props: { ingredientJson } };
 };
 
+/**
+ * @todo use components
+ * @param props
+ * @returns
+ */
 export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
-  //todo macro pie chart
   // const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
   return (
     <>
-      <Button variant="outlined" onClick={() => router.back()}>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={() => router.back()}
+      >
         Go back
       </Button>
       <Head>
@@ -43,7 +49,7 @@ export default function Ingredient(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <h1>View ingredient</h1>
+        <h2>{data.name}</h2>
       </div>
       <TableContainer sx={{ minWidth: 650, maxWidth: 650 }} component={Paper}>
         <Table aria-label="table">

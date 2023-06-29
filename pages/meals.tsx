@@ -23,8 +23,16 @@ export default function Meals(props: Props) {
 
   return (
     <>
-      <h1>Meals</h1>
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <h2>All meals</h2>
+      <small>Open a meal to edit</small>
+      <Box
+        sx={{
+          mt: '10px',
+          width: '100%',
+          maxWidth: 360,
+          bgcolor: 'background.paper',
+        }}
+      >
         <List>
           {data.map((x) => {
             return (

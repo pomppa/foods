@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <>
       <ResponsiveDrawer />
-      <Box sx={{ ml: '275px' }}>
+      <Box sx={{ ml: '50px', mr: '50px', mb: '50px' }}>
         <main>{children}</main>
       </Box>
     </>

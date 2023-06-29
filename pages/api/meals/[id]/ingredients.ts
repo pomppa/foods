@@ -1,6 +1,6 @@
 import prisma from '../../../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { FormValues, MealEditInterface } from '../../../../interfaces';
+import { FormValue, MealEditInterface } from '../../../../interfaces';
 
 export default async function handle(
   req: NextApiRequest,
@@ -37,7 +37,7 @@ async function updateMeal(meal: MealEditInterface) {
     data: { name: meal.name },
   });
 
-  const createRecords = (ingredients: FormValues[]) => {
+  const createRecords = (ingredients: FormValue[]) => {
     const promises = ingredients.map(async (ingredient) => {
       await prisma.meal_Ingredient.upsert({
         where: { id: ingredient.mealIngredientId ?? 0 },

@@ -142,7 +142,7 @@ export default function IngredientForm() {
         </Box>
         <Box sx={{ mt: 2 }}>
           <Button variant="contained" onClick={() => handleSubmit()}>
-            Submit
+            Save
           </Button>
         </Box>
       </form>

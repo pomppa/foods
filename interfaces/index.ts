@@ -68,11 +68,6 @@ export interface TableTotalsRow {
   fat: number;
 }
 
-export interface FormValues {
-  ingredient: number;
-  weight: number;
-}
-
 export type CombinedIngredientMeal = {
   id: number;
   meal_id: number;
@@ -89,7 +84,7 @@ export type CombinedIngredientMeal = {
 export interface FormValue {
   ingredient: number;
   weight: number;
-  uniqueKey?: number;
+  mealIngredientId?: number;
 }
 
 export interface TableData {
@@ -139,7 +134,7 @@ export interface AutocompleteOptions {
 export interface MealEditInterface {
   id: number;
   name: string;
-  ingredients: FormValues[];
+  ingredients: FormValue[];
   deletedMealIngredientIds: number[];
 }
 

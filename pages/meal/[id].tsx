@@ -1,10 +1,10 @@
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { findUniqueMealWithId } from '../api/meals/[id]';
 import { getMealDataForId } from '../api/meals/[id]/ingredients';
 import {
   MealInterface,
-  FormValues,
+  FormValue,
   IngredientI,
   MealI,
   CombinedIngredientMeal,
@@ -13,8 +13,8 @@ import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macroPieChart';
 import { getIngredientDataForIds } from '../api/ingredients';
-import { useState } from 'react';
 import { calculateTotals } from '../../lib/plan-calculator';
+import Link from 'next/link';
 
 type Props = {
   meal: MealInterface;
@@ -79,20 +79,35 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 export default function Meal(props: Props) {
   const router = useRouter();
   const ingredients: CombinedIngredientMeal[] = props.ingredients;
-  const formValues: FormValues[] = ingredients.map((item) => ({
+
+  const formValues: FormValue[] = ingredients.map((item) => ({
     ingredient: item.ingredient_id, //todo change to ingredient_id???
     weight: Number(item.ingredient_weight),
   }));
 
-  const [macros] = useState(calculateTotals(formValues, ingredients));
+  const totals = calculateTotals(formValues, ingredients);
+
   return (
     <>
-      <Button variant="outlined" onClick={() => router.back()}>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={() => router.back()}
+      >
         Go back
       </Button>
+      <Button sx={{ ml: '10px' }} variant="outlined">
+        <Link href="/edit" as={router.asPath + '/edit'}>
+          <a>Edit meal</a>
+        </Link>
+      </Button>
       <h2>{props.meal.name}</h2>
-      <MealTable totals={macros}></MealTable>
-      <MacroPieChart totals={macros}></MacroPieChart>
+      <MealTable totals={totals}></MealTable>
+      <Grid container>
+        <Grid>
+          <MacroPieChart totals={totals}></MacroPieChart>
+        </Grid>
+      </Grid>
     </>
   );
 }

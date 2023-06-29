@@ -1,6 +1,5 @@
 import prisma from '../lib/prisma';
 import React from 'react';
-import Head from 'next/head';
 import IngredientForm from '../components/forms/ingredientForm';
 import Link from 'next/link';
 import { IngredientInterface } from '../interfaces';
@@ -18,7 +17,14 @@ type Props = {
 };
 
 export const getServerSideProps = async () => {
-  const ingredients = await prisma.ingredient.findMany();
+  const ingredients = await prisma.ingredient.findMany({
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+  });
+
   const ingredientsJson = JSON.stringify(ingredients);
 
   return { props: { ingredientsJson } };
@@ -29,17 +35,24 @@ export default function Ingredients(props: Props) {
 
   return (
     <>
-      <Head>
-        <title>Foods - Ingredients</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <h2> Ingredients </h2>
-          <Box
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-          >
-            <List>
+          <h2>Add a new ingredient</h2>
+          <small>Input name and macronutrients</small>
+          <IngredientForm></IngredientForm>{' '}
+        </Grid>
+        <Grid item xs={6}>
+          <List>
+            <h2>All ingredients</h2>
+            <small>A list of ingredients sorted by their creation date</small>
+            <Box
+              sx={{
+                mt: '10px',
+                width: '100%',
+                maxWidth: 360,
+                bgcolor: 'background.paper',
+              }}
+            >
               {data.map((x) => {
                 return (
                   <>
@@ -53,14 +66,8 @@ export default function Ingredients(props: Props) {
                   </>
                 );
               })}
-            </List>
-          </Box>
-        </Grid>
-        <Grid item xs={6}>
-          <div>
-            <p>Add a new ingredient</p>
-          </div>
-          <IngredientForm></IngredientForm>
+            </Box>
+          </List>
         </Grid>
       </Grid>
     </>

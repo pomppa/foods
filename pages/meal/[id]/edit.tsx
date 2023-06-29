@@ -1,6 +1,5 @@
 import { NextApiRequest } from 'next';
 import { useState } from 'react';
-import MealFromPlan from '../../../components/forms/mealFromPlan';
 import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macroPieChart';
 import MealTable from '../../../components/mealTable';
@@ -18,6 +17,8 @@ import {
 import { findUniqueMealWithId } from '../../api/meals/[id]';
 import { getMealDataForId } from '../../api/meals/[id]/ingredients';
 import { calculateTotals } from '../../../lib/plan-calculator';
+import { Button, Grid } from '@mui/material';
+import router from 'next/router';
 
 export const getServerSideProps = async (req: NextApiRequest) => {
   const meal: Omit<MealI, 'created_at' | 'updated_at'> =
@@ -59,8 +60,6 @@ export default function Edit(props) {
   const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
   const initialIngredients: CombinedIngredientMeal[] = props.ingredients;
 
-  const [mealName, setMealName] = useState(meal.name);
-
   const { allIngredients } = props;
 
   const [formValues, setFormValues] = useState<FormValue[]>(
@@ -77,24 +76,31 @@ export default function Edit(props) {
 
   return (
     <>
-      <h1>Edit meal</h1>
-      <h2>{meal.name}</h2>
-
-      <PlanForm
-        data={allIngredients}
-        formValues={formValues}
-        onChange={handleChange}
-      ></PlanForm>
-      <MealFromPlan
-        {...{
-          setDisplayMealSave: false,
-          setMealName: setMealName,
-          mealName: mealName,
-          mealId: meal.id,
-        }}
-      ></MealFromPlan>
-      <MealTable totals={totals}></MealTable>
-      <MacroPieChart totals={totals}></MacroPieChart>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={() => router.back()}
+      >
+        Go back
+      </Button>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <h2>Edit </h2>
+          <h3>Meal name: {meal.name}</h3>
+          <small>Edit meal contents</small>
+          <PlanForm
+            data={allIngredients}
+            formValues={formValues}
+            onChange={handleChange}
+          ></PlanForm>
+        </Grid>
+        <Grid item xs={6}>
+          <MacroPieChart totals={totals}></MacroPieChart>
+        </Grid>
+      </Grid>
+      <Grid sx={{ mt: '50px', mb: '50px' }}>
+        <MealTable totals={totals}></MealTable>
+      </Grid>
     </>
   );
 }

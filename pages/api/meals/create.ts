@@ -1,13 +1,13 @@
 import prisma from '../../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { FormValues } from '../../../interfaces';
+import { FormValue } from '../../../interfaces';
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const createRecords = (data: {
-    ingredients: FormValues[];
+    ingredients: FormValue[];
     meal_id: string;
   }) => {
     const promises = data.ingredients.map(async (value) => {

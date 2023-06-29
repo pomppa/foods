@@ -1,6 +1,6 @@
 import {
   CombinedIngredientMeal,
-  FormValues,
+  FormValue,
   IngredientI,
   Totals,
 } from '../interfaces';
@@ -12,7 +12,7 @@ import {
  * @returns totals including table data
  */
 export function calculateTotals(
-  formValues: FormValues[],
+  formValues: FormValue[],
   data: CombinedIngredientMeal[] | IngredientI[],
 ): Totals {
   let totalKcal = 0;

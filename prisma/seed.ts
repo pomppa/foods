@@ -16,7 +16,8 @@ async function read() {
   fs.createReadStream('lib/data/food.csv')
     .pipe(parse({ delimiter: ';', from_line: 2 }))
     .on('data', async function (row) {
-      if (row[0] > startFromId) {
+      console.log(row[2]);
+      if (row[0] > startFromId && row[2] === 'FOOD') {
         ids.push(row[0]);
       }
     })

@@ -74,11 +74,18 @@ export default function PlanForm(props: Props) {
               disabledOptions={disabledOptions}
             />
           ))}
-          {ingredients.length > 0 && (
-            <button onClick={() => removeIngredient(ingredients.length - 1)}>
-              Remove Last Ingredient
-            </button>
-          )}
+          <Box sx={{ mt: 0.5 }}>
+            {ingredients.length > 0 && (
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ mt: '10px' }}
+                onClick={() => removeIngredient(ingredients.length - 1)}
+              >
+                Remove last
+              </Button>
+            )}
+          </Box>
         </div>
         <Box sx={{ mt: 2 }}>
           <Button variant="contained" onClick={addIngredient}>

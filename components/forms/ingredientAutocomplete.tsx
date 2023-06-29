@@ -21,7 +21,6 @@ export default function IngredientAutocomplete(props) {
 
   /* from plan this should be undefined, from edit we should have as controlled */
   // console.log(selected);
-
   return (
     <>
       <>
