@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <title>Foods</title>
       </Head>
       <ResponsiveDrawer />
-      <Box sx={{ ml: '50px', mr: '50px', mb: '50px' }}>
+      <Box sx={{ ml: '50px', mr: '50px', mb: '50px', maxWidth: 'md' }}>
         <main>{children}</main>
       </Box>
     </>
