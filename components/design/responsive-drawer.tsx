@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
@@ -85,7 +86,7 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    // { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
+    { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
     { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
     // { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
@@ -114,7 +115,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Foods
+            <Link href="/">Foods</Link>
           </Typography>
         </Toolbar>
       </AppBar>

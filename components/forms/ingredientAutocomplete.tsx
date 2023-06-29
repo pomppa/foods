@@ -47,7 +47,7 @@ export default function IngredientAutocomplete(props) {
           options={options}
           sx={{ width: 300, mt: 2 }}
           renderInput={(params) => (
-            <TextField {...params} label={'Ingredients'} />
+            <TextField {...params} label={'Select ingredient'} />
           )}
         />
         <TextField
