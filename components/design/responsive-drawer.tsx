@@ -21,6 +21,7 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import ListIcon from '@mui/icons-material/List';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import Link from 'next/link';
+// import AdbIcon from '@mui/icons-material/Adb';
 
 const drawerWidth = 240;
 
@@ -115,7 +116,23 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            <Link href="/">Foods</Link>
+            {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              FOODS
+            </Typography>
           </Typography>
         </Toolbar>
       </AppBar>

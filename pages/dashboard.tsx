@@ -1,4 +1,5 @@
-import { Grid, List, ListItem } from '@mui/material';
+import { Grid, List, ListItem, ListItemText } from '@mui/material';
+import Link from 'next/link';
 
 function Dashboard() {
   return (
@@ -15,15 +16,30 @@ function Dashboard() {
           <h3>How to use?</h3>
           <p>Foods enables meal planning and nutrient tracking</p>
           <List>
-            <ListItem>1. Left hand menu displays all pages in Foods</ListItem>
-            <ListItem>2. Use Plan a meal -page to create your meal</ListItem>
             <ListItem>
-              3. Plan a meal by selecting ingredients and their weights
+              <ListItemText>
+                1. Left hand menu displays all pages in Foods
+              </ListItemText>
             </ListItem>
             <ListItem>
-              4. Inspect your meal macro percentages and contents
+              <ListItemText>
+                2. Use <Link href="/plan">Plan a meal</Link> -page to create
+                your meal
+              </ListItemText>
             </ListItem>
-            <ListItem>5. Save your meal</ListItem>
+            <ListItem>
+              <ListItemText>
+                3. Plan a meal by selecting ingredients and their weights
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemText>
+                4. Inspect your meal macro percentages and contents
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemText>5. Save your meal</ListItemText>
+            </ListItem>
           </List>
         </Grid>
       </Grid>
@@ -39,12 +55,16 @@ function Dashboard() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Fineli Database
-            </a>
+              Fineli
+            </a>{' '}
+            Food Composition Database (THL).
           </p>
           <List>
             <ListItem>
-              1. You can add your own ingredients from Ingredients -page
+              <ListItemText>
+                1. You can add your own ingredients from{' '}
+                <Link href="/ingredients">Ingredients</Link> -page
+              </ListItemText>
             </ListItem>
             <ListItem>2. Input name and nutrients</ListItem>
             <ListItem>3. Save your ingredient</ListItem>
@@ -55,7 +75,10 @@ function Dashboard() {
         <Grid item xs={6}></Grid>
         <Grid item xs={6}>
           <h3>Browsing and editing meals</h3>
-          <p>From Meals -page you can inspect your meals</p>
+          <p>
+            From <Link href="/meals">Meals</Link> -page you can inspect your
+            meals
+          </p>
           <List>
             <ListItem>1. Choose a meal you want to edit or inspect</ListItem>
             <ListItem>2. Click Edit</ListItem>
