@@ -43,8 +43,10 @@ export default function Ingredients(props: Props) {
         </Grid>
         <Grid item xs={6}>
           <List>
-            <h2>All ingredients</h2>
-            <small>A list of ingredients sorted by their creation date</small>
+            <h2>Your ingredients</h2>
+            <small>
+              A list of ingredients created by you, sorted by creation date
+            </small>
             <Box
               sx={{
                 mt: '10px',
