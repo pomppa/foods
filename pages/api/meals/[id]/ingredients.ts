@@ -43,11 +43,11 @@ async function updateMeal(meal: MealEditInterface) {
         where: { id: ingredient.mealIngredientId ?? 0 },
         update: {
           ingredient_weight: ingredient.weight,
-          ingredient_id: ingredient.ingredient, // todo ingredient -> id
+          ingredient_id: ingredient.ingredient_id,
         },
         create: {
           meal_id: meal.id,
-          ingredient_id: ingredient.ingredient,
+          ingredient_id: ingredient.ingredient_id,
           ingredient_weight: ingredient.weight,
         },
       });

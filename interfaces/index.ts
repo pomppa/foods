@@ -82,7 +82,7 @@ export type CombinedIngredientMeal = {
 };
 
 export interface FormValue {
-  ingredient: number;
+  ingredient_id: number;
   weight: number;
   mealIngredientId?: number;
 }
@@ -160,7 +160,7 @@ export type DataMap = {
   };
 };
 
-export type Option = {
+export type AutocompleteOption = {
   label: string;
   id: number;
 };
@@ -168,4 +168,11 @@ export type Option = {
 export type IngredientWeightValues = {
   ingredient: number;
   weight: number;
+};
+
+export type MealIngredientI = {
+  id: number;
+  meal_id: number;
+  ingredient_id: number;
+  ingredient_weight: number;
 };

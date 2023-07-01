@@ -44,9 +44,7 @@ export default function Ingredients(props: Props) {
         <Grid item xs={6}>
           <List>
             <h2>Your ingredients</h2>
-            <small>
-              A list of ingredients created by you, sorted by creation date
-            </small>
+            <small>A list of your ingredients</small>
             <Box
               sx={{
                 mt: '10px',
@@ -57,15 +55,13 @@ export default function Ingredients(props: Props) {
             >
               {data.map((x) => {
                 return (
-                  <>
-                    <Link href={'ingredient/' + x.id}>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText primary={x.name} />
-                        </ListItemButton>
-                      </ListItem>
-                    </Link>
-                  </>
+                  <Link href={'ingredient/' + x.id} key={x.id}>
+                    <ListItem disablePadding>
+                      <ListItemButton>
+                        <ListItemText primary={x.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  </Link>
                 );
               })}
             </Box>

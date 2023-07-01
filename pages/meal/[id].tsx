@@ -6,15 +6,15 @@ import {
   MealInterface,
   FormValue,
   IngredientI,
+  MealIngredientI,
   MealI,
   CombinedIngredientMeal,
 } from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
-import MacroPieChart from '../../components/macroPieChart';
+import MacroPieChart from '../../components/macros';
 import { getIngredientDataForIds } from '../api/ingredients';
-import { calculateTotals } from '../../lib/plan-calculator';
-import Link from 'next/link';
+import { calculateTotals } from '../../components/planCalculator';
 
 type Props = {
   meal: MealInterface;
@@ -22,17 +22,7 @@ type Props = {
 };
 
 /**
- * todo move to index of interfaces?
- */
-interface MealIngredientI {
-  id: number;
-  meal_id: number;
-  ingredient_id: number;
-  ingredient_weight: number;
-}
-
-/**
- * todo return all in one object?
+ * @todo return all in one object?
  * @param req
  * @returns
  */
@@ -54,13 +44,11 @@ export const getServerSideProps = async (req: NextApiRequest) => {
     const ingredient: IngredientI = ingredientData.find(
       (obj) => obj.id === item.ingredient_id,
     );
-    // ingredientData.find((obj) => obj.id === item.ingredient_id) || {};
     return {
       ...item,
       ...ingredient,
     };
   });
-  // console.log({ mealData, mealIngredients, ingredients });
   return {
     props: { meal, ingredients },
   };
@@ -68,10 +56,6 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 
 /**
  * Meal page component.
- * todo do we need all props?
- * serialization not needed for this data, it is converted already
- * @see https://github.com/prisma/prisma/issues/9170
- * @see https://github.com/vercel/next.js/issues/11993#issuecomment-1504415523
  *
  * @param props
  * @returns
@@ -81,7 +65,7 @@ export default function Meal(props: Props) {
   const ingredients: CombinedIngredientMeal[] = props.ingredients;
 
   const formValues: FormValue[] = ingredients.map((item) => ({
-    ingredient: item.ingredient_id, //todo change to ingredient_id???
+    ingredient_id: item.ingredient_id,
     weight: Number(item.ingredient_weight),
   }));
 
@@ -96,10 +80,12 @@ export default function Meal(props: Props) {
       >
         Go back
       </Button>
-      <Button sx={{ ml: '10px' }} variant="outlined">
-        <Link href="/edit" as={router.asPath + '/edit'}>
-          <a>Edit meal</a>
-        </Link>
+      <Button
+        sx={{ ml: '10px' }}
+        variant="outlined"
+        onClick={() => router.push(router.asPath + '/edit')}
+      >
+        Edit meal
       </Button>
       <h2>{props.meal.name}</h2>
       <MealTable totals={totals}></MealTable>

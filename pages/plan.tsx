@@ -3,8 +3,8 @@ import { getIngredientsData } from './api/ingredients';
 import { FormValue, IngredientI, Totals } from '../interfaces';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
-import MacroPieChart from '../components/macroPieChart';
-import { calculateTotals } from '../lib/plan-calculator';
+import MacroPieChart from '../components/macros';
+import { calculateTotals } from '../components/planCalculator';
 import { useState } from 'react';
 
 type Props = {

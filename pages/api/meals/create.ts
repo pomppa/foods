@@ -21,7 +21,7 @@ export default async function handle(
           },
           ingredient: {
             connect: {
-              id: value.ingredient,
+              id: value.ingredient_id,
             },
           },
         },

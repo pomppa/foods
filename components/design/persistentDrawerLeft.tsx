@@ -21,6 +21,7 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import ListIcon from '@mui/icons-material/List';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import Link from 'next/link';
+import { ClickAwayListener } from '@mui/material';
 // import AdbIcon from '@mui/icons-material/Adb';
 
 const drawerWidth = 240;
@@ -87,12 +88,10 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    { title: 'Dashboard', icon: DashboardIcon, link: 'dashboard' },
+    { title: 'Dashboard', icon: DashboardIcon, link: 'main' },
     { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
-    // { title: 'Create meal', icon: TakeoutDiningIcon, link: 'meals' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Meals', icon: ListIcon, link: 'meals' },
-    // { title: 'Fineli', icon: TakeoutDiningIcon, link: 'fineli' },
   ];
 
   const Icon = (props) => {
@@ -102,85 +101,87 @@ export default function PersistentDrawerLeft() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
+    <ClickAwayListener onClickAway={handleDrawerClose}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: 'none' }) }}
             >
-              FOODS
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                FOODS
+              </Typography>
             </Typography>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {menu.map((element) => (
-            <Link
-              key={element.link}
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}
-            >
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleDrawerClose}>
-                  <ListItemIcon>
-                    <Icon icon={element.icon} />
-                  </ListItemIcon>
-                  <ListItemText primary={element.title} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          ))}
-        </List>
-        <Divider />
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-      </Main>
-    </Box>
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader onClick={handleDrawerClose}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'ltr' ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {menu.map((element) => (
+              <Link
+                key={element.link}
+                href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <Icon icon={element.icon} />
+                    </ListItemIcon>
+                    <ListItemText primary={element.title} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+          <Divider />
+        </Drawer>
+        <Main open={open}>
+          <DrawerHeader />
+        </Main>
+      </Box>
+    </ClickAwayListener>
   );
 }

@@ -1,31 +1,39 @@
 import { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { Option } from '../../interfaces';
+import { AutocompleteOption } from '../../interfaces';
+
+type Props = {
+  disabledOptions: number[];
+  onIngredientChange: (id: number) => void;
+  onWeightChange: (weight: number) => void;
+  options: AutocompleteOption[];
+  value: number;
+  weight: number;
+};
 
 /**
  * Ingredient autocomplete, contains ingredient dropdown + weight input
- * todo type props
+ *
  * @param props
  * @returns
  */
-export default function IngredientAutocomplete(props) {
+export default function IngredientAutocomplete(props: Props) {
   const { onIngredientChange, onWeightChange } = props;
-  const [inputValue, setInputValue] = useState('');
-
-  const options: Option[] = props.options;
-
-  const selected: Option =
-    options.find((option) => option.id === props.value) ?? undefined;
 
   const weight: number = props.weight;
 
-  /* from plan this should be undefined, from edit we should have as controlled */
-  // console.log(selected);
+  const [inputValue, setInputValue] = useState('');
+
+  const options: AutocompleteOption[] = props.options;
+
+  const selected: AutocompleteOption =
+    options.find((option) => option.id === props.value) ?? null;
+
   return (
     <>
       <>
         <Autocomplete
-          value={selected}
+          value={selected ?? null}
           isOptionEqualToValue={(option, value) =>
             option.id == value?.id || value?.id === 0
           }
@@ -51,7 +59,7 @@ export default function IngredientAutocomplete(props) {
           )}
         />
         <TextField
-          value={weight}
+          value={weight ?? ''}
           label="Weight (g)"
           variant="outlined"
           name="weight"
@@ -59,10 +67,15 @@ export default function IngredientAutocomplete(props) {
             type: 'number',
             inputMode: 'numeric',
             pattern: '[0-9]*',
+            min: '0',
+            required: true,
           }}
           sx={{ width: 300, mt: 2 }}
           onChange={(event) => {
-            onWeightChange(parseFloat(event.target.value));
+            const inputValue = parseFloat(event.target.value);
+            if (inputValue >= 0) {
+              onWeightChange(inputValue);
+            }
           }}
         />
       </>

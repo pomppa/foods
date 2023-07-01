@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Box, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import { FormValue, IngredientI } from '../../interfaces';
-import { Option } from '../../interfaces';
+import { AutocompleteOption } from '../../interfaces';
 
 type Props = {
   data: IngredientI[];
@@ -18,20 +18,20 @@ type Props = {
 export default function PlanForm(props: Props) {
   const { data, onChange } = props;
 
-  const options: Option[] = data.map((element: IngredientI) => {
+  const options: AutocompleteOption[] = data.map((element: IngredientI) => {
     return { label: element.name, id: element.id };
   });
 
   const [ingredients, setIngredients] = useState<FormValue[]>(
-    props.formValues || [{ ingredient: 0, weight: 0 }],
+    props.formValues ?? [{ ingredient_id: null, weight: null }],
   );
 
   const disabledOptions: number[] = Object.values(ingredients).map(
-    (item) => item.ingredient,
+    (item) => item.ingredient_id,
   );
 
   const addIngredient = () => {
-    setIngredients([...ingredients, { ingredient: 0, weight: 0 }]);
+    setIngredients([...ingredients, { ingredient_id: null, weight: null }]);
   };
 
   const removeIngredient = (index: number) => {
@@ -43,7 +43,7 @@ export default function PlanForm(props: Props) {
 
   const handleIngredientChange = (index: number, ingredient: number) => {
     const updatedIngredients: FormValue[] = [...ingredients];
-    updatedIngredients[index].ingredient = ingredient;
+    updatedIngredients[index].ingredient_id = ingredient;
     setIngredients(updatedIngredients);
     onChange(updatedIngredients);
   };
@@ -62,7 +62,7 @@ export default function PlanForm(props: Props) {
           {ingredients.map((ingredient, index) => (
             <IngredientAutocomplete
               key={index}
-              value={ingredient.ingredient}
+              value={ingredient.ingredient_id}
               weight={ingredient.weight}
               options={options}
               onIngredientChange={(updatedIngredient: number) =>
@@ -75,7 +75,7 @@ export default function PlanForm(props: Props) {
             />
           ))}
           <Box sx={{ mt: 0.5 }}>
-            {ingredients.length > 0 && (
+            {ingredients.length > 1 && (
               <Button
                 variant="contained"
                 color="secondary"
@@ -92,32 +92,6 @@ export default function PlanForm(props: Props) {
             Add more
           </Button>
         </Box>
-        {/* {!displayMealSave && props.displaySaveOption && (
-          <Button
-            sx={{ mt: 1 }}
-            variant="contained"
-            onClick={() => {
-              setDisplayMealSave(true);
-            }}
-          >
-            Save as a meal?
-          </Button>
-        )}
-        <Snackbar open={open} autoHideDuration={6000}>
-          <Alert severity="success" sx={{ width: '100%' }}>
-            Meal saved!
-          </Alert>
-        </Snackbar>
-      </Grid>
-      {displayMealSave && (
-        <MealFromPlan
-          {...{
-            setDisplayMealSave: setDisplayMealSave,
-            setMealName: setMealName,
-            saveMealFromPlan: saveMealFromPlan,
-          }}
-        ></MealFromPlan>
-      )} */}
       </Grid>
     </>
   );

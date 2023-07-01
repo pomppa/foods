@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next';
 import { useState } from 'react';
 import PlanForm from '../../../components/forms/planForm';
-import MacroPieChart from '../../../components/macroPieChart';
+import MacroPieChart from '../../../components/macros';
 import MealTable from '../../../components/mealTable';
 import {
   CombinedIngredientMeal,
@@ -16,7 +16,7 @@ import {
 } from '../../api/ingredients';
 import { findUniqueMealWithId } from '../../api/meals/[id]';
 import { getMealDataForId } from '../../api/meals/[id]/ingredients';
-import { calculateTotals } from '../../../lib/plan-calculator';
+import { calculateTotals } from '../../../components/planCalculator';
 import { Button, Grid } from '@mui/material';
 import router from 'next/router';
 
@@ -26,7 +26,7 @@ export const getServerSideProps = async (req: NextApiRequest) => {
   const mealIngredientsData = await getMealDataForId(req.query.id);
 
   const valuesArray: number[] = mealIngredientsData.map(
-    (obj) => obj.ingredient_id,
+    (obj: { ingredient_id: number }) => obj.ingredient_id,
   );
 
   const ingredientsData: IngredientI[] = await getIngredientDataForIds(
@@ -34,7 +34,7 @@ export const getServerSideProps = async (req: NextApiRequest) => {
   );
 
   const ingredients: CombinedIngredientMeal[] = mealIngredientsData.map(
-    (item) => {
+    (item: { ingredient_id: number }) => {
       const ingredient = ingredientsData.find(
         (obj) => obj.id === item.ingredient_id,
       );
@@ -45,29 +45,32 @@ export const getServerSideProps = async (req: NextApiRequest) => {
     },
   );
 
-  const allIngredients = await getIngredientsData();
+  const allIngredients: IngredientI[] = await getIngredientsData();
+
   return {
     props: { meal, ingredients, allIngredients },
   };
 };
 
 /**
- * todo clean props
+ * Edit page component
+ *
+ * @todo clean props
  * @param props
  * @returns
  */
 export default function Edit(props) {
   const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
   const initialIngredients: CombinedIngredientMeal[] = props.ingredients;
-
-  const { allIngredients } = props;
+  const allIngredients = props.allIngredients;
 
   const [formValues, setFormValues] = useState<FormValue[]>(
     initialIngredients.map((item) => ({
-      ingredient: item.ingredient_id,
+      ingredient_id: item.ingredient_id,
       weight: item.ingredient_weight,
     })),
   );
+
   const totals: Totals = calculateTotals(formValues, allIngredients);
 
   const handleChange = (formValues: FormValue[]) => {

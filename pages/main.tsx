@@ -1,19 +1,19 @@
 import { Grid, List, ListItem, ListItemText } from '@mui/material';
 import Link from 'next/link';
 
-function Dashboard() {
+function Main() {
   return (
     <>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <h3>Foods</h3>
-          <small>
+          <p>
             A meal planner and macronutrients calculator to calculate your
             nutrient intake
-          </small>
+          </p>
         </Grid>
         <Grid item xs={6}>
-          <h3>How to use?</h3>
+          <h3>How to use</h3>
           <p>Foods enables meal planning and nutrient tracking</p>
           <List>
             <ListItem>
@@ -71,26 +71,8 @@ function Dashboard() {
           </List>
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={6}></Grid>
-        <Grid item xs={6}>
-          <h3>Browsing and editing meals</h3>
-          <p>
-            From <Link href="/meals">Meals</Link> -page you can inspect your
-            meals
-          </p>
-          <List>
-            <ListItem>1. Choose a meal you want to edit or inspect</ListItem>
-            <ListItem>2. Click Edit</ListItem>
-            <ListItem>
-              3. Edit meal contents and inspect changes realtime
-            </ListItem>
-            <ListItem>4. Save edited meal</ListItem>
-          </List>
-        </Grid>
-      </Grid>
     </>
   );
 }
 
-export default Dashboard;
+export default Main;

@@ -22,11 +22,12 @@ const defaultLabelStyle = {
   fontFamily: 'sans-serif',
 };
 
+/**
+ * @todo display as disabled?
+ * @param props
+ * @returns
+ */
 export default function MacroPieChart(props: Props) {
-  if (!props.totals.totalWeight) {
-    return <></>;
-  }
-
   return (
     <>
       <h3>Macros</h3>

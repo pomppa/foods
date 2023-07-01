@@ -1,4 +1,4 @@
-import ResponsiveDrawer from './responsive-drawer';
+import PersistentDrawerLeft from './persistentDrawerLeft';
 import { Box } from '@mui/system';
 import Head from 'next/head';
 
@@ -8,7 +8,7 @@ export default function Layout({ children }) {
       <Head>
         <title>Foods</title>
       </Head>
-      <ResponsiveDrawer />
+      <PersistentDrawerLeft />
       <Box sx={{ ml: '50px', mr: '50px', mb: '50px', maxWidth: 'md' }}>
         <main>{children}</main>
       </Box>
