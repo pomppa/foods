@@ -66,16 +66,14 @@ export default function IngredientAutocomplete(props: Props) {
           inputProps={{
             type: 'number',
             inputMode: 'numeric',
-            pattern: '[0-9]*',
-            min: '0',
+            pattern: '[1-9]*',
+            min: '1',
             required: true,
           }}
           sx={{ width: 300, mt: 2 }}
           onChange={(event) => {
             const inputValue = parseFloat(event.target.value);
-            if (inputValue >= 0) {
-              onWeightChange(inputValue);
-            }
+            onWeightChange(inputValue);
           }}
         />
       </>

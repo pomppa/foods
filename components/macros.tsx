@@ -28,6 +28,30 @@ const defaultLabelStyle = {
  * @returns
  */
 export default function MacroPieChart(props: Props) {
+  const { totals } = props;
+
+  const proteinRatio = isNaN(totals.proteinRatio) ? 0 : totals.proteinRatio;
+  const fatRatio = isNaN(totals.fatRatio) ? 0 : totals.fatRatio;
+  const carbsRatio = isNaN(totals.carbsRatio) ? 0 : totals.carbsRatio;
+
+  const formatLabel = (ratio: number) => {
+    return ratio > 0 ? `~${ratio.toFixed()}%` : `${ratio}%`;
+  };
+
+  const proteinLabel = formatLabel(proteinRatio);
+  const carbsLabel = formatLabel(carbsRatio);
+  const fatLabel = formatLabel(fatRatio);
+
+  const ratios = [
+    { title: 'protein', value: proteinRatio, color: '#90a4ae' },
+    { title: 'carbs', value: carbsRatio, color: '#cfd8dc' },
+    { title: 'fat', value: fatRatio, color: '#455a64' },
+  ];
+
+  const data = ratios
+    .filter((ratio) => ratio.value > 0)
+    .map((ratio) => ({ ...ratio }));
+
   return (
     <>
       <h3>Macros</h3>
@@ -42,10 +66,7 @@ export default function MacroPieChart(props: Props) {
                   <EggAltIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary="Protein"
-                secondary={props.totals.proteinRatio.toFixed() + '%'}
-              />
+              <ListItemText primary="Protein" secondary={proteinLabel} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -53,10 +74,7 @@ export default function MacroPieChart(props: Props) {
                   <BreakfastDiningIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary="Carbs"
-                secondary={props.totals.carbsRatio.toFixed() + '%'}
-              />
+              <ListItemText primary="Carbs" secondary={carbsLabel} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -64,37 +82,21 @@ export default function MacroPieChart(props: Props) {
                   <EggIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary="Fat"
-                secondary={props.totals.fatRatio.toFixed() + '%'}
-              />
+              <ListItemText primary="Fat" secondary={fatLabel} />
             </ListItem>
           </List>
         </Grid>
         <Grid item xs={8} sx={{ mt: '10px' }}>
-          <PieChart
-            data={[
-              {
-                title: 'protein',
-                value: props.totals.proteinRatio,
-                color: '#90a4ae',
-              },
-              {
-                title: 'carbs',
-                value: props.totals.carbsRatio,
-                color: '#cfd8dc',
-              },
-              {
-                title: 'fat',
-                value: props.totals.fatRatio,
-                color: '#455a64',
-              },
-            ]}
-            label={({ dataEntry }) => dataEntry.title}
-            labelStyle={{
-              ...defaultLabelStyle,
-            }}
-          ></PieChart>
+          {totals.totalKcal > 0 && (
+            <PieChart
+              data={data}
+              animate={true}
+              label={({ dataEntry }) => dataEntry.title}
+              labelStyle={{
+                ...defaultLabelStyle,
+              }}
+            ></PieChart>
+          )}
         </Grid>
       </Grid>
     </>

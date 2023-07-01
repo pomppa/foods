@@ -72,28 +72,30 @@ export default function Meal(props: Props) {
   const totals = calculateTotals(formValues, ingredients);
 
   return (
-    <>
-      <Button
-        color="secondary"
-        variant="outlined"
-        onClick={() => router.back()}
-      >
-        Go back
-      </Button>
-      <Button
-        sx={{ ml: '10px' }}
-        variant="outlined"
-        onClick={() => router.push(router.asPath + '/edit')}
-      >
-        Edit meal
-      </Button>
-      <h2>{props.meal.name}</h2>
-      <MealTable totals={totals}></MealTable>
-      <Grid container>
-        <Grid>
-          <MacroPieChart totals={totals}></MacroPieChart>
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Button
+          color="secondary"
+          variant="outlined"
+          onClick={() => router.back()}
+        >
+          Go back
+        </Button>
+        <Button
+          sx={{ ml: '10px' }}
+          variant="outlined"
+          onClick={() => router.push(router.asPath + '/edit')}
+        >
+          Edit meal
+        </Button>
       </Grid>
-    </>
+      <Grid item xs={12}>
+        <h2>{props.meal.name}</h2>
+        <MealTable totals={totals}></MealTable>
+      </Grid>
+      <Grid item xs={12}>
+        <MacroPieChart totals={totals}></MacroPieChart>
+      </Grid>
+    </Grid>
   );
 }

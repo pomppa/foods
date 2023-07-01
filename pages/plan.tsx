@@ -31,20 +31,18 @@ export default function Plan(props: Props) {
   };
 
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <h2>Plan a meal</h2>
-          <small>Select ingredients from the dropdown and input weight</small>
-          <PlanForm data={allIngredients} onChange={handleChange}></PlanForm>
-        </Grid>
-        <Grid item xs={6}>
-          <MacroPieChart totals={totals}></MacroPieChart>
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={6}>
+        <h2>Plan a meal</h2>
+        <small>Select ingredients from the dropdown and input weight</small>
+        <PlanForm data={allIngredients} onChange={handleChange}></PlanForm>
       </Grid>
-      <Grid sx={{ mt: '50px', mb: '50px' }}>
+      <Grid item xs={12} md={6}>
+        <MacroPieChart totals={totals}></MacroPieChart>
+      </Grid>
+      <Grid item xs={12}>
         <MealTable totals={totals}></MealTable>
       </Grid>
-    </>
+    </Grid>
   );
 }

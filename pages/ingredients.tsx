@@ -37,14 +37,14 @@ export default function Ingredients(props: Props) {
     <>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <h2>Add a new ingredient</h2>
+          <h2>Add new ingredient</h2>
           <small>Input name and macronutrients</small>
           <IngredientForm></IngredientForm>{' '}
         </Grid>
         <Grid item xs={6}>
           <List>
             <h2>Your ingredients</h2>
-            <small>A list of your ingredients</small>
+            <small>List of your ingredients</small>
             <Box
               sx={{
                 mt: '10px',

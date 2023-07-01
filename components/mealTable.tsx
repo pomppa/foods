@@ -30,10 +30,6 @@ function createData(
  * @returns
  */
 export default function MealTable(props: Props) {
-  if (!props.totals.totalWeight) {
-    return <></>;
-  }
-
   const data: TableData[] = props.totals.tableData;
   const rows = data.map((x) => {
     return createData(
@@ -62,6 +58,7 @@ export default function MealTable(props: Props) {
 
   return (
     <>
+      <h3>Meal table</h3>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -74,37 +71,52 @@ export default function MealTable(props: Props) {
               <TableCell align="right">Protein&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody
+            sx={{
+              td: {
+                color: 'text.secondary',
+              },
+            }}
+          >
             {rows.map((row) => (
               <TableRow
                 key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                }}
               >
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
                 <TableCell align="right">{row.weight}</TableCell>
-                <TableCell align="right">{row.calories.toFixed(2)}</TableCell>
-                <TableCell align="right">{row.fat.toFixed(2)}</TableCell>
-                <TableCell align="right">{row.carbs.toFixed(2)}</TableCell>
-                <TableCell align="right">{row.protein.toFixed(2)}</TableCell>
+                <TableCell align="right">{row.calories.toFixed()}</TableCell>
+                <TableCell align="right">{row.fat.toFixed()}</TableCell>
+                <TableCell align="right">{row.carbs.toFixed()}</TableCell>
+                <TableCell align="right">{row.protein.toFixed()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter>
-            <TableRow
-              sx={{
-                td: {
-                  fontSize: 15,
-                },
-              }}
-            >
+          <TableFooter
+            sx={{
+              td: {
+                fontSize: 15,
+                color: 'text.primary',
+              },
+            }}
+          >
+            <TableRow>
               <TableCell>TOTAL</TableCell>
-              <TableCell align="right">{totals.weight}</TableCell>
-              <TableCell align="right">{totals.kcal.toFixed(2)}</TableCell>
-              <TableCell align="right">{totals.fat.toFixed(2)}</TableCell>
-              <TableCell align="right">{totals.carbs.toFixed(2)}</TableCell>
-              <TableCell align="right">{totals.protein.toFixed(2)}</TableCell>
+              <TableCell align="right">
+                {totals.weight.toLocaleString()}
+              </TableCell>
+              <TableCell align="right">
+                {totals.kcal.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
+              </TableCell>
+              <TableCell align="right">{totals.fat.toFixed()}</TableCell>
+              <TableCell align="right">{totals.carbs.toFixed()}</TableCell>
+              <TableCell align="right">{totals.protein.toFixed()}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

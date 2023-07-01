@@ -26,13 +26,17 @@ export function calculateTotals(
       const ingredient = data.find((item) => {
         return item.id === value.ingredient_id;
       });
+
       if (ingredient) {
         const weight = value.weight;
 
-        const kcal = (ingredient.kcal * weight) / 100;
-        const protein = (ingredient.protein * weight) / 100;
-        const carbs = (ingredient.carbs * weight) / 100;
-        const fat = (ingredient.fat * weight) / 100;
+        const factor =
+          weight === null && formValues.length === 1 ? 1 : weight / 100;
+
+        const kcal = ingredient.kcal * factor;
+        const protein = ingredient.protein * factor;
+        const carbs = ingredient.carbs * factor;
+        const fat = ingredient.fat * factor;
 
         totalKcal += kcal;
         totalProtein += protein;
@@ -54,7 +58,7 @@ export function calculateTotals(
     })
     .filter(Boolean);
 
-  const kcalPerProtein = totalProtein * 4; // 0
+  const kcalPerProtein = totalProtein * 4;
   const kcalPerCarbs = totalCarbs * 4;
   const kcalPerFat = totalFat * 9;
 

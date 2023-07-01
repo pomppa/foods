@@ -78,32 +78,32 @@ export default function Edit(props) {
   };
 
   return (
-    <>
-      <Button
-        color="secondary"
-        variant="outlined"
-        onClick={() => router.back()}
-      >
-        Go back
-      </Button>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <h2>Edit </h2>
-          <h3>Meal name: {meal.name}</h3>
-          <small>Edit meal contents</small>
-          <PlanForm
-            data={allIngredients}
-            formValues={formValues}
-            onChange={handleChange}
-          ></PlanForm>
-        </Grid>
-        <Grid item xs={6}>
-          <MacroPieChart totals={totals}></MacroPieChart>
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Button
+          color="secondary"
+          variant="outlined"
+          onClick={() => router.back()}
+        >
+          Go back
+        </Button>
       </Grid>
-      <Grid sx={{ mt: '50px', mb: '50px' }}>
+      <Grid item xs={12} sm={6}>
+        <h2>Edit</h2>
+        <h3>Meal name: {meal.name}</h3>
+        <small>Edit meal contents</small>
+        <PlanForm
+          data={allIngredients}
+          formValues={formValues}
+          onChange={handleChange}
+        ></PlanForm>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <MacroPieChart totals={totals}></MacroPieChart>
+      </Grid>
+      <Grid item xs={12}>
         <MealTable totals={totals}></MealTable>
       </Grid>
-    </>
+    </Grid>
   );
 }

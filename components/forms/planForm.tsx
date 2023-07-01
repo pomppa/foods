@@ -55,6 +55,8 @@ export default function PlanForm(props: Props) {
     onChange(updatedIngredients);
   };
 
+  const isLastWeightNull = ingredients[ingredients.length - 1].weight === null;
+
   return (
     <>
       <Grid>
@@ -88,7 +90,11 @@ export default function PlanForm(props: Props) {
           </Box>
         </div>
         <Box sx={{ mt: 2 }}>
-          <Button variant="contained" onClick={addIngredient}>
+          <Button
+            disabled={isLastWeightNull}
+            variant="contained"
+            onClick={addIngredient}
+          >
             Add more
           </Button>
         </Box>
