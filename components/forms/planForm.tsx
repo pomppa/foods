@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Button, Box, Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import { FormValue, IngredientI } from '../../interfaces';
 import { AutocompleteOption } from '../../interfaces';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 type Props = {
   data: IngredientI[];
   onChange: (formValues: FormValue[]) => void;
   formValues?: FormValue[];
+  hasNullValues?: boolean;
 };
 
 /**
@@ -16,8 +19,8 @@ type Props = {
  * @returns
  */
 export default function PlanForm(props: Props) {
-  const { data, onChange } = props;
-
+  const { data, onChange, hasNullValues } = props;
+  console.log(hasNullValues);
   const options: AutocompleteOption[] = data.map((element: IngredientI) => {
     return { label: element.name, id: element.id };
   });
@@ -31,7 +34,10 @@ export default function PlanForm(props: Props) {
   );
 
   const addIngredient = () => {
-    setIngredients([...ingredients, { ingredient_id: null, weight: null }]);
+    const newIngredient: FormValue = { ingredient_id: null, weight: null };
+    const updatedIngredients: FormValue[] = [...ingredients, newIngredient];
+    setIngredients(updatedIngredients);
+    onChange(updatedIngredients);
   };
 
   const removeIngredient = (index: number) => {
@@ -54,8 +60,6 @@ export default function PlanForm(props: Props) {
     setIngredients(updatedIngredients);
     onChange(updatedIngredients);
   };
-
-  const isLastWeightNull = ingredients[ingredients.length - 1].weight === null;
 
   return (
     <Grid container spacing={2}>
@@ -82,18 +86,20 @@ export default function PlanForm(props: Props) {
             variant="contained"
             color="secondary"
             onClick={() => removeIngredient(ingredients.length - 1)}
+            startIcon={<RemoveIcon />}
           >
-            Remove last
+            Remove
           </Button>
         </Grid>
       )}
       <Grid item>
         <Button
-          disabled={isLastWeightNull}
+          disabled={hasNullValues}
           variant="contained"
           onClick={addIngredient}
+          startIcon={<AddIcon />}
         >
-          Add more
+          Add
         </Button>
       </Grid>
     </Grid>

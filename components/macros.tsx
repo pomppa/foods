@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Paper,
 } from '@mui/material';
 import EggIcon from '@mui/icons-material/Egg';
 import EggAltIcon from '@mui/icons-material/EggAlt';
