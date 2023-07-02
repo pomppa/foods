@@ -58,47 +58,44 @@ export default function PlanForm(props: Props) {
   const isLastWeightNull = ingredients[ingredients.length - 1].weight === null;
 
   return (
-    <>
-      <Grid>
-        <div>
-          {ingredients.map((ingredient, index) => (
-            <IngredientAutocomplete
-              key={index}
-              value={ingredient.ingredient_id}
-              weight={ingredient.weight}
-              options={options}
-              onIngredientChange={(updatedIngredient: number) =>
-                handleIngredientChange(index, updatedIngredient)
-              }
-              onWeightChange={(weight: number) =>
-                handleWeightChange(index, weight)
-              }
-              disabledOptions={disabledOptions}
-            />
-          ))}
-          <Box sx={{ mt: 0.5 }}>
-            {ingredients.length > 1 && (
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{ mt: '10px' }}
-                onClick={() => removeIngredient(ingredients.length - 1)}
-              >
-                Remove last
-              </Button>
-            )}
-          </Box>
-        </div>
-        <Box sx={{ mt: 2 }}>
-          <Button
-            disabled={isLastWeightNull}
-            variant="contained"
-            onClick={addIngredient}
-          >
-            Add more
-          </Button>
-        </Box>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        {ingredients.map((ingredient, index) => (
+          <IngredientAutocomplete
+            key={index}
+            value={ingredient.ingredient_id}
+            weight={ingredient.weight}
+            options={options}
+            onIngredientChange={(updatedIngredient: number) =>
+              handleIngredientChange(index, updatedIngredient)
+            }
+            onWeightChange={(weight: number) =>
+              handleWeightChange(index, weight)
+            }
+            disabledOptions={disabledOptions}
+          />
+        ))}
       </Grid>
-    </>
+      {ingredients.length > 1 && (
+        <Grid item>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => removeIngredient(ingredients.length - 1)}
+          >
+            Remove last
+          </Button>
+        </Grid>
+      )}
+      <Grid item>
+        <Button
+          disabled={isLastWeightNull}
+          variant="contained"
+          onClick={addIngredient}
+        >
+          Add more
+        </Button>
+      </Grid>
+    </Grid>
   );
 }

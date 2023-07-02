@@ -4,6 +4,10 @@ import { findUniqueIngredient } from '../api/ingredients/[id]';
 import {
   Box,
   Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
   Paper,
   Table,
   TableBody,
@@ -34,50 +38,37 @@ export const getServerSideProps = async (req: NextApiRequest) => {
  */
 export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
-  // const macros: MacroPercentages = ingredientsMacroPercentagesCalculator(data);
+  const { name, kcal, protein, fat, carbs } = data;
   return (
     <>
-      <Button
-        color="secondary"
-        variant="outlined"
-        onClick={() => router.back()}
-      >
-        Go back
-      </Button>
-      <Head>
-        <title>Food - Ingredient</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div>
-        <h2>{data.name}</h2>
-      </div>
-      <TableContainer sx={{ minWidth: 650, maxWidth: 650 }} component={Paper}>
-        <Table aria-label="table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Ingredient</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                {data.name}
-              </TableCell>
-              <TableCell align="right">{String(data.kcal)}</TableCell>
-              <TableCell align="right">{String(data.fat)}</TableCell>
-              <TableCell align="right">{String(data.carbs)}</TableCell>
-              <TableCell align="right">{String(data.protein)}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box sx={{ width: 1 / 3, py: 5, ml: 5 }}>
-        {/* <MacroPieChart macros={macros}></MacroPieChart> */}
-      </Box>
+      <Grid container spacing={2} sx={{ paddingTop: 3 }}>
+        <Grid item xs={12}>
+          <Button
+            color="secondary"
+            variant="outlined"
+            onClick={() => router.back()}
+          >
+            Back
+          </Button>
+          <List dense>
+            <ListItem>
+              <ListItemText primary="Name" secondary={name} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Calories" secondary={kcal} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Protein" secondary={protein + ' g'} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Carbs" secondary={carbs + ' g'} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Fat" secondary={fat + ' g'} />
+            </ListItem>
+          </List>
+        </Grid>
+      </Grid>
     </>
   );
 }

@@ -60,7 +60,7 @@ export default function MealTable(props: Props) {
     <>
       <h3>Meal table</h3>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table aria-label="meal table">
           <TableHead>
             <TableRow>
               <TableCell>Ingredient</TableCell>

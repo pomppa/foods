@@ -5,14 +5,14 @@ function Main() {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={4}>
           <h3>Foods</h3>
           <p>
             A meal planner and macronutrients calculator to calculate your
             nutrient intake
           </p>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={4}>
           <h3>How to use</h3>
           <p>Foods enables meal planning and nutrient tracking</p>
           <List>
@@ -42,10 +42,7 @@ function Main() {
             </ListItem>
           </List>
         </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={6}></Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={4}>
           <h3>Adding ingredients</h3>
           <p>
             Foods has over thousand ingredients that you can use. Ingredients

@@ -36,15 +36,13 @@ export default function Meals(props: Props) {
         <List>
           {data.map((x) => {
             return (
-              <>
-                <Link href={'meal/' + x.id}>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemText key={x.id} primary={x.name} />
-                    </ListItemButton>
-                  </ListItem>
-                </Link>
-              </>
+              <Link key={x.id} href={'meal/' + x.id}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={x.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             );
           })}
         </List>

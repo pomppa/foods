@@ -21,16 +21,18 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import ListIcon from '@mui/icons-material/List';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import Link from 'next/link';
-import { ClickAwayListener } from '@mui/material';
+import { ClickAwayListener, useMediaQuery } from '@mui/material';
 // import AdbIcon from '@mui/icons-material/Adb';
 
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
-}>(({ theme, open }) => ({
+  mobile?: number;
+}>(({ theme, open, mobile }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
+  padding: mobile ? theme.spacing(0) : theme.spacing(1),
+
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -78,6 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -88,7 +91,7 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    { title: 'Dashboard', icon: DashboardIcon, link: 'main' },
+    { title: 'Foods', icon: DashboardIcon, link: 'main' },
     { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Meals', icon: ListIcon, link: 'meals' },
@@ -124,7 +127,7 @@ export default function PersistentDrawerLeft() {
                 href="/"
                 sx={{
                   mr: 2,
-                  display: { xs: 'none', md: 'flex' },
+                  display: { md: 'flex' },
                   fontWeight: 700,
                   letterSpacing: '.3rem',
                   color: 'inherit',
@@ -178,7 +181,7 @@ export default function PersistentDrawerLeft() {
           </List>
           <Divider />
         </Drawer>
-        <Main open={open}>
+        <Main open={open} mobile={mobile ? 1 : 0}>
           <DrawerHeader />
         </Main>
       </Box>

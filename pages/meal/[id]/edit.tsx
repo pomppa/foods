@@ -78,14 +78,14 @@ export default function Edit(props) {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ paddingTop: 3 }}>
       <Grid item xs={12}>
         <Button
           color="secondary"
           variant="outlined"
           onClick={() => router.back()}
         >
-          Go back
+          Back
         </Button>
       </Grid>
       <Grid item xs={12} sm={6}>

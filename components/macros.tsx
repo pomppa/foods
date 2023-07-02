@@ -12,14 +12,14 @@ import BreakfastDiningIcon from '@mui/icons-material/BreakfastDining';
 
 import { PieChart } from 'react-minimal-pie-chart';
 import { Totals } from '../interfaces';
+import { blueGrey } from '@mui/material/colors';
 
 type Props = {
   totals: Totals;
 };
 
 const defaultLabelStyle = {
-  fontSize: '5px',
-  fontFamily: 'sans-serif',
+  fontSize: '8px',
 };
 
 /**
@@ -43,9 +43,9 @@ export default function MacroPieChart(props: Props) {
   const fatLabel = formatLabel(fatRatio);
 
   const ratios = [
-    { title: 'protein', value: proteinRatio, color: '#90a4ae' },
-    { title: 'carbs', value: carbsRatio, color: '#cfd8dc' },
-    { title: 'fat', value: fatRatio, color: '#455a64' },
+    { title: 'protein', value: proteinRatio, color: blueGrey['300'] },
+    { title: 'carbs', value: carbsRatio, color: blueGrey['A100'] },
+    { title: 'fat', value: fatRatio, color: blueGrey['700'] },
   ];
 
   const data = ratios
@@ -53,52 +53,52 @@ export default function MacroPieChart(props: Props) {
     .map((ratio) => ({ ...ratio }));
 
   return (
-    <>
-      <h3>Macros</h3>
-      <Grid container>
-        <Grid item xs={8}>
-          <List
-            sx={{ width: '100%', maxWidth: 380, bgcolor: 'background.paper' }}
-          >
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <EggAltIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Protein" secondary={proteinLabel} />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <BreakfastDiningIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Carbs" secondary={carbsLabel} />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <EggIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Fat" secondary={fatLabel} />
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item xs={8} sx={{ mt: '10px' }}>
-          {totals.totalKcal > 0 && (
-            <PieChart
-              data={data}
-              animate={true}
-              label={({ dataEntry }) => dataEntry.title}
-              labelStyle={{
-                ...defaultLabelStyle,
-              }}
-            ></PieChart>
-          )}
-        </Grid>
+    <Grid container spacing={2} sx={{ position: 'sticky', top: 50 }}>
+      <Grid item xs={12}>
+        <h3>Macros</h3>
       </Grid>
-    </>
+      <Grid item xs={6} sm={6}>
+        <List dense sx={{ bgcolor: 'background.paper' }}>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <EggAltIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Protein" secondary={proteinLabel} />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <BreakfastDiningIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Carbs" secondary={carbsLabel} />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <EggIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Fat" secondary={fatLabel} />
+          </ListItem>
+        </List>
+      </Grid>
+      <Grid item xs={6} sm={6} sx={{ maxHeight: '215px' }}>
+        {totals.totalKcal > 0 && (
+          <PieChart
+            data={data}
+            animate
+            animationDuration={500}
+            animationEasing="ease-out"
+            label={({ dataEntry }) => dataEntry.title}
+            labelStyle={{
+              ...defaultLabelStyle,
+            }}
+          ></PieChart>
+        )}
+      </Grid>
+    </Grid>
   );
 }

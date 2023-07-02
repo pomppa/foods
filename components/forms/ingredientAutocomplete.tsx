@@ -66,14 +66,13 @@ export default function IngredientAutocomplete(props: Props) {
           inputProps={{
             type: 'number',
             inputMode: 'numeric',
-            pattern: '[1-9]*',
-            min: '1',
-            required: true,
           }}
           sx={{ width: 300, mt: 2 }}
           onChange={(event) => {
             const inputValue = parseFloat(event.target.value);
-            onWeightChange(inputValue);
+            if (isNaN(inputValue) || (inputValue >= 0 && inputValue <= 9999)) {
+              onWeightChange(inputValue);
+            }
           }}
         />
       </>
