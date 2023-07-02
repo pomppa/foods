@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import { FormValue, IngredientI } from '../../interfaces';
@@ -33,11 +33,24 @@ export default function PlanForm(props: Props) {
     (item) => item.ingredient_id,
   );
 
+  const ingredientRef = useRef<HTMLDivElement>(null);
+
   const addIngredient = () => {
     const newIngredient: FormValue = { ingredient_id: null, weight: null };
     const updatedIngredients: FormValue[] = [...ingredients, newIngredient];
     setIngredients(updatedIngredients);
     onChange(updatedIngredients);
+    setTimeout(() => {
+      if (ingredientRef.current) {
+        const drawerHeight = 55; // Replace with the actual height of your Drawer
+        const scrollPosition = ingredientRef.current.offsetTop - drawerHeight;
+
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: 'smooth',
+        });
+      }
+    }, 0);
   };
 
   const removeIngredient = (index: number) => {
@@ -63,8 +76,8 @@ export default function PlanForm(props: Props) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        {ingredients.map((ingredient, index) => (
+      {ingredients.map((ingredient, index) => (
+        <Grid item xs={12} key={index} ref={ingredientRef}>
           <IngredientAutocomplete
             key={index}
             value={ingredient.ingredient_id}
@@ -79,8 +92,8 @@ export default function PlanForm(props: Props) {
             disabledOptions={disabledOptions}
             isSavingEnabled={isSavingEnabled}
           />
-        ))}
-      </Grid>
+        </Grid>
+      ))}
       <Grid
         item
         xs={12}
