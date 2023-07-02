@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { IngredientInterface } from '../interfaces';
@@ -21,7 +22,7 @@ export default function Fineli(props: Props) {
   });
 
   return (
-    <>
+    <Grid container spacing="{}">
       <h2>Fineli</h2>
       <Autocomplete
         disablePortal
@@ -32,6 +33,6 @@ export default function Fineli(props: Props) {
           <TextField {...params} label="Search Fineli data" />
         )}
       />
-    </>
+    </Grid>
   );
 }

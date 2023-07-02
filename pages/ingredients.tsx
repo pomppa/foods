@@ -4,7 +4,6 @@ import IngredientForm from '../components/forms/ingredientForm';
 import Link from 'next/link';
 import { IngredientInterface } from '../interfaces';
 import {
-  Box,
   Grid,
   List,
   ListItem,
@@ -38,17 +37,14 @@ export default function Ingredients(props: Props) {
       <Grid item xs={6} sm={4}>
         <h2>Add new ingredient</h2>
         <small>Input name and macronutrients</small>
-        <IngredientForm></IngredientForm>{' '}
+        <IngredientForm></IngredientForm>
       </Grid>
       <Grid item xs={6} sm={8}>
         <List>
           <h2>Your ingredients</h2>
           <small>List of your ingredients</small>
-          <Box
+          <List
             sx={{
-              mt: '10px',
-              width: '100%',
-              maxWidth: 360,
               bgcolor: 'background.paper',
             }}
           >
@@ -63,7 +59,7 @@ export default function Ingredients(props: Props) {
                 </Link>
               );
             })}
-          </Box>
+          </List>
         </List>
       </Grid>
     </Grid>

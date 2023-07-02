@@ -5,11 +5,11 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const ingredients = await getFineliIngredientsData();
   switch (req.method) {
     case 'GET':
-      // eslint-disable-next-line no-case-declarations
-      const ingredients = await getFineliIngredientsData();
       res.json(ingredients);
+      break;
   }
 }
 

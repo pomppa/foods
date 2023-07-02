@@ -6,13 +6,13 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const meals = await getAllMeals();
+
   switch (req.method) {
     case 'POST':
       res.status(200).json({ data: await createMeal(req.body.name) });
       break;
     case 'GET':
-      // eslint-disable-next-line no-case-declarations
-      const meals = await getAllMeals();
       res.json({ meals });
       break;
     case 'PUT':

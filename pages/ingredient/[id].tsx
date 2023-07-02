@@ -1,21 +1,6 @@
 import React from 'react';
-import Head from 'next/head';
 import { findUniqueIngredient } from '../api/ingredients/[id]';
-import {
-  Box,
-  Button,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import { Button, Grid, List, ListItem, ListItemText } from '@mui/material';
 import router from 'next/router';
 import { NextApiRequest } from 'next';
 import { IngredientInterface } from '../../interfaces';
@@ -40,35 +25,33 @@ export default function Ingredient(props: Props) {
   const data: IngredientInterface = JSON.parse(props.ingredientJson);
   const { name, kcal, protein, fat, carbs } = data;
   return (
-    <>
-      <Grid container spacing={2} sx={{ paddingTop: 3 }}>
-        <Grid item xs={12}>
-          <Button
-            color="secondary"
-            variant="outlined"
-            onClick={() => router.back()}
-          >
-            Back
-          </Button>
-          <List dense>
-            <ListItem>
-              <ListItemText primary="Name" secondary={name} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Calories" secondary={kcal} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Protein" secondary={protein + ' g'} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Carbs" secondary={carbs + ' g'} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Fat" secondary={fat + ' g'} />
-            </ListItem>
-          </List>
-        </Grid>
+    <Grid container spacing={2} sx={{ paddingTop: 3 }}>
+      <Grid item xs={12}>
+        <Button
+          color="secondary"
+          variant="outlined"
+          onClick={() => router.back()}
+        >
+          Back
+        </Button>
+        <List>
+          <ListItem>
+            <ListItemText primary="Name" secondary={name} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Calories" secondary={kcal} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Protein" secondary={protein + ' g'} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Carbs" secondary={carbs + ' g'} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Fat" secondary={fat + ' g'} />
+          </ListItem>
+        </List>
       </Grid>
-    </>
+    </Grid>
   );
 }
