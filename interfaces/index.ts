@@ -152,6 +152,7 @@ export type MealI = {
   created_at: Date;
   updated_at: Date;
   name: string;
+  formValues?: string;
 };
 
 export type DataMap = {

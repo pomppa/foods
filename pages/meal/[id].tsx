@@ -1,56 +1,38 @@
-import { Button, Grid } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Grid } from '@mui/material';
 import { findUniqueMealWithId } from '../api/meals/[id]';
-import { getMealDataForId } from '../api/meals/[id]/ingredients';
-import {
-  MealInterface,
-  FormValue,
-  IngredientI,
-  MealIngredientI,
-  MealI,
-  CombinedIngredientMeal,
-} from '../../interfaces';
+import { FormValue, IngredientI, Totals } from '../../interfaces';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macros';
 import { getIngredientDataForIds } from '../api/ingredients';
 import { calculateTotals } from '../../components/planCalculator';
+import { Meal } from '@prisma/client';
 
 type Props = {
-  meal: MealInterface;
-  ingredients: CombinedIngredientMeal[];
+  mealName: string;
+  ingredients: IngredientI[];
+  formValues: FormValue[];
 };
 
 /**
- * @todo return all in one object?
+ *
  * @param req
  * @returns
  */
 export const getServerSideProps = async (req: NextApiRequest) => {
-  const meal: Omit<MealI, 'created_at' | 'updated_at'> =
+  const meal: Omit<Meal, 'created_at' | 'updated_at'> =
     await findUniqueMealWithId(req.query.id);
 
-  const mealIngredients: MealIngredientI[] = await getMealDataForId(
-    req.query.id,
+  const mealName: string = meal.name;
+
+  const formValues: FormValue[] = JSON.parse(String(meal.formValues));
+
+  const ingredients: IngredientI[] = await getIngredientDataForIds(
+    formValues.map((value) => value.ingredient_id),
   );
 
-  const valuesArray: number[] = mealIngredients.map((obj) => obj.ingredient_id);
-
-  const ingredientData: IngredientI[] = await getIngredientDataForIds(
-    valuesArray,
-  );
-
-  const ingredients: CombinedIngredientMeal[] = mealIngredients.map((item) => {
-    const ingredient: IngredientI = ingredientData.find(
-      (obj) => obj.id === item.ingredient_id,
-    );
-    return {
-      ...item,
-      ...ingredient,
-    };
-  });
   return {
-    props: { meal, ingredients },
+    props: { mealName, ingredients, formValues },
   };
 };
 
@@ -60,21 +42,15 @@ export const getServerSideProps = async (req: NextApiRequest) => {
  * @param props
  * @returns
  */
-export default function Meal(props: Props) {
-  const router = useRouter();
-  const ingredients: CombinedIngredientMeal[] = props.ingredients;
+export default function MealPage(props: Props) {
+  const { mealName, formValues, ingredients } = props;
 
-  const formValues: FormValue[] = ingredients.map((item) => ({
-    ingredient_id: item.ingredient_id,
-    weight: Number(item.ingredient_weight),
-  }));
-
-  const totals = calculateTotals(formValues, ingredients);
+  const totals: Totals = calculateTotals(formValues, ingredients);
 
   return (
-    <Grid container spacing={2} sx={{ paddingTop: 3 }}>
+    <Grid container spacing={2}>
       <Grid item xs={12}>
-        <h2>{props.meal.name}</h2>
+        <h2>{mealName}</h2>
         <MealTable totals={totals}></MealTable>
       </Grid>
       <Grid item xs={12}>
