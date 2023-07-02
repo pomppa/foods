@@ -58,7 +58,7 @@ export default function MacroPieChart(props: Props) {
         <h3>Macros</h3>
       </Grid>
       <Grid item xs={6} sm={6}>
-        <List dense sx={{ bgcolor: 'background.paper' }}>
+        <List dense>
           <ListItem>
             <ListItemAvatar>
               <Avatar>

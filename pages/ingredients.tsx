@@ -45,7 +45,7 @@ export default function Ingredients(props: Props) {
           <small>List of your ingredients</small>
           <List
             sx={{
-              bgcolor: 'background.paper',
+              width: 'fit-content',
             }}
           >
             {data.map((x) => {

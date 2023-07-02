@@ -1,6 +1,6 @@
 import prisma from '../../lib/prisma';
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { MealInterface } from '../../interfaces';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handle(
   req: NextApiRequest,
@@ -27,7 +27,7 @@ export async function getAllMeals() {
   return meals;
 }
 
-async function createMeal(name) {
+async function createMeal(name: string) {
   const meal = await prisma.meal.create({
     data: {
       name: name,

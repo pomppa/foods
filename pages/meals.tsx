@@ -25,11 +25,7 @@ export default function Meals(props: Props) {
       <Grid item xs={12} md={6}>
         <h2>All meals</h2>
         <small>Open a meal to edit</small>
-        <List
-          sx={{
-            bgcolor: 'background.paper',
-          }}
-        >
+        <List>
           {data.map((x) => {
             return (
               <Link key={x.id} href={'meal/' + x.id}>
