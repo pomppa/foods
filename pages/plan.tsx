@@ -1,4 +1,4 @@
-import { Button, Fab, Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
 import { FormValue, IngredientI, Totals } from '../interfaces';
 import MealTable from '../components/mealTable';
@@ -7,7 +7,6 @@ import MacroPieChart from '../components/macros';
 import { calculateTotals } from '../components/planCalculator';
 import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
-import SaveIcon from '@mui/icons-material/Save';
 
 type Props = {
   allIngredients: IngredientI[];

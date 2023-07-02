@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Grid } from '@mui/material';
+import { Button, ButtonGroup, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import { FormValue, IngredientI } from '../../interfaces';
 import { AutocompleteOption } from '../../interfaces';
@@ -81,28 +81,33 @@ export default function PlanForm(props: Props) {
           />
         ))}
       </Grid>
-      {ingredients.length > 1 && (
-        <Grid item>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: { xs: 'flex', sm: 'initial' },
+          justifyContent: 'center',
+        }}
+      >
+        <ButtonGroup>
           <Button
             variant="contained"
-            disabled={isSavingEnabled}
+            disabled={isSavingEnabled || ingredients.length <= 1}
             color="secondary"
             onClick={() => removeIngredient(ingredients.length - 1)}
             startIcon={<RemoveIcon />}
           >
             Remove
           </Button>
-        </Grid>
-      )}
-      <Grid item>
-        <Button
-          disabled={isSavingEnabled || hasNullValues}
-          variant="contained"
-          onClick={addIngredient}
-          startIcon={<AddIcon />}
-        >
-          Add
-        </Button>
+          <Button
+            disabled={isSavingEnabled || hasNullValues}
+            variant="contained"
+            onClick={addIngredient}
+            startIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+        </ButtonGroup>
       </Grid>
     </Grid>
   );

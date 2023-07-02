@@ -54,7 +54,10 @@ export default function IngredientAutocomplete(props: Props) {
             )
           }
           options={options}
-          sx={{ width: 300, mt: 2 }}
+          sx={{
+            width: { xs: '100%', sm: '75%' },
+            mt: 2,
+          }}
           renderInput={(params) => (
             <TextField {...params} label={'Select ingredient'} />
           )}
@@ -69,7 +72,10 @@ export default function IngredientAutocomplete(props: Props) {
             type: 'number',
             inputMode: 'numeric',
           }}
-          sx={{ width: 300, mt: 2 }}
+          sx={{
+            width: { xs: '100%', sm: '75%' },
+            mt: 2,
+          }}
           onChange={(event) => {
             const inputValue = parseFloat(event.target.value);
             if (isNaN(inputValue) || (inputValue >= 0 && inputValue <= 9999)) {
