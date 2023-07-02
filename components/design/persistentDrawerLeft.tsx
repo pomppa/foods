@@ -91,10 +91,10 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    { title: 'Foods', icon: DashboardIcon, link: 'main' },
     { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Meals', icon: ListIcon, link: 'meals' },
+    { title: 'Foods', icon: DashboardIcon, link: 'main' },
   ];
 
   const Icon = (props) => {

@@ -106,7 +106,7 @@ export default function Edit(props) {
         top: document.documentElement.scrollHeight,
         behavior: 'smooth',
       });
-    }, 10);
+    }, 0);
   };
 
   return (

@@ -35,14 +35,14 @@ export default function Ingredients(props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} sm={4}>
-        <h2>Add new ingredient</h2>
+        <h2>Add new </h2>
         <small>Input name and macronutrients</small>
         <IngredientForm></IngredientForm>
       </Grid>
       <Grid item xs={6} sm={8}>
+        <h2>Ingredients</h2>
+        <small>List of your ingredients</small>
         <List>
-          <h2>Your ingredients</h2>
-          <small>List of your ingredients</small>
           <List
             sx={{
               width: 'fit-content',

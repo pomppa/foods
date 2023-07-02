@@ -56,7 +56,7 @@ export default function Plan(props: Props) {
         top: document.documentElement.scrollHeight,
         behavior: 'smooth',
       });
-    }, 10);
+    }, 0);
   };
 
   return (
