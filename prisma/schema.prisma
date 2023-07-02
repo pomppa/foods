@@ -29,6 +29,7 @@ model Meal {
   updated_at     DateTime          @default(now())
   name           String
   MealIngredient Meal_Ingredient[]
+  formValues     Json?
 }
 
 model Meal_Ingredient {

@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Grow, ButtonGroup } from '@mui/material';
+import {
+  Grid,
+  TextField,
+  Button,
+  Grow,
+  ButtonGroup,
+  CircularProgress,
+  Box,
+} from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { green, grey } from '@mui/material/colors';
@@ -12,6 +20,7 @@ const SaveMeal = ({
   onButtonClick,
 }) => {
   const [mealName, setMealName] = useState(meal);
+  const [loading, setLoading] = useState(false);
 
   const handleButtonClick = (value: boolean) => {
     onButtonClick(value);
@@ -22,9 +31,8 @@ const SaveMeal = ({
   };
 
   const handleConfirmSaveClick = () => {
+    setLoading(true);
     onSave(mealName);
-    setMealName('');
-    onButtonClick(false);
   };
 
   return (
@@ -33,7 +41,8 @@ const SaveMeal = ({
         <Grid item xs={12} sx={{ mt: 1 }}>
           <Grow in={isSavingEnabled}>
             <TextField
-              label="Meal Name"
+              label="Name"
+              disabled={loading}
               variant="outlined"
               value={mealName}
               onChange={handleMealNameChange}
@@ -85,25 +94,41 @@ const SaveMeal = ({
             <ButtonGroup>
               <Button
                 variant="contained"
-                color="primary"
-                onClick={handleConfirmSaveClick}
-                disabled={!mealName.trim() || hasNullValues}
-                style={{
-                  backgroundColor:
-                    !mealName.trim() || hasNullValues ? grey[850] : green[500],
-                }}
-                startIcon={<SaveIcon />}
+                onClick={() => handleButtonClick(false)}
+                style={{ backgroundColor: grey[400] }}
+                startIcon={<CancelIcon />}
               >
-                Confirm & Save
+                Cancel
               </Button>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => handleButtonClick(false)}
-                style={{ backgroundColor: grey[300] }}
-                startIcon={<CancelIcon />}
+                onClick={handleConfirmSaveClick}
+                disabled={!mealName.trim() || hasNullValues || loading}
+                style={{
+                  backgroundColor:
+                    !mealName.trim() || hasNullValues || loading
+                      ? grey[850]
+                      : green[500],
+                }}
+                startIcon={<SaveIcon />}
               >
-                Cancel
+                <Box>
+                  Save
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                      }}
+                    />
+                  )}
+                </Box>
               </Button>
             </ButtonGroup>
           </Grid>

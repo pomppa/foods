@@ -8,6 +8,7 @@ import { calculateTotals } from '../components/planCalculator';
 import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
+import { useRouter } from 'next/router';
 
 type Props = {
   allIngredients: IngredientI[];
@@ -23,6 +24,8 @@ export async function getServerSideProps() {
  * @returns
  */
 export default function Plan(props: Props) {
+  const router = useRouter();
+
   const [formValues, setFormValues] = useState([]);
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
 
@@ -33,9 +36,31 @@ export default function Plan(props: Props) {
     setFormValues(formValues);
   };
 
-  const handleSaveMeal = (mealName: string) => {
-    // Perform saving functionality here using mealName and formValues
-    console.log(`Saving meal "${mealName}" with form values:`, formValues);
+  const handleSaveMeal = async (mealName: string) => {
+    try {
+      const response = await fetch('/api/saveMeal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mealName: mealName,
+          formValues: formValues,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save meal');
+      }
+
+      const {
+        data: { id },
+      } = await response.json();
+
+      router.push(`/meal/${id}`);
+    } catch (error) {
+      router.push('/plan');
+    }
   };
 
   const handleButtonClick = (value: boolean) => {

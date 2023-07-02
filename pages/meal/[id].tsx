@@ -74,22 +74,6 @@ export default function Meal(props: Props) {
   return (
     <Grid container spacing={2} sx={{ paddingTop: 3 }}>
       <Grid item xs={12}>
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={() => router.back()}
-        >
-          Back
-        </Button>
-        <Button
-          sx={{ ml: '10px' }}
-          variant="outlined"
-          onClick={() => router.push(router.asPath + '/edit')}
-        >
-          Edit
-        </Button>
-      </Grid>
-      <Grid item xs={12}>
         <h2>{props.meal.name}</h2>
         <MealTable totals={totals}></MealTable>
       </Grid>

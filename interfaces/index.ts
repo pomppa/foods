@@ -31,6 +31,7 @@ export type MealInterface = {
   created_at?: Date;
   updated_at?: Date;
   name: string;
+  formValues?: string;
 };
 
 export type IngredientI = {
