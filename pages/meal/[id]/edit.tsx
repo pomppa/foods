@@ -110,8 +110,8 @@ export default function Edit(props) {
   };
 
   return (
-    <Grid container spacing={2} sx={{ paddingTop: 3 }}>
-      <Grid item xs={12}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sx={{ display: { xs: 'none' } }}>
         <Button
           color="secondary"
           variant="outlined"
@@ -122,7 +122,7 @@ export default function Edit(props) {
       </Grid>
       <Grid item xs={12} sm={6}>
         <h2>Edit</h2>
-        <h3>Meal name: {meal.name}</h3>
+        <h4>{meal.name}</h4>
         <small>Edit meal contents</small>
         <PlanForm
           data={allIngredients}
