@@ -5,12 +5,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { green, grey } from '@mui/material/colors';
 
 const SaveMeal = ({
+  meal = '',
   hasNullValues,
   onSave,
   isSavingEnabled,
   onButtonClick,
 }) => {
-  const [mealName, setMealName] = useState('');
+  const [mealName, setMealName] = useState(meal);
 
   const handleButtonClick = (value: boolean) => {
     onButtonClick(value);
@@ -43,7 +44,6 @@ const SaveMeal = ({
           </Grow>
         </Grid>
       )}
-
       <Grid item xs={12} sx={{ mt: 1 }}>
         {!isSavingEnabled && (
           <Grid

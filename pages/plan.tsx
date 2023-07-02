@@ -33,7 +33,7 @@ export default function Plan(props: Props) {
     setFormValues(formValues);
   };
 
-  const handleSaveMeal = (mealName) => {
+  const handleSaveMeal = (mealName: string) => {
     // Perform saving functionality here using mealName and formValues
     console.log(`Saving meal "${mealName}" with form values:`, formValues);
   };
