@@ -11,6 +11,7 @@ type Props = {
   onChange: (formValues: FormValue[]) => void;
   formValues?: FormValue[];
   hasNullValues?: boolean;
+  isSavingEnabled?: boolean;
 };
 
 /**
@@ -19,8 +20,7 @@ type Props = {
  * @returns
  */
 export default function PlanForm(props: Props) {
-  const { data, onChange, hasNullValues } = props;
-  console.log(hasNullValues);
+  const { data, onChange, hasNullValues, isSavingEnabled } = props;
   const options: AutocompleteOption[] = data.map((element: IngredientI) => {
     return { label: element.name, id: element.id };
   });
@@ -77,6 +77,7 @@ export default function PlanForm(props: Props) {
               handleWeightChange(index, weight)
             }
             disabledOptions={disabledOptions}
+            isSavingEnabled={isSavingEnabled}
           />
         ))}
       </Grid>
@@ -84,6 +85,7 @@ export default function PlanForm(props: Props) {
         <Grid item>
           <Button
             variant="contained"
+            disabled={isSavingEnabled}
             color="secondary"
             onClick={() => removeIngredient(ingredients.length - 1)}
             startIcon={<RemoveIcon />}
@@ -94,7 +96,7 @@ export default function PlanForm(props: Props) {
       )}
       <Grid item>
         <Button
-          disabled={hasNullValues}
+          disabled={isSavingEnabled || hasNullValues}
           variant="contained"
           onClick={addIngredient}
           startIcon={<AddIcon />}

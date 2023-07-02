@@ -24,6 +24,7 @@ export async function getServerSideProps() {
  */
 export default function Plan(props: Props) {
   const [formValues, setFormValues] = useState([]);
+  const [isSavingEnabled, setIsSavingEnabled] = useState(false);
 
   const allIngredients: IngredientI[] = props.allIngredients;
   const totals: Totals = calculateTotals(formValues, allIngredients);
@@ -35,6 +36,10 @@ export default function Plan(props: Props) {
   const handleSaveMeal = (mealName) => {
     // Perform saving functionality here using mealName and formValues
     console.log(`Saving meal "${mealName}" with form values:`, formValues);
+  };
+
+  const handleButtonClick = (value: boolean) => {
+    setIsSavingEnabled(value);
   };
 
   const hasNullValues =
@@ -52,6 +57,7 @@ export default function Plan(props: Props) {
           data={allIngredients}
           onChange={handleChange}
           hasNullValues={hasNullValues}
+          isSavingEnabled={isSavingEnabled}
         ></PlanForm>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -61,7 +67,12 @@ export default function Plan(props: Props) {
         <MealTable totals={totals}></MealTable>
       </Grid>
       <Grid item xs={12}>
-        <SaveMeal hasNullValues={hasNullValues} onSave={handleSaveMeal} />
+        <SaveMeal
+          hasNullValues={hasNullValues}
+          onSave={handleSaveMeal}
+          isSavingEnabled={isSavingEnabled}
+          onButtonClick={handleButtonClick}
+        />
       </Grid>
     </Grid>
   );

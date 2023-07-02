@@ -4,12 +4,16 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { green, grey } from '@mui/material/colors';
 
-const SaveMeal = ({ hasNullValues, onSave }) => {
-  const [isSavingEnabled, setIsSavingEnabled] = useState(false);
+const SaveMeal = ({
+  hasNullValues,
+  onSave,
+  isSavingEnabled,
+  onButtonClick,
+}) => {
   const [mealName, setMealName] = useState('');
 
-  const handleSaveButtonClick = () => {
-    setIsSavingEnabled(true);
+  const handleButtonClick = (value: boolean) => {
+    onButtonClick(value);
   };
 
   const handleMealNameChange = (event) => {
@@ -19,11 +23,7 @@ const SaveMeal = ({ hasNullValues, onSave }) => {
   const handleConfirmSaveClick = () => {
     onSave(mealName);
     setMealName('');
-    setIsSavingEnabled(false);
-  };
-
-  const handleCancelClick = () => {
-    setIsSavingEnabled(false);
+    onButtonClick(false);
   };
 
   return (
@@ -46,7 +46,7 @@ const SaveMeal = ({ hasNullValues, onSave }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleSaveButtonClick}
+            onClick={() => handleButtonClick(true)}
             disabled={hasNullValues}
             style={{
               backgroundColor: hasNullValues ? grey[850] : green[500],
@@ -76,7 +76,7 @@ const SaveMeal = ({ hasNullValues, onSave }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleCancelClick}
+              onClick={() => handleButtonClick(false)}
               sx={{ backgroundColor: grey[300] }}
               startIcon={<CancelIcon />}
             >

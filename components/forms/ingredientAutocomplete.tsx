@@ -9,6 +9,7 @@ type Props = {
   options: AutocompleteOption[];
   value: number;
   weight: number;
+  isSavingEnabled?: boolean;
 };
 
 /**
@@ -18,7 +19,7 @@ type Props = {
  * @returns
  */
 export default function IngredientAutocomplete(props: Props) {
-  const { onIngredientChange, onWeightChange } = props;
+  const { onIngredientChange, onWeightChange, isSavingEnabled } = props;
 
   const weight: number = props.weight;
 
@@ -57,6 +58,7 @@ export default function IngredientAutocomplete(props: Props) {
           renderInput={(params) => (
             <TextField {...params} label={'Select ingredient'} />
           )}
+          disabled={isSavingEnabled}
         />
         <TextField
           value={weight ?? ''}
@@ -74,6 +76,7 @@ export default function IngredientAutocomplete(props: Props) {
               onWeightChange(inputValue);
             }
           }}
+          disabled={isSavingEnabled}
         />
       </>
     </>
