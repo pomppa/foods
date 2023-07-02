@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Fab, Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
 import { FormValue, IngredientI, Totals } from '../interfaces';
 import MealTable from '../components/mealTable';
@@ -7,6 +7,7 @@ import MacroPieChart from '../components/macros';
 import { calculateTotals } from '../components/planCalculator';
 import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
+import SaveIcon from '@mui/icons-material/Save';
 
 type Props = {
   allIngredients: IngredientI[];
@@ -47,6 +48,17 @@ export default function Plan(props: Props) {
       ({ ingredient_id, weight }) => ingredient_id === null || weight === null,
     );
 
+  const handleFabClick = () => {
+    setIsSavingEnabled(true);
+
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 10);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -73,6 +85,23 @@ export default function Plan(props: Props) {
           onButtonClick={handleButtonClick}
         />
       </Grid>
+      <Fab
+        aria-label="Save"
+        color="success"
+        disabled={hasNullValues}
+        sx={{
+          position: 'fixed',
+          bottom: '16px',
+          right: '16px',
+          display: {
+            sm: 'none',
+            xs: isSavingEnabled ? 'none' : 'flex',
+          },
+        }}
+        onClick={handleFabClick}
+      >
+        <SaveIcon />
+      </Fab>
     </Grid>
   );
 }

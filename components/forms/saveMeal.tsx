@@ -62,6 +62,10 @@ const SaveMeal = ({
               sx={{
                 backgroundColor: hasNullValues ? grey[850] : green[500],
                 width: { xs: '80%', md: 'auto' },
+                display: {
+                  xs: 'none',
+                  sm: 'initial',
+                },
               }}
               startIcon={<SaveIcon />}
             >
