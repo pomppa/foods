@@ -113,7 +113,7 @@ export default function Plan(props: Props) {
       </Grid>
       <Fab
         aria-label="Save"
-        color="success"
+        color="primary"
         disabled={hasNullValues}
         sx={{
           position: 'fixed',

@@ -113,6 +113,7 @@ export default function PlanForm(props: Props) {
             Remove
           </Button>
           <Button
+            color="success"
             disabled={isSavingEnabled || hasNullValues}
             variant="contained"
             onClick={addIngredient}

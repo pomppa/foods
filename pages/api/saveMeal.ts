@@ -21,9 +21,10 @@ export default async function saveMealHandler(
       },
     });
 
+    await prisma.$disconnect();
     return res.status(200).json({ data: meal });
   } catch (error) {
-    console.error('Error saving meal:', error);
+    await prisma.$disconnect();
     return res.status(500).json({ message: 'Failed to save meal' });
   }
 }
