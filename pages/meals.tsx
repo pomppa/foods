@@ -1,28 +1,37 @@
-import prisma from '../lib/prisma';
-import Link from 'next/link';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { Grid, List } from '@mui/material';
-import { MealInterface } from '../types';
+import { Meal } from '@prisma/client';
+import { getAllMeals } from './api/meals';
+import { useRouter } from 'next/router';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 type Props = {
-  mealsJson: string;
+  meals: Omit<Meal, 'created_at' | 'updated_at'>[];
 };
 
 export const getServerSideProps = async () => {
-  const meals = await prisma.meal.findMany({
-    orderBy: {
-      updated_at: 'desc',
-    },
-  });
-  const mealsJson = JSON.stringify(meals);
-
-  return { props: { mealsJson } };
+  const meals = await getAllMeals();
+  return { props: { meals } };
 };
 
 export default function Meals(props: Props) {
-  const data: MealInterface[] = JSON.parse(props.mealsJson);
+  const data: Omit<Meal, 'created_at' | 'updated_at'>[] = props.meals;
+
+  const router = useRouter();
+
+  const handleEditClick = (id: number) => {
+    router.push(`/meals/${id}`);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -30,17 +39,40 @@ export default function Meals(props: Props) {
         <h2>All meals</h2>
         <small>Open a meal to edit</small>
         <List>
-          {data.map((x) => {
-            return (
-              <Link key={x.id} href={'meal/' + x.id}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={x.name} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            );
-          })}
+          {data.map((x) => (
+            <Accordion key={x.id}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <ListItemText primary={x.name} />
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {/* prisma-json-types-generator */}
+                  {x.formValues.map((value, index) => (
+                    <ListItem key={index}>
+                      <ListItemText
+                        primary={`${value.ingredient_id}`}
+                        secondary={`Weight: ${value.weight}`}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+                <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  width="100%"
+                  marginTop="auto"
+                >
+                  <IconButton
+                    aria-label="Edit"
+                    color="primary"
+                    onClick={() => handleEditClick(x.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </List>
       </Grid>
     </Grid>

@@ -12,6 +12,7 @@ import router from 'next/router';
 import SaveMeal from '../../../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
 import { Meal } from '@prisma/client';
+import BackIcon from '@mui/icons-material/ArrowBack';
 
 export const getServerSideProps = async (req: NextApiRequest) => {
   const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
@@ -69,7 +70,7 @@ export default function Edit(props) {
         throw new Error('Failed to update meal');
       }
 
-      router.push(`/meal/${meal.id}`);
+      router.push(`/meals/${meal.id}`);
     } catch (error) {
       router.push('/plan');
     }
@@ -95,6 +96,10 @@ export default function Edit(props) {
         behavior: 'smooth',
       });
     }, 0);
+  };
+
+  const handleBack = () => {
+    router.push('/meals');
   };
 
   return (
@@ -137,20 +142,33 @@ export default function Edit(props) {
       </Grid>
       <Fab
         aria-label="Save"
-        color="success"
+        color="primary"
         disabled={hasNullValues || !isFabEnabled}
         sx={{
           position: 'fixed',
-          bottom: '16px',
+          bottom: '80px',
           right: '16px',
           display: {
-            sm: 'none',
+            sm: isSavingEnabled ? 'none' : 'flex',
             xs: isSavingEnabled ? 'none' : 'flex',
           },
         }}
         onClick={handleFabClick}
       >
         <SaveIcon />
+      </Fab>
+      <Fab
+        aria-label="Back"
+        color="secondary"
+        disabled={isSavingEnabled}
+        onClick={handleBack}
+        sx={{
+          position: 'fixed',
+          bottom: '16px',
+          right: '16px',
+        }}
+      >
+        <BackIcon />
       </Fab>
     </Grid>
   );

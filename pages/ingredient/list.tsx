@@ -63,63 +63,61 @@ export default function Ingredients(props: Props) {
         <h2>Food items</h2>
         <small>List of all, sorted by creation date</small>
         <List>
-          <List>
-            {data.map((x) => (
-              <Accordion
-                key={x.id}
-                expanded={openedAccordion === x.id}
-                onChange={() => handleAccordionChange(x.id)}
-              >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <ListItemText primary={x.name} />
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Table>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell>Calories:</TableCell>
-                            <TableCell>{x.kcal}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Protein:</TableCell>
-                            <TableCell>{x.protein}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Carbs:</TableCell>
-                            <TableCell>{x.carbs}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Fat:</TableCell>
-                            <TableCell>{x.fat}</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          bottom: '8px',
-                          right: '8px',
-                        }}
-                      >
-                        <Link href={`/ingredient/${x.id}/edit`}>
-                          <IconButton aria-label="Edit">
-                            <EditIcon />
-                          </IconButton>
-                        </Link>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      {openedAccordion === x.id && (
-                        <IngredientPie ingredient={x} />
-                      )}
-                    </Grid>
+          {data.map((x) => (
+            <Accordion
+              key={x.id}
+              expanded={openedAccordion === x.id}
+              onChange={() => handleAccordionChange(x.id)}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <ListItemText primary={x.name} />
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Calories:</TableCell>
+                          <TableCell>{x.kcal}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Protein:</TableCell>
+                          <TableCell>{x.protein}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Carbs:</TableCell>
+                          <TableCell>{x.carbs}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Fat:</TableCell>
+                          <TableCell>{x.fat}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        bottom: '8px',
+                        right: '8px',
+                      }}
+                    >
+                      <Link href={`/ingredient/${x.id}/edit`}>
+                        <IconButton aria-label="Edit">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
+                    </Box>
                   </Grid>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </List>
+                  <Grid item xs={6}>
+                    {openedAccordion === x.id && (
+                      <IngredientPie ingredient={x} />
+                    )}
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </List>
       </Grid>
       <Fab

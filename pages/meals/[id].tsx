@@ -8,6 +8,7 @@ import { getIngredientDataForIds } from '../api/ingredients';
 import { calculateTotals } from '../../components/totalsCalculator';
 import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
+import BackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -54,7 +55,11 @@ export default function MealPage(props: Props) {
   const totals: Totals = calculateTotals(formValues, ingredients);
 
   const handleFabClick = () => {
-    router.push(`/meal/${id}/edit`);
+    router.push(`/meals/${id}/edit`);
+  };
+
+  const handleBack = () => {
+    router.push(`/meals/`);
   };
   return (
     <Grid container spacing={2}>
@@ -67,15 +72,27 @@ export default function MealPage(props: Props) {
       </Grid>
       <Fab
         aria-label="Edit"
-        color="secondary"
+        color="primary"
         sx={{
           position: 'fixed',
-          bottom: '16px',
+          bottom: '80px',
           right: '16px',
         }}
         onClick={handleFabClick}
       >
         <EditIcon />
+      </Fab>
+      <Fab
+        aria-label="Back"
+        color="secondary"
+        onClick={handleBack}
+        sx={{
+          position: 'fixed',
+          bottom: '16px',
+          right: '16px',
+        }}
+      >
+        <BackIcon />
       </Fab>
     </Grid>
   );

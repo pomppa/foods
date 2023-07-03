@@ -59,17 +59,16 @@ const SaveMeal = ({
             item
             xs={12}
             sx={{
-              display: { xs: 'flex', sm: 'initial' },
               justifyContent: 'center',
             }}
           >
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               onClick={() => handleButtonClick(true)}
               disabled={hasNullValues}
               sx={{
-                backgroundColor: hasNullValues ? grey[850] : green[500],
+                backgroundColor: hasNullValues ? grey[850] : 'primary',
                 width: { xs: '80%', md: 'auto' },
                 display: {
                   xs: 'none',
@@ -79,7 +78,7 @@ const SaveMeal = ({
               startIcon={<SaveIcon />}
             >
               Save Meal
-            </Button>
+            </Button> */}
           </Grid>
         )}
         {isSavingEnabled && (
@@ -109,7 +108,7 @@ const SaveMeal = ({
                   backgroundColor:
                     !mealName.trim() || hasNullValues || loading
                       ? grey[850]
-                      : green[500],
+                      : 'primary', //green[500],
                 }}
                 startIcon={<SaveIcon />}
               >
@@ -119,7 +118,7 @@ const SaveMeal = ({
                     <CircularProgress
                       size={24}
                       sx={{
-                        color: green[500],
+                        // color: green[500],
                         position: 'absolute',
                         top: '50%',
                         left: '50%',

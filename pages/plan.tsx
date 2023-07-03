@@ -57,7 +57,7 @@ export default function Plan(props: Props) {
         data: { id },
       } = await response.json();
 
-      router.push(`/meal/${id}`);
+      router.push(`/meals/${id}`);
     } catch (error) {
       router.push('/plan');
     }
@@ -120,7 +120,7 @@ export default function Plan(props: Props) {
           bottom: '16px',
           right: '16px',
           display: {
-            sm: 'none',
+            sm: isSavingEnabled ? 'none' : 'flex',
             xs: isSavingEnabled ? 'none' : 'flex',
           },
         }}
