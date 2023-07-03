@@ -70,7 +70,8 @@ export default function Plan(props: Props) {
   const hasNullValues =
     formValues.length === 0 ||
     formValues.some(
-      ({ ingredient_id, weight }) => ingredient_id === null || weight === null,
+      ({ ingredient_id, weight }) =>
+        ingredient_id === null || weight === null || weight == 0,
     );
 
   const handleFabClick = () => {

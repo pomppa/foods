@@ -3,54 +3,28 @@ import { useState } from 'react';
 import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macros';
 import MealTable from '../../../components/mealTable';
-import {
-  CombinedIngredientMeal,
-  FormValue,
-  IngredientI,
-  MealI,
-  Totals,
-} from '../../../interfaces';
-import {
-  getIngredientDataForIds,
-  getIngredientsData,
-} from '../../api/ingredients';
-import { findUniqueMealWithId } from '../../api/meals/[id]';
-import { getMealDataForId } from '../../api/meals/[id]/ingredients';
+import { FormValue, IngredientI, Totals } from '../../../interfaces';
+import { getIngredientsData } from '../../api/ingredients';
+import { getMeal } from '../../api/meals/[id]';
 import { calculateTotals } from '../../../components/planCalculator';
 import { Button, Fab, Grid } from '@mui/material';
 import router from 'next/router';
 import SaveMeal from '../../../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
+import { Meal } from '@prisma/client';
 
 export const getServerSideProps = async (req: NextApiRequest) => {
-  const meal: Omit<MealI, 'created_at' | 'updated_at'> =
-    await findUniqueMealWithId(req.query.id);
-  const mealIngredientsData = await getMealDataForId(req.query.id);
-
-  const valuesArray: number[] = mealIngredientsData.map(
-    (obj: { ingredient_id: number }) => obj.ingredient_id,
+  const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
+    req.query.id,
   );
 
-  const ingredientsData: IngredientI[] = await getIngredientDataForIds(
-    valuesArray,
-  );
+  const initialFormValues = meal.formValues;
 
-  const ingredients: CombinedIngredientMeal[] = mealIngredientsData.map(
-    (item: { ingredient_id: number }) => {
-      const ingredient = ingredientsData.find(
-        (obj) => obj.id === item.ingredient_id,
-      );
-      return {
-        ...item,
-        ...ingredient,
-      };
-    },
-  );
-
-  const allIngredients: IngredientI[] = await getIngredientsData();
+  const allIngredients: Omit<IngredientI, 'created_at' | 'updated_at'>[] =
+    await getIngredientsData();
 
   return {
-    props: { meal, ingredients, allIngredients },
+    props: { meal, initialFormValues, allIngredients },
   };
 };
 
@@ -62,19 +36,14 @@ export const getServerSideProps = async (req: NextApiRequest) => {
  * @returns
  */
 export default function Edit(props) {
-  const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
-  const initialIngredients: CombinedIngredientMeal[] = props.ingredients;
-  const allIngredients = props.allIngredients;
+  const { meal, initialFormValues, allIngredients } = props;
+
+  // const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
 
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isFabEnabled, setIsFabEnabled] = useState(false);
 
-  const [formValues, setFormValues] = useState<FormValue[]>(
-    initialIngredients.map((item) => ({
-      ingredient_id: item.ingredient_id,
-      weight: item.ingredient_weight,
-    })),
-  );
+  const [formValues, setFormValues] = useState<FormValue[]>(initialFormValues);
 
   const totals: Totals = calculateTotals(formValues, allIngredients);
 
@@ -83,9 +52,27 @@ export default function Edit(props) {
     setFormValues(formValues);
   };
 
-  const handleSaveMeal = (mealName: string) => {
-    // Perform saving functionality here using mealName and formValues
-    console.log(`Saving meal "${mealName}" with form values:`, formValues);
+  const handleSaveMeal = async (mealName: string) => {
+    try {
+      const response = await fetch(`/api/updateMeal/${meal.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: mealName,
+          formValues: formValues,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update meal');
+      }
+
+      router.push(`/meal/${meal.id}`);
+    } catch (error) {
+      router.push('/plan');
+    }
   };
 
   const handleButtonClick = (value: boolean) => {
@@ -95,7 +82,8 @@ export default function Edit(props) {
   const hasNullValues =
     formValues.length === 0 ||
     formValues.some(
-      ({ ingredient_id, weight }) => ingredient_id === null || weight === null,
+      ({ ingredient_id, weight }) =>
+        ingredient_id === null || weight === null || weight == 0,
     );
 
   const handleFabClick = () => {

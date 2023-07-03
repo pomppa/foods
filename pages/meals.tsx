@@ -11,7 +11,11 @@ type Props = {
 };
 
 export const getServerSideProps = async () => {
-  const meals = await prisma.meal.findMany();
+  const meals = await prisma.meal.findMany({
+    orderBy: {
+      created_at: 'desc',
+    },
+  });
   const mealsJson = JSON.stringify(meals);
 
   return { props: { mealsJson } };

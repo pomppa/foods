@@ -17,7 +17,7 @@ export default async function saveMealHandler(
     const meal: Meal = await prisma.meal.create({
       data: {
         name: mealName,
-        formValues: JSON.stringify(formValues),
+        formValues: formValues,
       },
     });
 

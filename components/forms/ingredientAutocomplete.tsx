@@ -5,7 +5,7 @@ import { AutocompleteOption } from '../../interfaces';
 type Props = {
   disabledOptions: number[];
   onIngredientChange: (id: number) => void;
-  onWeightChange: (weight: number) => void;
+  onWeightChange: (weight: number | string) => void;
   options: AutocompleteOption[];
   value: number;
   weight: number;
@@ -78,8 +78,9 @@ export default function IngredientAutocomplete(props: Props) {
           }}
           onChange={(event) => {
             const inputValue = parseFloat(event.target.value);
-            if (isNaN(inputValue) || (inputValue >= 0 && inputValue <= 9999)) {
-              onWeightChange(inputValue);
+            const newValue = isNaN(inputValue) ? '' : inputValue;
+            if (newValue === '' || (newValue >= 0 && newValue <= 9999)) {
+              onWeightChange(newValue);
             }
           }}
           disabled={isSavingEnabled}

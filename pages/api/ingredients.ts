@@ -29,20 +29,23 @@ export default async function handle(
   await prisma.$disconnect();
 }
 
+/**
+ *
+ * @returns IngredientI[]
+ */
 export async function getIngredientsData() {
-  const ingredients: Ingredient[] = await prisma.fineli_Ingredient
-    .findMany
-    //   {
-    //   orderBy: [
-    //     {
-    //       created_at: 'desc',
-    //     },
-    //   ],
-    // }
-    ();
+  const ingredients: Ingredient[] = await prisma.fineli_Ingredient.findMany({
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+  });
+
   const ingredientsExcluded = ingredients.map((ingredient) =>
     exclude(ingredient, ['created_at', 'updated_at']),
   );
+
   const cleanedIngredients: IngredientI[] = ingredientsExcluded.map(
     (ingredient) => ({
       id: ingredient.id,
@@ -65,7 +68,7 @@ export async function getIngredientData(id: number) {
 }
 
 export async function getIngredientDataForIds(ids: number[]) {
-  const ingredients: Ingredient[] = await prisma.ingredient.findMany({
+  const ingredients: Ingredient[] = await prisma.fineli_Ingredient.findMany({
     where: {
       id: {
         in: ids,

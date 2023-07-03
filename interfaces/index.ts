@@ -82,11 +82,10 @@ export type CombinedIngredientMeal = {
   mealIngredientId?: number;
 };
 
-export interface FormValue {
-  ingredient_id: number;
+export type FormValue = {
   weight: number;
-  mealIngredientId?: number;
-}
+  ingredient_id: number;
+};
 
 export interface TableData {
   ingredient: string;

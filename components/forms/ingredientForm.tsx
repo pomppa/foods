@@ -2,25 +2,15 @@ import { useState } from 'react';
 import { Alert, Snackbar, TextField, Box, Button } from '@mui/material';
 import { IngredientFormData } from '../../interfaces';
 
-// todo is it necessary to initialize like this
-const defaultValues: IngredientFormData = {
-  name: '',
-  kcal: 0,
-  fat: 0,
-  carbs: 0,
-  protein: 0,
-};
-
 /**
  * Form for submitting new ingredient
  * @returns
  */
 export default function IngredientForm() {
-  const [formData, setFormData] = useState<IngredientFormData>(defaultValues);
+  const [formData, setFormData] = useState<IngredientFormData>(null);
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
-    // todo handle 200 / 500
     await fetch('/api/ingredients', {
       method: 'POST',
       headers: {
@@ -29,7 +19,7 @@ export default function IngredientForm() {
       body: JSON.stringify(formData),
     });
 
-    setFormData(defaultValues);
+    setFormData(null);
     setOpen(true);
 
     setTimeout(() => {
@@ -51,7 +41,7 @@ export default function IngredientForm() {
             label="Name"
             variant="outlined"
             name="name"
-            value={formData.name || ''}
+            value={formData?.name || ''}
             onChange={(event) => {
               setFormData((prevState) => ({
                 ...prevState,
@@ -66,7 +56,7 @@ export default function IngredientForm() {
             label="Calories"
             variant="outlined"
             name="kcal"
-            value={formData.kcal || ''}
+            value={formData?.kcal || ''}
             inputProps={{
               type: 'number',
               inputMode: 'numeric',
@@ -86,7 +76,7 @@ export default function IngredientForm() {
             label="Fats"
             variant="outlined"
             name="fat"
-            value={formData.fat || ''}
+            value={formData?.fat || ''}
             inputProps={{
               type: 'number',
               inputMode: 'numeric',
@@ -106,7 +96,7 @@ export default function IngredientForm() {
             label="Carbs"
             variant="outlined"
             name="carbs"
-            value={formData.carbs || ''}
+            value={formData?.carbs || ''}
             inputProps={{
               type: 'number',
               inputMode: 'numeric',
@@ -126,7 +116,7 @@ export default function IngredientForm() {
             label="Protein"
             variant="outlined"
             name="protein"
-            value={formData.protein || ''}
+            value={formData?.protein || ''}
             inputProps={{
               type: 'number',
               inputMode: 'numeric',

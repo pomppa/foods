@@ -6,7 +6,7 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   const id = req.query.id;
-  const meal = await findUniqueMealWithId(id);
+  const meal = await getMeal(id);
   res.json(meal);
 }
 
@@ -15,7 +15,7 @@ export default async function handle(
  * @param id
  * @returns
  */
-export async function findUniqueMealWithId(id: string | string[]) {
+export async function getMeal(id: string | string[]) {
   const meal = await prisma.meal.findUnique({
     where: {
       id: Number(id),
