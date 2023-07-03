@@ -10,22 +10,11 @@ import SaveMeal from '../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
 import { useRouter } from 'next/router';
 
-type Props = {
-  ingredientIdsAndNames: IngredientI[];
-};
-
-export async function getServerSideProps() {
-  const ingredientIdsAndNames: IngredientI[] = await getIngredientsWithSelect();
-  return { props: { ingredientIdsAndNames } };
-}
-
 /**
  * @param props
  * @returns
  */
-export default function Plan(props: Props) {
-  const { ingredientIdsAndNames } = props;
-  console.log(ingredientIdsAndNames);
+export default function Plan() {
   const router = useRouter();
 
   const [formValues, setFormValues] = useState([]);
@@ -38,8 +27,12 @@ export default function Plan(props: Props) {
   const handleChange = async (formValues: FormValue[]) => {
     setFormValues(formValues);
     const ingredientIds = formValues.map((value) => value.ingredient_id);
+    console.log(formValues);
 
-    if (ingredientIds.length > 0) {
+    if (
+      ingredientIds.length > 0 &&
+      !formValues.some((formValue) => formValue.ingredient_id === null)
+    ) {
       try {
         const response = await fetch('api/getIngredients', {
           method: 'POST',

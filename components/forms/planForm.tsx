@@ -84,7 +84,7 @@ export default function PlanForm(props: Props) {
     setIngredients(updatedIngredients);
     onChange(updatedIngredients);
   };
-  console.log(ingredientIdsAndNames);
+
   return (
     <Grid container spacing={2}>
       {ingredients.map((ingredient, index) => (

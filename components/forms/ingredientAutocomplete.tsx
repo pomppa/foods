@@ -38,9 +38,9 @@ export default function IngredientAutocomplete(props: Props) {
         }
         onChange={(
           _event: React.ChangeEvent,
-          newValue: { label: string; id: number } | null,
+          value: { name: string; id: number } | null,
         ) => {
-          onIngredientChange(newValue?.id || null);
+          onIngredientChange(value?.id || null);
         }}
         inputValue={inputValue}
         onInputChange={(_event, newInputValue) => {
@@ -76,9 +76,9 @@ export default function IngredientAutocomplete(props: Props) {
         }}
         onChange={(event) => {
           const inputValue = parseFloat(event.target.value);
-          const newValue = isNaN(inputValue) ? '' : inputValue;
-          if (newValue === '' || (newValue >= 0 && newValue <= 9999)) {
-            onWeightChange(newValue);
+          const value = isNaN(inputValue) ? '' : inputValue;
+          if (value === '' || (value >= 0 && value <= 9999)) {
+            onWeightChange(value);
           }
         }}
         disabled={isSavingEnabled}
