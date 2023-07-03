@@ -1,16 +1,4 @@
-export type IngredientInterface = {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  name: string;
-  kcal: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  fineli_id?: number;
-};
-
-export type MealInterface = {
+export type MealI = {
   id: number;
   created_at?: Date;
   updated_at?: Date;
@@ -25,6 +13,7 @@ export type IngredientI = {
   protein?: number;
   carbs?: number;
   fat?: number;
+  fineli_id?: number;
 };
 
 export type FormValue = {
@@ -54,14 +43,6 @@ export type TableData = {
   protein: number;
   carbs: number;
   fat: number;
-};
-
-export type MealI = {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  name: string;
-  formValues: string;
 };
 
 export type AutocompleteOption = {

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macros';
 import MealTable from '../../../components/mealTable';
-import { FormValue, IngredientI, Totals } from '../../../types';
-import { getIngredientsData } from '../../api/ingredients';
-import { getMeal } from '../../api/meals/[id]';
+import { FormValue, Totals } from '../../../types';
+import { getIngredientDataForIds } from '../../api/ingredients';
+import { getMeal } from '../../api/getMeal/[id]';
 import { calculateTotals } from '../../../components/totalsCalculator';
 import { Button, Fab, Grid } from '@mui/material';
 import router from 'next/router';
@@ -19,13 +19,14 @@ export const getServerSideProps = async (req: NextApiRequest) => {
     req.query.id,
   );
 
-  const initialFormValues = meal.formValues;
+  const initialFormValues: FormValue[] = meal.formValues as FormValue[];
 
-  const allIngredients: Omit<IngredientI, 'created_at' | 'updated_at'>[] =
-    await getIngredientsData();
+  const ingredientIds = initialFormValues.map((value) => value.ingredient_id);
+
+  const ingredientDataForIds = await getIngredientDataForIds(ingredientIds);
 
   return {
-    props: { meal, initialFormValues, allIngredients },
+    props: { meal, initialFormValues, ingredientDataForIds },
   };
 };
 
@@ -37,16 +38,14 @@ export const getServerSideProps = async (req: NextApiRequest) => {
  * @returns
  */
 export default function Edit(props) {
-  const { meal, initialFormValues, allIngredients } = props;
-
-  // const meal: Omit<MealI, 'created_at' | 'updated_at'> = props.meal;
+  const { meal, initialFormValues, ingredientDataForIds } = props;
 
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isFabEnabled, setIsFabEnabled] = useState(false);
 
   const [formValues, setFormValues] = useState<FormValue[]>(initialFormValues);
 
-  const totals: Totals = calculateTotals(formValues, allIngredients);
+  const totals: Totals = calculateTotals(formValues, ingredientDataForIds);
 
   const handleChange = (formValues: FormValue[]) => {
     setIsFabEnabled(true);
@@ -118,7 +117,6 @@ export default function Edit(props) {
         <h4>{meal.name}</h4>
         <small>Edit meal contents</small>
         <PlanForm
-          data={allIngredients}
           formValues={formValues}
           onChange={handleChange}
           hasNullValues={hasNullValues}

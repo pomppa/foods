@@ -1,6 +1,5 @@
 import { Meal } from '@prisma/client';
-import { getAllMeals } from './api/meals';
-import { useRouter } from 'next/router';
+import { getAllMeals } from './api/getMeals';
 import {
   Grid,
   List,
@@ -22,11 +21,6 @@ export const getServerSideProps = async () => {
 export default function Meals(props: Props) {
   const data: Omit<Meal, 'created_at' | 'updated_at'>[] = props.meals;
 
-  const router = useRouter();
-
-  const handleEditClick = (id: number) => {
-    router.push(`/meals/${id}`);
-  };
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -34,12 +28,7 @@ export default function Meals(props: Props) {
         <small>Open a meal to edit</small>
         <List>
           {data.map((x) => (
-            <ListItem
-              key={x.id}
-              button
-              component="a"
-              href={`/meals/${x.id}/edit`}
-            >
+            <ListItem key={x.id} button component="a" href={`/meals/${x.id}`}>
               <ListItemText primary={x.name} />
               <ListItemIcon>
                 <ArrowCircleRightIcon />

@@ -1,5 +1,5 @@
 import prisma from '../../lib/prisma';
-import { IngredientInterface } from '../../types';
+import { IngredientI } from '../../types';
 import {
   Box,
   Fab,
@@ -39,7 +39,7 @@ export const getServerSideProps = async () => {
 };
 
 export default function Ingredients(props: Props) {
-  const data: IngredientInterface[] = JSON.parse(props.ingredientsJson);
+  const data: IngredientI[] = JSON.parse(props.ingredientsJson);
 
   const router = useRouter();
   const { query } = router;

@@ -1,5 +1,5 @@
 import prisma from '../../../lib/prisma';
-import { MealInterface } from '../../../types';
+import { MealI } from '../../../types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handle(
@@ -16,7 +16,7 @@ export default async function handle(
   }
 }
 
-async function updateMeal(mealId: string, meal: MealInterface) {
+async function updateMeal(mealId: string, meal: MealI) {
   return await prisma.meal.update({
     where: { id: parseInt(mealId, 10) },
     data: {

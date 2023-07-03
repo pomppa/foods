@@ -1,5 +1,5 @@
 import { Fab, Grid } from '@mui/material';
-import { getMeal } from '../api/meals/[id]';
+import { getMeal } from '../api/getMeal/[id]';
 import { FormValue, IngredientI, Totals } from '../../types';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';

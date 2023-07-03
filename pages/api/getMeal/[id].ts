@@ -10,11 +10,6 @@ export default async function handle(
   res.json(meal);
 }
 
-/**
- *
- * @param id
- * @returns
- */
 export async function getMeal(id: string | string[]) {
   const meal = await prisma.meal.findUnique({
     where: {

@@ -2,9 +2,9 @@ import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IngredientI } from '../../types';
 
-export default async function handler(
+export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse, // todo type
+  res: NextApiResponse,
 ) {
   try {
     const ingredients: IngredientI[] = await prisma.fineli_Ingredient.findMany({

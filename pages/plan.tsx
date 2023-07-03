@@ -1,6 +1,5 @@
 import { Fab, Grid } from '@mui/material';
-import { getIngredientsWithSelect } from './api/ingredients';
-import { FormValue, IngredientI, Totals } from '../types';
+import { FormValue, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
 import MacroPieChart from '../components/macros';
@@ -34,7 +33,7 @@ export default function Plan() {
       !formValues.some((formValue) => formValue.ingredient_id === null)
     ) {
       try {
-        const response = await fetch('api/getIngredients', {
+        const response = await fetch('api/getIngredientsWithIds', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

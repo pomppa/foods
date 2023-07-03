@@ -2,6 +2,7 @@ import prisma from '../../../lib/prisma';
 import IngredientForm from '../../../components/forms/ingredientForm';
 import { Grid, Typography } from '@mui/material';
 import { NextApiRequest } from 'next';
+import { IngredientI } from '../../../types';
 
 export const getServerSideProps = async (req: NextApiRequest) => {
   const ingredientRaw = await prisma.ingredient.findFirst({
@@ -11,11 +12,12 @@ export const getServerSideProps = async (req: NextApiRequest) => {
   });
 
   const ingredient = JSON.stringify(ingredientRaw);
+
   return { props: { ingredient } };
 };
 
 export default function EditIngredient(props) {
-  const ingredient = JSON.parse(props.ingredient);
+  const ingredient: IngredientI = JSON.parse(props.ingredient);
 
   return (
     <Grid container spacing={2}>

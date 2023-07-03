@@ -2,9 +2,9 @@ import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Ingredient } from '@prisma/client';
 
-export default async function handler(
+export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse, // todo type
+  res: NextApiResponse,
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });

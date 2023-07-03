@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
-import { FormValue, IngredientI } from '../../types';
+import { FormValue } from '../../types';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
