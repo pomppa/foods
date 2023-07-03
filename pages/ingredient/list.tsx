@@ -29,7 +29,7 @@ export const getServerSideProps = async () => {
   const ingredients = await prisma.ingredient.findMany({
     orderBy: [
       {
-        created_at: 'desc',
+        updated_at: 'desc',
       },
     ],
   });
@@ -42,14 +42,19 @@ export default function Ingredients(props: Props) {
   const data: IngredientInterface[] = JSON.parse(props.ingredientsJson);
 
   const router = useRouter();
+  const { query } = router;
+  const openAccordionId = query.openAccordion;
 
   const handleFabClick = () => {
     router.push('/ingredient/new');
   };
 
-  const [openedAccordion, setOpenedAccordion] = useState<number>(null);
+  const [openedAccordion, setOpenedAccordion] = useState<number | null>(
+    Number(openAccordionId),
+  );
 
   const handleAccordionChange = (accordionId: number) => {
+    console.log(accordionId);
     setOpenedAccordion(accordionId === openedAccordion ? null : accordionId);
   };
 

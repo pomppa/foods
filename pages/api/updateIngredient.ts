@@ -20,7 +20,7 @@ export default async function updateIngredientHandler(
     });
 
     await prisma.$disconnect();
-    return res.status(200).json({ data: updatedIngredient });
+    return res.status(200).json({ ingredient: updatedIngredient });
   } catch (error) {
     await prisma.$disconnect();
     return res.status(500).json({ message: 'Failed to update ingredient' });

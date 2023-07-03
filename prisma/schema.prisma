@@ -14,7 +14,7 @@ datasource db {
 model Ingredient {
   id              Int               @id @default(autoincrement())
   created_at      DateTime          @default(now())
-  updated_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
   name            String            @db.VarChar(255)
   kcal            Decimal           @db.Decimal(65, 2)
   protein         Decimal           @db.Decimal(65, 2)
@@ -25,7 +25,7 @@ model Ingredient {
 model Meal {
   id             Int               @id @default(autoincrement())
   created_at     DateTime          @default(now())
-  updated_at     DateTime          @default(now())
+  updated_at     DateTime          @updatedAt
   name           String
   formValues     Json?
 }
@@ -34,7 +34,7 @@ model Fineli_Ingredient {
   id              Int               @id @default(autoincrement())
   fineli_id       Int               @db.Int
   created_at      DateTime          @default(now())
-  updated_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
   name            String            @db.VarChar(255)
   kcal            Decimal           @db.Decimal(65, 2)
   protein         Decimal           @db.Decimal(65, 2)
