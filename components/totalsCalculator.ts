@@ -1,19 +1,15 @@
-import {
-  CombinedIngredientMeal,
-  FormValue,
-  IngredientI,
-  Totals,
-} from '../interfaces';
+import { FormValue, IngredientI, Totals } from '../types';
 
 /**
- * Calculator for planner, accepts ingredients and constructs macros
+ * Calculator for macros and for table data
+ *
  * @param formValues
  * @param data
  * @returns totals including table data
  */
 export function calculateTotals(
   formValues: FormValue[],
-  data: CombinedIngredientMeal[] | IngredientI[],
+  data: IngredientI[],
 ): Totals {
   let totalKcal = 0;
   let totalProtein = 0;

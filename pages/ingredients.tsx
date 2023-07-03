@@ -2,7 +2,7 @@ import prisma from '../lib/prisma';
 import React from 'react';
 import IngredientForm from '../components/forms/ingredientForm';
 import Link from 'next/link';
-import { IngredientInterface } from '../interfaces';
+import { IngredientInterface } from '../types';
 import {
   Grid,
   List,

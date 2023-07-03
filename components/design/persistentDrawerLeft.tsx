@@ -94,7 +94,7 @@ export default function PersistentDrawerLeft() {
     { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
     { title: 'Ingredients', icon: LocalDiningIcon, link: 'ingredients' },
     { title: 'Meals', icon: ListIcon, link: 'meals' },
-    { title: 'Foods', icon: DashboardIcon, link: 'main' },
+    { title: 'About', icon: DashboardIcon, link: 'about' },
   ];
 
   const Icon = (props) => {
@@ -124,7 +124,7 @@ export default function PersistentDrawerLeft() {
                 variant="h6"
                 noWrap
                 component="a"
-                href="/"
+                href="/plan"
                 sx={{
                   mr: 2,
                   display: { md: 'flex' },

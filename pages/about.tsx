@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import Link from 'next/link';
 
-function Main() {
+function About() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={4}>
@@ -28,4 +28,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default About;

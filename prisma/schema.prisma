@@ -20,7 +20,6 @@ model Ingredient {
   protein         Decimal           @db.Decimal(65, 2)
   carbs           Decimal           @db.Decimal(65, 2)
   fat             Decimal           @db.Decimal(65, 2)
-  Meal_Ingredient Meal_Ingredient[]
 }
 
 model Meal {
@@ -28,17 +27,7 @@ model Meal {
   created_at     DateTime          @default(now())
   updated_at     DateTime          @default(now())
   name           String
-  MealIngredient Meal_Ingredient[]
   formValues     Json?
-}
-
-model Meal_Ingredient {
-  id                Int        @id @default(autoincrement())
-  meal              Meal       @relation(fields: [meal_id], references: [id], onDelete: Cascade)
-  meal_id           Int
-  ingredient        Ingredient @relation(fields: [ingredient_id], references: [id])
-  ingredient_id     Int
-  ingredient_weight Decimal    @db.Decimal(65, 2)
 }
 
 model Fineli_Ingredient {

@@ -1,5 +1,5 @@
 import prisma from '../../../lib/prisma';
-import { MealInterface } from '../../../interfaces';
+import { MealInterface } from '../../../types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handle(

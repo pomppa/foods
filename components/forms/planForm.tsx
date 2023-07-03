@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
-import { FormValue, IngredientI } from '../../interfaces';
-import { AutocompleteOption } from '../../interfaces';
+import { FormValue, IngredientI } from '../../types';
+import { AutocompleteOption } from '../../types';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -42,7 +42,7 @@ export default function PlanForm(props: Props) {
     onChange(updatedIngredients);
     setTimeout(() => {
       if (ingredientRef.current) {
-        const drawerHeight = 55; // Replace with the actual height of your Drawer
+        const drawerHeight = 55;
         const scrollPosition = ingredientRef.current.offsetTop - drawerHeight;
 
         window.scrollTo({

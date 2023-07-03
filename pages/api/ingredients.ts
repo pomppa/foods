@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { Ingredient } from '@prisma/client';
-import { IngredientI } from '../../interfaces';
+import { IngredientI } from '../../types';
 
 export default async function handle(
   req: NextApiRequest,
@@ -57,14 +57,6 @@ export async function getIngredientsData() {
     }),
   );
   return cleanedIngredients;
-}
-
-export async function getIngredientData(id: number) {
-  return await prisma.ingredient.findFirst({
-    where: {
-      id: id,
-    },
-  });
 }
 
 export async function getIngredientDataForIds(ids: number[]) {

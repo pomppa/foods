@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Alert, Snackbar, TextField, Box, Button } from '@mui/material';
-import { IngredientFormData } from '../../interfaces';
+
+type IngredientFormData = {
+  name: string;
+  kcal: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+};
 
 /**
  * Form for submitting new ingredient

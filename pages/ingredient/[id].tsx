@@ -3,7 +3,7 @@ import { findUniqueIngredient } from '../api/ingredients/[id]';
 import { Button, Grid, List, ListItem, ListItemText } from '@mui/material';
 import router from 'next/router';
 import { NextApiRequest } from 'next';
-import { IngredientInterface } from '../../interfaces';
+import { IngredientInterface } from '../../types';
 
 type Props = {
   ingredientJson: string;

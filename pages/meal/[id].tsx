@@ -1,11 +1,11 @@
 import { Fab, Grid } from '@mui/material';
 import { getMeal } from '../api/meals/[id]';
-import { FormValue, IngredientI, Totals } from '../../interfaces';
+import { FormValue, IngredientI, Totals } from '../../types';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macros';
 import { getIngredientDataForIds } from '../api/ingredients';
-import { calculateTotals } from '../../components/planCalculator';
+import { calculateTotals } from '../../components/totalsCalculator';
 import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';

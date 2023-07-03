@@ -8,10 +8,18 @@ import {
   TableBody,
   TableFooter,
 } from '@mui/material';
-import { TableTotalsRow, TableData, Totals } from '../interfaces';
+import { TableData, Totals } from '../types';
 
 type Props = {
   totals: Totals;
+};
+
+type TableTotalsRow = {
+  weight: number;
+  kcal: number;
+  protein: number;
+  carbs: number;
+  fat: number;
 };
 
 function createData(
@@ -24,9 +32,10 @@ function createData(
 ) {
   return { name, calories, fat, carbs, protein, weight };
 }
+
 /**
  * Meal table component, takes meal data as a parameter and returns a table
- * @param param0
+ * @param props
  * @returns
  */
 export default function MealTable(props: Props) {

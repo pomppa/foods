@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Main from './main';
+import About from './about';
 
 function Home() {
   return (
@@ -9,7 +9,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <Main></Main>
+        <About></About>
       </>
     </>
   );

@@ -1,10 +1,10 @@
 import { Fab, Grid } from '@mui/material';
 import { getIngredientsData } from './api/ingredients';
-import { FormValue, IngredientI, Totals } from '../interfaces';
+import { FormValue, IngredientI, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
 import MacroPieChart from '../components/macros';
-import { calculateTotals } from '../components/planCalculator';
+import { calculateTotals } from '../components/totalsCalculator';
 import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';

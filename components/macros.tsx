@@ -5,26 +5,20 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Paper,
 } from '@mui/material';
 import EggIcon from '@mui/icons-material/Egg';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import BreakfastDiningIcon from '@mui/icons-material/BreakfastDining';
 
 import { PieChart } from 'react-minimal-pie-chart';
-import { Totals } from '../interfaces';
+import { Totals } from '../types';
 import { blueGrey } from '@mui/material/colors';
 
 type Props = {
   totals: Totals;
 };
 
-const defaultLabelStyle = {
-  fontSize: '8px',
-};
-
 /**
- * @todo display as disabled?
  * @param props
  * @returns
  */
@@ -95,7 +89,7 @@ export default function MacroPieChart(props: Props) {
             animationEasing="ease-out"
             label={({ dataEntry }) => dataEntry.title}
             labelStyle={{
-              ...defaultLabelStyle,
+              fontSize: '8px',
             }}
           ></PieChart>
         )}

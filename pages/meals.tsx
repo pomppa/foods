@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Grid, List } from '@mui/material';
-import { MealInterface } from '../interfaces';
+import { MealInterface } from '../types';
 
 type Props = {
   mealsJson: string;

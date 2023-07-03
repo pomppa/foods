@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { IngredientInterface } from '../interfaces';
+import { IngredientInterface } from '../types';
 import prisma from '../lib/prisma';
 
 type Props = {

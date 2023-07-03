@@ -22,7 +22,6 @@ export async function getMeal(id: string | string[]) {
     },
   });
   await prisma.$disconnect();
-  //return meal;
   return exclude(meal, ['created_at', 'updated_at']);
 }
 

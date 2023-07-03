@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { AutocompleteOption } from '../../interfaces';
+import { AutocompleteOption } from '../../types';
 
 type Props = {
   disabledOptions: number[];
