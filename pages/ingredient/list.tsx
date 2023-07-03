@@ -54,7 +54,6 @@ export default function Ingredients(props: Props) {
   );
 
   const handleAccordionChange = (accordionId: number) => {
-    console.log(accordionId);
     setOpenedAccordion(accordionId === openedAccordion ? null : accordionId);
   };
 

@@ -70,7 +70,6 @@ export default function IngredientForm(props) {
       const data = await response.json();
       router.push(`/ingredient/list?openAccordion=${data.ingredient.id}`);
     } catch (error) {
-      console.log(error);
       router.push(`/ingredient/list`);
     }
   };
