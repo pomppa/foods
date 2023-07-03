@@ -3,8 +3,8 @@ import { useState } from 'react';
 import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macros';
 import MealTable from '../../../components/mealTable';
-import { FormValue, Totals } from '../../../types';
-import { getIngredientDataForIds } from '../../api/ingredients';
+import { FormValue, IngredientI, Totals } from '../../../types';
+import { getIngredientDataForIds } from '../getIngredientDataForIds';
 import { getMeal } from '../../api/getMeal/[id]';
 import { calculateTotals } from '../../../components/totalsCalculator';
 import { Button, Fab, Grid } from '@mui/material';
@@ -14,12 +14,15 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Meal } from '@prisma/client';
 import BackIcon from '@mui/icons-material/ArrowBack';
 
+type Props = {
+  meal: Omit<Meal, 'created_at' | 'updated_at'>;
+  initialFormValues: FormValue[];
+  ingredientDataForIds: IngredientI[];
+};
 export const getServerSideProps = async (req: NextApiRequest) => {
-  const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
-    req.query.id,
-  );
+  const meal = await getMeal(req.query.id);
 
-  const initialFormValues: FormValue[] = meal.formValues as FormValue[];
+  const initialFormValues = meal.formValues as FormValue[];
 
   const ingredientIds = initialFormValues.map((value) => value.ingredient_id);
 
@@ -33,11 +36,10 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 /**
  * Edit page component
  *
- * @todo clean props
  * @param props
  * @returns
  */
-export default function Edit(props) {
+export default function Edit(props: Props) {
   const { meal, initialFormValues, ingredientDataForIds } = props;
 
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
