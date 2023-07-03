@@ -1,5 +1,5 @@
 import { Fab, Grid } from '@mui/material';
-import { getIngredientsData } from './api/ingredients';
+import { getIngredientsWithSelect } from './api/ingredients';
 import { FormValue, IngredientI, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
@@ -11,12 +11,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useRouter } from 'next/router';
 
 type Props = {
-  allIngredients: IngredientI[];
+  ingredientIdsAndNames: IngredientI[];
 };
 
 export async function getServerSideProps() {
-  const allIngredients: IngredientI[] = await getIngredientsData();
-  return { props: { allIngredients } };
+  const ingredientIdsAndNames: IngredientI[] = await getIngredientsWithSelect();
+  return { props: { ingredientIdsAndNames } };
 }
 
 /**
@@ -24,16 +24,41 @@ export async function getServerSideProps() {
  * @returns
  */
 export default function Plan(props: Props) {
+  const { ingredientIdsAndNames } = props;
+  console.log(ingredientIdsAndNames);
   const router = useRouter();
 
   const [formValues, setFormValues] = useState([]);
+  const [allIngredients, setAllIngredients] = useState([]);
+
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
 
-  const allIngredients: IngredientI[] = props.allIngredients;
   const totals: Totals = calculateTotals(formValues, allIngredients);
 
-  const handleChange = (formValues: FormValue[]) => {
+  const handleChange = async (formValues: FormValue[]) => {
     setFormValues(formValues);
+    const ingredientIds = formValues.map((value) => value.ingredient_id);
+
+    if (ingredientIds.length > 0) {
+      try {
+        const response = await fetch('api/getIngredients', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ingredientIds }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch ingredients');
+        }
+
+        const ingredients = await response.json();
+        setAllIngredients(ingredients);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const handleSaveMeal = async (mealName: string) => {
@@ -91,7 +116,6 @@ export default function Plan(props: Props) {
         <h2>Plan a meal</h2>
         <small>Select ingredients from the dropdown and input weight</small>
         <PlanForm
-          data={allIngredients}
           onChange={handleChange}
           hasNullValues={hasNullValues}
           isSavingEnabled={isSavingEnabled}

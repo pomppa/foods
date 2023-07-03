@@ -1,13 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import IngredientAutocomplete from './ingredientAutocomplete';
 import { FormValue, IngredientI } from '../../types';
-import { AutocompleteOption } from '../../types';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 type Props = {
-  data: IngredientI[];
   onChange: (formValues: FormValue[]) => void;
   formValues?: FormValue[];
   hasNullValues?: boolean;
@@ -20,10 +18,23 @@ type Props = {
  * @returns
  */
 export default function PlanForm(props: Props) {
-  const { data, onChange, hasNullValues, isSavingEnabled } = props;
-  const options: AutocompleteOption[] = data.map((element: IngredientI) => {
-    return { label: element.name, id: element.id };
-  });
+  const [ingredientIdsAndNames, setIngredientIdsAndNames] = useState([]);
+
+  useEffect(() => {
+    const fetchIngredientIdsAndNames = async () => {
+      try {
+        const response = await fetch('/api/getIngredientIdsAndNames');
+        const data = await response.json();
+        setIngredientIdsAndNames(data);
+      } catch (error) {
+        console.error('Error fetching ingredientIdsAndNames:', error);
+      }
+    };
+
+    fetchIngredientIdsAndNames();
+  }, []);
+
+  const { onChange, hasNullValues, isSavingEnabled } = props;
 
   const [ingredients, setIngredients] = useState<FormValue[]>(
     props.formValues ?? [{ ingredient_id: null, weight: null }],
@@ -73,7 +84,7 @@ export default function PlanForm(props: Props) {
     setIngredients(updatedIngredients);
     onChange(updatedIngredients);
   };
-
+  console.log(ingredientIdsAndNames);
   return (
     <Grid container spacing={2}>
       {ingredients.map((ingredient, index) => (
@@ -82,7 +93,7 @@ export default function PlanForm(props: Props) {
             key={index}
             value={ingredient.ingredient_id}
             weight={ingredient.weight}
-            options={options}
+            options={ingredientIdsAndNames}
             onIngredientChange={(updatedIngredient: number) =>
               handleIngredientChange(index, updatedIngredient)
             }

@@ -10,7 +10,6 @@ export default async function handle(
   const newIngredient = req.body;
   switch (req.method) {
     case 'POST':
-      // todo maybe error handling just maybe
       res.status(200).json(
         await prisma.ingredient.create({
           data: {
@@ -94,4 +93,20 @@ function exclude<Ingredient, Key extends keyof Ingredient>(
   }
 
   return ingredient;
+}
+
+export async function getIngredientsWithSelect(): Promise<IngredientI[]> {
+  const ingredients: IngredientI[] = await prisma.fineli_Ingredient.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+    orderBy: [
+      {
+        created_at: 'desc',
+      },
+    ],
+  });
+
+  return ingredients;
 }

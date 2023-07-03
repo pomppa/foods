@@ -21,10 +21,10 @@ export type MealInterface = {
 export type IngredientI = {
   id: number;
   name: string;
-  kcal: number;
-  protein: number;
-  carbs: number;
-  fat: number;
+  kcal?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
 };
 
 export type FormValue = {
