@@ -4,7 +4,7 @@ import { FormValue, IngredientI, Totals } from '../../types';
 import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macros';
-import { getIngredientDataForIds } from './getIngredientDataForIds';
+import { getIngredientDataForIds } from '../../utils/getIngredientDataForIds';
 import { calculateTotals } from '../../components/totalsCalculator';
 import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';

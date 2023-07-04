@@ -6,7 +6,6 @@ import {
   Grid,
   Input,
 } from '@mui/material';
-import { useEffect } from 'react';
 
 export default function IngredientForm(props) {
   const {

@@ -4,7 +4,7 @@ import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macros';
 import MealTable from '../../../components/mealTable';
 import { FormValue, IngredientI, Totals } from '../../../types';
-import { getIngredientDataForIds } from '../getIngredientDataForIds';
+import { getIngredientDataForIds } from '../../../utils/getIngredientDataForIds';
 import { getMeal } from '../../api/getMeal/[id]';
 import { calculateTotals } from '../../../components/totalsCalculator';
 import { Grid, Typography } from '@mui/material';
