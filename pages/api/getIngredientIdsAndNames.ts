@@ -7,19 +7,38 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   try {
-    const ingredients: IngredientI[] = await prisma.fineli_Ingredient.findMany({
+    const fineliIngredients: IngredientI[] =
+      await prisma.fineli_Ingredient.findMany({
+        select: {
+          id: true,
+          name: true,
+        },
+        orderBy: [
+          {
+            updated_at: 'desc',
+          },
+        ],
+      });
+
+    const ingredients: IngredientI[] = await prisma.ingredient.findMany({
       select: {
         id: true,
         name: true,
       },
       orderBy: [
         {
-          created_at: 'desc',
+          updated_at: 'desc',
         },
       ],
     });
 
-    return res.status(200).json(ingredients);
+    /* ids could potentially collide */
+    const combinedIngredients: IngredientI[] = [
+      ...ingredients,
+      ...fineliIngredients,
+    ];
+
+    return res.status(200).json(combinedIngredients);
   } catch (error) {
     return res.status(500).json({ message: 'Failed to fetch ingredient data' });
   }

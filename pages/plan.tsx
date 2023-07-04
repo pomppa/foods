@@ -106,7 +106,7 @@ export default function Plan() {
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         <h2>Plan a meal</h2>
-        <small>Select ingredients from the dropdown and input weight</small>
+        <small>Select food items and input weights</small>
         <PlanForm
           onChange={handleChange}
           hasNullValues={hasNullValues}

@@ -1,5 +1,5 @@
-import prisma from '../../lib/prisma';
 import { Ingredient } from '@prisma/client';
+import prisma from '../../lib/prisma';
 import { IngredientI } from '../../types';
 
 /**
@@ -9,7 +9,16 @@ import { IngredientI } from '../../types';
  * @returns
  */
 export async function getIngredientDataForIds(ids: number[]) {
-  const ingredients: Ingredient[] = await prisma.fineli_Ingredient.findMany({
+  const fineliIngredients: Ingredient[] =
+    await prisma.fineli_Ingredient.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+  const ingredients: Ingredient[] = await prisma.ingredient.findMany({
     where: {
       id: {
         in: ids,
@@ -17,7 +26,13 @@ export async function getIngredientDataForIds(ids: number[]) {
     },
   });
 
-  const ingredientsExcluded = ingredients.map((ingredient) =>
+  /* ids could potentially collide */
+  const combinedIngredients: Ingredient[] = [
+    ...ingredients,
+    ...fineliIngredients,
+  ];
+
+  const ingredientsExcluded = combinedIngredients.map((ingredient) =>
     exclude(ingredient, ['created_at', 'updated_at']),
   );
 

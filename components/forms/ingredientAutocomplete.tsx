@@ -56,9 +56,7 @@ export default function IngredientAutocomplete(props: Props) {
           width: { xs: '100%', sm: '75%' },
           mt: 2,
         }}
-        renderInput={(params) => (
-          <TextField {...params} label={'Select ingredient'} />
-        )}
+        renderInput={(params) => <TextField {...params} label={'Food item'} />}
         disabled={isSavingEnabled}
       />
       <TextField
