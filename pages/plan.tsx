@@ -1,5 +1,5 @@
 import { Fab, Grid } from '@mui/material';
-import { FormValue, Totals } from '../types';
+import { FormValue, IngredientI, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
 import MacroPieChart from '../components/macros';
@@ -16,17 +16,18 @@ import { useRouter } from 'next/router';
 export default function Plan() {
   const router = useRouter();
 
-  const [formValues, setFormValues] = useState([]);
-  const [allIngredients, setAllIngredients] = useState([]);
+  const [formValues, setFormValues] = useState<FormValue[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<IngredientI[]>(
+    [],
+  );
 
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
 
-  const totals: Totals = calculateTotals(formValues, allIngredients);
+  const totals: Totals = calculateTotals(formValues, selectedIngredients);
 
   const handleChange = async (formValues: FormValue[]) => {
     setFormValues(formValues);
     const ingredientIds = formValues.map((value) => value.ingredient_id);
-    console.log(formValues);
 
     if (
       ingredientIds.length > 0 &&
@@ -46,9 +47,9 @@ export default function Plan() {
         }
 
         const ingredients = await response.json();
-        setAllIngredients(ingredients);
+        setSelectedIngredients(ingredients);
       } catch (error) {
-        console.log(error);
+        router.push('/plan');
       }
     }
   };
@@ -127,23 +128,29 @@ export default function Plan() {
           onButtonClick={handleButtonClick}
         />
       </Grid>
-      <Fab
-        aria-label="Save"
-        color="primary"
-        disabled={hasNullValues}
+      <Grid
+        item
+        xs={12}
         sx={{
-          position: 'fixed',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          position: 'sticky',
+          zIndex: 1,
           bottom: '16px',
-          right: '16px',
-          display: {
-            sm: isSavingEnabled ? 'none' : 'flex',
-            xs: isSavingEnabled ? 'none' : 'flex',
-          },
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
         }}
-        onClick={handleFabClick}
       >
-        <SaveIcon />
-      </Fab>
+        <Fab
+          aria-label="Save"
+          color="primary"
+          disabled={hasNullValues || isSavingEnabled}
+          onClick={handleFabClick}
+        >
+          <SaveIcon />
+        </Fab>
+      </Grid>
     </Grid>
   );
 }

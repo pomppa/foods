@@ -17,8 +17,8 @@ export type IngredientI = {
 };
 
 export type FormValue = {
-  weight: number;
-  ingredient_id: number;
+  weight: number | null;
+  ingredient_id: number | null;
 };
 
 export interface Totals {

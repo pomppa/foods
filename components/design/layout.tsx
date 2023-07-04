@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <title>Foods</title>
       </Head>
       <PersistentDrawerLeft />
-      <Box sx={{ ml: '20px', mr: '20px', mb: '50px', maxWidth: 'md' }}>
+      <Box sx={{ ml: '20px', mr: '20px', maxWidth: 'md' }}>
         <main>{children}</main>
       </Box>
     </>

@@ -120,18 +120,24 @@ export default function Ingredients(props: Props) {
           ))}
         </List>
       </Grid>
-      <Fab
-        aria-label="Save"
-        color="primary"
+      <Grid
+        item
+        xs={12}
+        sm={8}
         sx={{
-          position: 'fixed',
+          display: 'flex',
+          position: 'sticky',
+          zIndex: 1,
+          justifyContent: 'flex-end',
           bottom: '16px',
-          right: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
         }}
-        onClick={handleFabClick}
       >
-        <AddIcon />
-      </Fab>
+        <Fab aria-label="Save" color="primary" onClick={handleFabClick}>
+          <AddIcon />
+        </Fab>
+      </Grid>
     </Grid>
   );
 }

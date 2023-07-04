@@ -70,30 +70,32 @@ export default function MealPage(props: Props) {
       <Grid item xs={12}>
         <MacroPieChart totals={totals}></MacroPieChart>
       </Grid>
-      <Fab
-        aria-label="Edit"
-        color="primary"
+      <Grid
+        item
+        xs={12}
         sx={{
-          position: 'fixed',
-          bottom: '80px',
-          right: '16px',
-        }}
-        onClick={handleFabClick}
-      >
-        <EditIcon />
-      </Fab>
-      <Fab
-        aria-label="Back"
-        color="secondary"
-        onClick={handleBack}
-        sx={{
-          position: 'fixed',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          position: 'sticky',
+          zIndex: 1,
           bottom: '16px',
-          right: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
         }}
       >
-        <BackIcon />
-      </Fab>
+        <Fab
+          aria-label="Edit"
+          color="primary"
+          onClick={handleFabClick}
+          sx={{ marginBottom: '8px' }}
+        >
+          <EditIcon />
+        </Fab>
+        <Fab aria-label="Back" color="secondary" onClick={handleBack}>
+          <BackIcon />
+        </Fab>
+      </Grid>
     </Grid>
   );
 }
