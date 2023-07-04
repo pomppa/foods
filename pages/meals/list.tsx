@@ -42,7 +42,12 @@ export default function Meals(props: Props) {
         </Typography>
         <List>
           {data.map((x) => (
-            <ListItem key={x.id} component="a" href={`/meals/${x.id}`}>
+            <ListItem
+              key={x.id}
+              component="button"
+              button // todo
+              href={`/meals/${x.id}`}
+            >
               <ListItemText primary={x.name} />
               <ListItemIcon>
                 <ArrowCircleRightIcon />
