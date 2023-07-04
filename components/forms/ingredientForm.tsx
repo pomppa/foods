@@ -9,7 +9,6 @@ import {
 
 export default function IngredientForm(props) {
   const {
-    initialIngredient,
     name,
     setName,
     kcal,
