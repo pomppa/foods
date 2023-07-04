@@ -177,43 +177,6 @@ export default function IngredientForm(props) {
           </Grid>
         </Grid>
       </Grid>
-      {/* <Grid
-        item
-        xs={12}
-        sm={4}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-          position: 'sticky',
-          bottom: '16px',
-          marginLeft: { xs: 'unset', sm: '280px' },
-          zIndex: 1,
-        }}
-      >
-        <Fab
-          aria-label="Save"
-          color="primary"
-          disabled={!name.trim() || !isAnyValueNonZero || !saveEnabled}
-          onClick={handleSubmit}
-          sx={{ marginBottom: '8px' }}
-        >
-          {isSaving ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            <SaveIcon />
-          )}
-        </Fab>
-        <Fab
-          aria-label="Back"
-          color="secondary"
-          disabled={isSaving}
-          onClick={handleBack}
-        >
-          <BackIcon />
-        </Fab>
-      </Grid> */}
     </Grid>
   );
 }

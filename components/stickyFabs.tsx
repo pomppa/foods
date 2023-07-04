@@ -1,6 +1,5 @@
 import React from 'react';
-import { CircularProgress, Fab } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, CircularProgress, Fab } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import BackIcon from '@mui/icons-material/ArrowBack';
 
@@ -15,17 +14,19 @@ const StickyFabs = (props) => {
     isLoading,
     primaryFabIcon,
   } = props;
-  const theme = useTheme();
+
   return (
-    <div
+    <Box
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
-        position: 'sticky',
+        position: 'fixed',
         zIndex: 1,
         bottom: '16px',
-        maxWidth: theme.breakpoints.values.md,
+        left: '90%',
+        transform: 'translateX(-50%)',
+        maxWidth: '90%',
         margin: '0 auto',
       }}
     >
@@ -35,7 +36,13 @@ const StickyFabs = (props) => {
           color="primary"
           disabled={primaryFabDisabled}
           onClick={onPrimaryClick}
-          style={{ marginBottom: '8px' }}
+          style={{
+            marginBottom: '8px',
+            outline: 'none',
+            backgroundColor: primaryFabDisabled
+              ? 'rgba(255, 255, 255, 0.12)'
+              : null, // maybe a bug, not always grey but hover color
+          }}
         >
           {isLoading ? (
             <CircularProgress size={24} color="inherit" />
@@ -56,7 +63,7 @@ const StickyFabs = (props) => {
           <BackIcon />
         </Fab>
       )}
-    </div>
+    </Box>
   );
 };
 

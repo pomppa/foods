@@ -2,7 +2,6 @@ import prisma from '../../lib/prisma';
 import { IngredientI } from '../../types';
 import {
   Box,
-  Fab,
   Grid,
   IconButton,
   Link,
@@ -126,24 +125,6 @@ export default function Ingredients(props: Props) {
           ))}
         </List>
       </Grid>
-      {/* <Grid
-        item
-        xs={12}
-        sm={8}
-        sx={{
-          display: 'flex',
-          position: 'sticky',
-          zIndex: 1,
-          justifyContent: 'flex-end',
-          bottom: '16px',
-          maxWidth: 'calc(100% - 16px)',
-          margin: '0 auto',
-        }}
-      >
-        <Fab aria-label="Save" color="primary" onClick={handleFabClick}>
-          <AddIcon />
-        </Fab>
-      </Grid> */}
       <Grid
         container
         justifyContent="flex-end"
@@ -160,7 +141,7 @@ export default function Ingredients(props: Props) {
         <Grid item xs={12}>
           <StickyFabs
             primaryFabVisible={true}
-            primaryFabIcon={<EditIcon />}
+            primaryFabIcon={<AddIcon />}
             onPrimaryClick={handleFabClick}
             // onSecondaryClick={handleSecondaryClick}
           />

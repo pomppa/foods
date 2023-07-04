@@ -10,6 +10,7 @@ import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
+import StickyFabs from '../../components/stickyFabs';
 
 type Props = {
   name: string;
@@ -65,7 +66,9 @@ export default function MealPage(props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h5">{name}</Typography>
+        <Typography variant="h5" mt={2}>
+          {name}
+        </Typography>
         <MealTable totals={totals}></MealTable>
       </Grid>
       <Grid item xs={12}>
@@ -85,17 +88,15 @@ export default function MealPage(props: Props) {
           margin: '0 auto',
         }}
       >
-        <Fab
-          aria-label="Edit"
-          color="primary"
-          onClick={handleFabClick}
-          sx={{ marginBottom: '8px' }}
-        >
-          <EditIcon />
-        </Fab>
-        <Fab aria-label="Back" color="secondary" onClick={handleBack}>
-          <BackIcon />
-        </Fab>
+        <Grid item xs={12}>
+          <StickyFabs
+            primaryFabVisible={true}
+            primaryFabIcon={<EditIcon />}
+            secondaryFabVisible={true}
+            onSecondaryClick={handleBack}
+            onPrimaryClick={handleFabClick}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );

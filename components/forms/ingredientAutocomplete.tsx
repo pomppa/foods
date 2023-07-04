@@ -52,6 +52,11 @@ export default function IngredientAutocomplete(props: Props) {
           )
         }
         options={options}
+        renderOption={(props, option) => (
+          <li {...props} key={option.id}>
+            {option.name}
+          </li>
+        )}
         sx={{
           width: { xs: '100%', sm: '75%' },
           mt: 2,

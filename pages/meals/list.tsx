@@ -9,6 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import StickyFabs from '../../components/stickyFabs';
+import AddIcon from '@mui/icons-material/Add';
+import { useRouter } from 'next/router';
 
 type Props = {
   meals: Omit<Meal, 'created_at' | 'updated_at'>[];
@@ -20,7 +23,13 @@ export const getServerSideProps = async () => {
 };
 
 export default function Meals(props: Props) {
+  const router = useRouter();
+
   const data: Omit<Meal, 'created_at' | 'updated_at'>[] = props.meals;
+
+  const handleFabClick = () => {
+    router.push('/plan');
+  };
 
   return (
     <Grid container spacing={2}>
@@ -33,7 +42,7 @@ export default function Meals(props: Props) {
         </Typography>
         <List>
           {data.map((x) => (
-            <ListItem key={x.id} button component="a" href={`/meals/${x.id}`}>
+            <ListItem key={x.id} component="a" href={`/meals/${x.id}`}>
               <ListItemText primary={x.name} />
               <ListItemIcon>
                 <ArrowCircleRightIcon />
@@ -41,6 +50,27 @@ export default function Meals(props: Props) {
             </ListItem>
           ))}
         </List>
+      </Grid>
+      <Grid
+        container
+        justifyContent="flex-end"
+        sx={{
+          position: 'sticky',
+          zIndex: 1,
+          bottom: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
+          left: 0,
+          right: 0,
+        }}
+      >
+        <Grid item xs={12}>
+          <StickyFabs
+            primaryFabVisible={true}
+            primaryFabIcon={<AddIcon />}
+            onPrimaryClick={handleFabClick}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );

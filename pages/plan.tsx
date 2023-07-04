@@ -133,29 +133,6 @@ export default function Plan() {
           onButtonClick={handleButtonClick}
         />
       </Grid>
-      {/* <Grid
-        item
-        xs={12}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          position: 'sticky',
-          zIndex: 1,
-          bottom: '16px',
-          maxWidth: 'calc(100% - 16px)',
-          margin: '0 auto',
-        }}
-      >
-        <Fab
-          aria-label="Save"
-          color="primary"
-          disabled={hasNullValues || isSavingEnabled}
-          onClick={handleFabClick}
-        >
-          <SaveIcon />
-        </Fab>
-      </Grid> */}
       <Grid
         container
         justifyContent="flex-end"
@@ -170,7 +147,11 @@ export default function Plan() {
         }}
       >
         <Grid item xs={12}>
-          <StickyFabs />
+          <StickyFabs
+            primaryFabVisible={true}
+            primaryFabDisabled={hasNullValues || isSavingEnabled}
+            onPrimaryClick={handleFabClick}
+          />
         </Grid>
       </Grid>
     </Grid>

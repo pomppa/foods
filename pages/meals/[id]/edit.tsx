@@ -101,7 +101,7 @@ export default function Edit(props: Props) {
   };
 
   const handleBack = () => {
-    router.push('/meals');
+    router.push('/meals/list');
   };
 
   return (
@@ -138,44 +138,6 @@ export default function Edit(props: Props) {
           onButtonClick={handleButtonClick}
         />
       </Grid>
-      {/* <Grid
-        item
-        xs={12}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          position: 'sticky',
-          zIndex: 1,
-          bottom: '16px',
-          maxWidth: 'calc(100% - 16px)',
-          margin: '0 auto',
-        }}
-      >
-        <Fab
-          aria-label="Save"
-          color="primary"
-          disabled={hasNullValues || !isFabEnabled}
-          sx={{
-            display: {
-              marginBottom: '8px',
-              sm: isSavingEnabled ? 'none' : 'flex',
-              xs: isSavingEnabled ? 'none' : 'flex',
-            },
-          }}
-          onClick={handleFabClick}
-        >
-          <SaveIcon />
-        </Fab>
-        <Fab
-          aria-label="Back"
-          color="secondary"
-          disabled={isSavingEnabled}
-          onClick={handleBack}
-        >
-          <BackIcon />
-        </Fab>
-      </Grid> */}
       <Grid
         container
         justifyContent="flex-end"
@@ -188,7 +150,15 @@ export default function Edit(props: Props) {
         }}
       >
         <Grid item xs={12}>
-          <StickyFabs />
+          <Grid item xs={12}>
+            <StickyFabs
+              primaryFabVisible={true}
+              primaryFabDisabled={!isFabEnabled || isSavingEnabled}
+              secondaryFabVisible={true}
+              onSecondaryClick={handleBack}
+              onPrimaryClick={handleFabClick}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

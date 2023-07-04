@@ -66,7 +66,7 @@ export default function EditIngredient(props) {
   };
 
   const handleSecondaryClick = () => {
-    router.back();
+    router.push('/ingredients/list');
   };
 
   const handleChildStateChange = () => {
