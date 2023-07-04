@@ -59,8 +59,9 @@ export default function MealPage(props: Props) {
   };
 
   const handleBack = () => {
-    router.push(`/meals/`);
+    router.push('/meals/list');
   };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
