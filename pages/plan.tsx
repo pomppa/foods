@@ -133,7 +133,7 @@ export default function Plan() {
           onButtonClick={handleButtonClick}
         />
       </Grid>
-      <Grid
+      {/* <Grid
         item
         xs={12}
         sx={{
@@ -155,9 +155,23 @@ export default function Plan() {
         >
           <SaveIcon />
         </Fab>
-      </Grid>
-      <Grid item xs={12}>
-        <StickyFabs />
+      </Grid> */}
+      <Grid
+        container
+        justifyContent="flex-end"
+        sx={{
+          position: 'sticky',
+          zIndex: 1,
+          bottom: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
+          left: 0,
+          right: 0,
+        }}
+      >
+        <Grid item xs={12}>
+          <StickyFabs />
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -158,7 +158,12 @@ export default function Ingredients(props: Props) {
         }}
       >
         <Grid item xs={12}>
-          <StickyFabs />
+          <StickyFabs
+            primaryFabVisible={true}
+            primaryFabIcon={<EditIcon />}
+            onPrimaryClick={handleFabClick}
+            // onSecondaryClick={handleSecondaryClick}
+          />
         </Grid>
       </Grid>
     </Grid>

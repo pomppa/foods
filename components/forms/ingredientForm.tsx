@@ -1,85 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-
 import {
   InputAdornment,
   Slider,
-  Box,
   Typography,
   TextField,
   Grid,
   Input,
-  Fab,
-  CircularProgress,
 } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import BackIcon from '@mui/icons-material/ArrowBack';
+import { useEffect } from 'react';
 
 export default function IngredientForm(props) {
-  const { initialIngredient } = props;
-
-  const [saveEnabled, setSaveEnabled] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-
-  const router = useRouter();
-
-  const [name, setName] = useState('');
-  const [kcal, setKcal] = useState(0);
-  const [fat, setFat] = useState(0);
-  const [carbs, setCarbs] = useState(0);
-  const [protein, setProteins] = useState(0);
-
-  useEffect(() => {
-    if (initialIngredient) {
-      setName(initialIngredient.name);
-      setKcal(Number(initialIngredient.kcal));
-      setFat(Number(initialIngredient.fat));
-      setCarbs(Number(initialIngredient.carbs));
-      setProteins(Number(initialIngredient.protein));
-    }
-  }, [initialIngredient]);
-
-  const handleSubmit = async () => {
-    setIsSaving(true);
-
-    try {
-      const url = initialIngredient
-        ? '/api/updateIngredient'
-        : '/api/createIngredient';
-
-      const method = initialIngredient ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: initialIngredient?.id,
-          name,
-          kcal,
-          fat,
-          carbs,
-          protein,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save ingredient');
-      }
-      const data = await response.json();
-      router.push(`/ingredients/list?openAccordion=${data.ingredient.id}`);
-    } catch (error) {
-      router.push(`/ingredients/list`);
-    }
-  };
-
-  const handleBack = () => {
-    router.back();
-  };
-
-  const isAnyValueNonZero =
-    kcal !== 0 || fat !== 0 || carbs !== 0 || protein !== 0;
+  const {
+    initialIngredient,
+    name,
+    setName,
+    kcal,
+    setKcal,
+    fat,
+    setFat,
+    carbs,
+    setCarbs,
+    protein,
+    setProteins,
+    onStateChange,
+  } = props;
 
   return (
     <Grid container spacing={2}>
@@ -91,7 +34,7 @@ export default function IngredientForm(props) {
           variant="standard"
           value={name}
           onChange={(event) => {
-            setSaveEnabled(true);
+            onStateChange(false);
             setName(event.target.value);
           }}
           sx={{ mb: 3 }}
@@ -104,7 +47,7 @@ export default function IngredientForm(props) {
             <Slider
               value={kcal}
               onChange={(event, newValue) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setKcal(Number(newValue));
               }}
               min={0}
@@ -119,7 +62,7 @@ export default function IngredientForm(props) {
               size="small"
               fullWidth
               onChange={(event) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setKcal(Number(event.target.value));
               }}
               inputProps={{
@@ -139,7 +82,7 @@ export default function IngredientForm(props) {
             <Slider
               value={fat}
               onChange={(event, newValue) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setFat(Number(newValue));
               }}
               min={0}
@@ -153,7 +96,7 @@ export default function IngredientForm(props) {
               value={fat}
               size="small"
               onChange={(event) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setFat(Number(event.target.value));
               }}
               inputProps={{
@@ -173,7 +116,7 @@ export default function IngredientForm(props) {
             <Slider
               value={carbs}
               onChange={(event, newValue) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setCarbs(Number(newValue));
               }}
               min={0}
@@ -187,7 +130,7 @@ export default function IngredientForm(props) {
               value={carbs}
               size="small"
               onChange={(event) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setCarbs(Number(event.target.value));
               }}
               inputProps={{
@@ -207,7 +150,7 @@ export default function IngredientForm(props) {
             <Slider
               value={protein}
               onChange={(event, newValue) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setProteins(Number(newValue));
               }}
               min={0}
@@ -221,7 +164,7 @@ export default function IngredientForm(props) {
               value={protein}
               size="small"
               onChange={(event) => {
-                setSaveEnabled(true);
+                onStateChange(false);
                 setProteins(Number(event.target.value));
               }}
               inputProps={{

@@ -10,7 +10,7 @@ export default async function handle(
   if (req.method !== 'PUT') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-
+  console.log(req.body);
   const { id, name, kcal, fat, carbs, protein } = req.body;
 
   try {
@@ -22,6 +22,7 @@ export default async function handle(
     await prisma.$disconnect();
     return res.status(200).json({ ingredient: updatedIngredient });
   } catch (error) {
+    console.log(error);
     await prisma.$disconnect();
     return res.status(500).json({ message: 'Failed to update ingredient' });
   }

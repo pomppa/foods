@@ -1,10 +1,21 @@
 import React from 'react';
-import { Fab } from '@mui/material';
+import { CircularProgress, Fab } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import SaveIcon from '@mui/icons-material/Save';
+import BackIcon from '@mui/icons-material/ArrowBack';
 
-const StickyFabs = ({ onEditClick, onBackClick }) => {
+const StickyFabs = (props) => {
+  const {
+    primaryFabVisible,
+    primaryFabDisabled,
+    secondaryFabVisible,
+    secondaryFabDisabled,
+    onPrimaryClick,
+    onSecondaryClick,
+    isLoading,
+    primaryFabIcon,
+  } = props;
   const theme = useTheme();
-
   return (
     <div
       style={{
@@ -18,17 +29,33 @@ const StickyFabs = ({ onEditClick, onBackClick }) => {
         margin: '0 auto',
       }}
     >
-      <Fab
-        aria-label="Edit"
-        color="primary"
-        onClick={onEditClick}
-        style={{ marginBottom: '8px' }}
-      >
-        Edit
-      </Fab>
-      <Fab aria-label="Back" color="secondary" onClick={onBackClick}>
-        Back
-      </Fab>
+      {primaryFabVisible && (
+        <Fab
+          aria-label="Save"
+          color="primary"
+          disabled={primaryFabDisabled}
+          onClick={onPrimaryClick}
+          style={{ marginBottom: '8px' }}
+        >
+          {isLoading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : primaryFabIcon ? (
+            primaryFabIcon
+          ) : (
+            <SaveIcon />
+          )}
+        </Fab>
+      )}
+      {secondaryFabVisible && (
+        <Fab
+          disabled={secondaryFabDisabled}
+          aria-label="Back"
+          color="secondary"
+          onClick={onSecondaryClick}
+        >
+          <BackIcon />
+        </Fab>
+      )}
     </div>
   );
 };
