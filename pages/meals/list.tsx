@@ -1,17 +1,21 @@
 import { Meal } from '@prisma/client';
 import { getAllMeals } from '../api/getMeals';
 import {
+  Divider,
   Grid,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
   Typography,
 } from '@mui/material';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StickyFabs from '../../components/stickyFabs';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 type Props = {
   meals: Omit<Meal, 'created_at' | 'updated_at'>[];
@@ -40,21 +44,23 @@ export default function Meals(props: Props) {
         <Typography variant="body2" mt={2}>
           Open a meal to edit
         </Typography>
-        <List>
-          {data.map((x) => (
-            <ListItem
-              key={x.id}
-              component="button"
-              button // todo
-              href={`/meals/${x.id}`}
-            >
-              <ListItemText primary={x.name} />
-              <ListItemIcon>
-                <ArrowCircleRightIcon />
-              </ListItemIcon>
-            </ListItem>
-          ))}
-        </List>
+        <Paper>
+          <List>
+            {data.map((x, index) => (
+              <React.Fragment key={x.id}>
+                {index !== 0 && <Divider />}
+                <ListItem>
+                  <ListItemButton component="a" href={`/meals/${x.id}`}>
+                    <ListItemText primary={x.name} />
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                  </ListItemButton>
+                </ListItem>
+              </React.Fragment>
+            ))}
+          </List>
+        </Paper>
       </Grid>
       <Grid
         container
