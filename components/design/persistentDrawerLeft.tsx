@@ -91,10 +91,10 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    { title: 'Plan a meal', icon: ScaleIcon, link: 'plan' },
-    { title: 'Food items', icon: LocalDiningIcon, link: 'ingredients/list' },
-    { title: 'Meals', icon: ListIcon, link: 'meals/list' },
-    { title: 'About', icon: DashboardIcon, link: 'about' },
+    { title: 'Plan a meal', icon: ScaleIcon, link: '/plan' },
+    { title: 'Food items', icon: LocalDiningIcon, link: '/ingredients/list' },
+    { title: 'Meals', icon: ListIcon, link: '/meals/list' },
+    { title: 'About', icon: DashboardIcon, link: '/about' },
   ];
 
   const Icon = (props) => {
@@ -164,10 +164,7 @@ export default function PersistentDrawerLeft() {
           <Divider />
           <List>
             {menu.map((element) => (
-              <Link
-                key={element.link}
-                href={`${process.env.NEXT_PUBLIC_BASE_PATH}` + element.link}
-              >
+              <Link key={element.link} href={element.link}>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleDrawerClose}>
                     <ListItemIcon>
