@@ -1,11 +1,12 @@
 import { Meal } from '@prisma/client';
-import { getAllMeals } from './api/getMeals';
+import { getAllMeals } from '../api/getMeals';
 import {
   Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
@@ -24,8 +25,12 @@ export default function Meals(props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
-        <h2>All meals</h2>
-        <small>Open a meal to edit</small>
+        <Typography variant="h5" mt={2}>
+          All meals
+        </Typography>
+        <Typography variant="body2" mt={2}>
+          Open a meal to edit
+        </Typography>
         <List>
           {data.map((x) => (
             <ListItem key={x.id} button component="a" href={`/meals/${x.id}`}>

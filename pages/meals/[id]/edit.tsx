@@ -7,7 +7,7 @@ import { FormValue, IngredientI, Totals } from '../../../types';
 import { getIngredientDataForIds } from '../getIngredientDataForIds';
 import { getMeal } from '../../api/getMeal/[id]';
 import { calculateTotals } from '../../../components/totalsCalculator';
-import { Button, Fab, Grid } from '@mui/material';
+import { Button, Fab, Grid, Typography } from '@mui/material';
 import router from 'next/router';
 import SaveMeal from '../../../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
@@ -115,9 +115,15 @@ export default function Edit(props: Props) {
         </Button>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <h2>Edit</h2>
-        <h4>{meal.name}</h4>
-        <small>Edit meal contents</small>
+        <Typography variant="h5" mt={2} mb={2}>
+          Edit
+        </Typography>
+        <Typography variant="h6" mb={2}>
+          {meal.name}
+        </Typography>
+        <Typography variant="body2" mb={2}>
+          Edit meal contents
+        </Typography>
         <PlanForm
           formValues={formValues}
           onChange={handleChange}

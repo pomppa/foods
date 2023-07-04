@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import EggIcon from '@mui/icons-material/Egg';
 import EggAltIcon from '@mui/icons-material/EggAlt';
@@ -50,7 +51,9 @@ export default function MacroPieChart(props: Props) {
   return (
     <Grid container spacing={2} sx={{ position: 'sticky', top: 50 }}>
       <Grid item xs={12}>
-        <h3>Macros</h3>
+        <Typography variant="h6" mt={2}>
+          Macros
+        </Typography>
       </Grid>
       <Grid item xs={6} sm={6}>
         <List dense>

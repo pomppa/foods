@@ -7,6 +7,7 @@ import {
   TableCell,
   TableBody,
   TableFooter,
+  Typography,
 } from '@mui/material';
 import { TableData, Totals } from '../types';
 
@@ -67,7 +68,9 @@ export default function MealTable(props: Props) {
 
   return (
     <>
-      <h3>Meal table</h3>
+      <Typography variant="h6" mt={2} mb={2}>
+        Meal table
+      </Typography>
       <TableContainer component={Paper}>
         <Table aria-label="meal table">
           <TableHead>

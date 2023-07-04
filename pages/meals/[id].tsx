@@ -1,4 +1,4 @@
-import { Fab, Grid } from '@mui/material';
+import { Fab, Grid, Typography } from '@mui/material';
 import { getMeal } from '../api/getMeal/[id]';
 import { FormValue, IngredientI, Totals } from '../../types';
 import { NextApiRequest } from 'next';
@@ -64,7 +64,7 @@ export default function MealPage(props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <h2>{name}</h2>
+        <Typography variant="h5">{name}</Typography>
         <MealTable totals={totals}></MealTable>
       </Grid>
       <Grid item xs={12}>

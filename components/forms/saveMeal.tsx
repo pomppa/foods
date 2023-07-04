@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { green, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 const SaveMeal = ({
   meal = '',
@@ -61,25 +61,7 @@ const SaveMeal = ({
             sx={{
               justifyContent: 'center',
             }}
-          >
-            {/* <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleButtonClick(true)}
-              disabled={hasNullValues}
-              sx={{
-                backgroundColor: hasNullValues ? grey[850] : 'primary',
-                width: { xs: '80%', md: 'auto' },
-                display: {
-                  xs: 'none',
-                  sm: 'initial',
-                },
-              }}
-              startIcon={<SaveIcon />}
-            >
-              Save Meal
-            </Button> */}
-          </Grid>
+          ></Grid>
         )}
         {isSavingEnabled && (
           <Grid
@@ -108,7 +90,7 @@ const SaveMeal = ({
                   backgroundColor:
                     !mealName.trim() || hasNullValues || loading
                       ? grey[850]
-                      : 'primary', //green[500],
+                      : 'primary',
                 }}
                 startIcon={<SaveIcon />}
               >
@@ -118,7 +100,6 @@ const SaveMeal = ({
                     <CircularProgress
                       size={24}
                       sx={{
-                        // color: green[500],
                         position: 'absolute',
                         top: '50%',
                         left: '50%',

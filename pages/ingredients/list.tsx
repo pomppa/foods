@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,7 +47,7 @@ export default function Ingredients(props: Props) {
   const openAccordionId = query.openAccordion;
 
   const handleFabClick = () => {
-    router.push('/ingredient/new');
+    router.push('/ingredients/new');
   };
 
   const [openedAccordion, setOpenedAccordion] = useState<number | null>(
@@ -60,8 +61,12 @@ export default function Ingredients(props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={8}>
-        <h2>Food items</h2>
-        <small>List of all, sorted by creation date</small>
+        <Typography variant="h5" mt={2}>
+          Food items
+        </Typography>
+        <Typography variant="body2" mt={2} mb={2}>
+          List of all, sorted by creation date
+        </Typography>
         <List>
           {data.map((x) => (
             <Accordion
@@ -102,7 +107,7 @@ export default function Ingredients(props: Props) {
                         right: '8px',
                       }}
                     >
-                      <Link href={`/ingredient/${x.id}/edit`}>
+                      <Link href={`/ingredients/${x.id}/edit`}>
                         <IconButton aria-label="Edit">
                           <EditIcon />
                         </IconButton>

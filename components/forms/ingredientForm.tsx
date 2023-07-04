@@ -68,9 +68,9 @@ export default function IngredientForm(props) {
         throw new Error('Failed to save ingredient');
       }
       const data = await response.json();
-      router.push(`/ingredient/list?openAccordion=${data.ingredient.id}`);
+      router.push(`/ingredients/list?openAccordion=${data.ingredient.id}`);
     } catch (error) {
-      router.push(`/ingredient/list`);
+      router.push(`/ingredients/list`);
     }
   };
 

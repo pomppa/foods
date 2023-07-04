@@ -1,4 +1,4 @@
-import { Fab, Grid } from '@mui/material';
+import { Fab, Grid, Typography } from '@mui/material';
 import { FormValue, IngredientI, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
@@ -106,8 +106,12 @@ export default function Plan() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
-        <h2>Plan a meal</h2>
-        <small>Select food items and input weights</small>
+        <Typography variant="h5" mt={2}>
+          Plan a meal
+        </Typography>
+        <Typography variant="body2" mt={2}>
+          Select food items and input weights
+        </Typography>
         <PlanForm
           onChange={handleChange}
           hasNullValues={hasNullValues}
