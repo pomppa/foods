@@ -30,22 +30,20 @@ export default function Meals(props: Props) {
   const router = useRouter();
 
   const data: Omit<Meal, 'created_at' | 'updated_at'>[] = props.meals;
-
   const handleFabClick = () => {
     router.push('/plan');
   };
-
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12}>
         <Typography variant="h5" mt={2}>
           All meals
         </Typography>
         <Typography variant="body2" mt={2}>
-          Open a meal to edit
+          {data.length > 0 ? 'Open a meal to view & edit' : 'No meals'}
         </Typography>
-        <Paper>
-          <List>
+        <List>
+          <Paper>
             {data.map((x, index) => (
               <React.Fragment key={x.id}>
                 {index !== 0 && <Divider />}
@@ -59,8 +57,8 @@ export default function Meals(props: Props) {
                 </ListItem>
               </React.Fragment>
             ))}
-          </List>
-        </Paper>
+          </Paper>
+        </List>
       </Grid>
       <Grid
         container

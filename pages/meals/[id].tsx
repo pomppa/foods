@@ -31,7 +31,6 @@ export const getServerSideProps = async (req: NextApiRequest) => {
   const { name, id } = meal;
 
   const formValues: FormValue[] = meal.formValues as FormValue[];
-
   const ingredients: IngredientI[] = await getIngredientDataForIds(
     formValues.map((value) => value.ingredient_id),
   );

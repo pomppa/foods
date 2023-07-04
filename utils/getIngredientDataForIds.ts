@@ -18,7 +18,7 @@ export async function getIngredientDataForIds(ids: number[]) {
       },
     });
 
-  const ingredients: Ingredient[] = await prisma.fineli_Ingredient.findMany({
+  const ingredients: Ingredient[] = await prisma.ingredient.findMany({
     where: {
       id: {
         in: ids,

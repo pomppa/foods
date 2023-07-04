@@ -65,7 +65,9 @@ export default function Ingredients(props: Props) {
           Food items
         </Typography>
         <Typography variant="body2" mt={2} mb={2}>
-          List of all, sorted by creation date
+          {data.length > 0
+            ? 'List of all, sorted by creation date'
+            : ' No food items, create a new one'}
         </Typography>
         <List>
           {data.map((x) => (
