@@ -2,7 +2,7 @@ personal [Next.js](https://nextjs.org/) journey - heavily wip
 
 ## getting started
 
-provision two mysql databases, add `mysql://` connection strings to .env 
+provision mysql database, add `mysql://` connection string to .env 
 
 migrate prisma schema to mysql
 
@@ -23,5 +23,5 @@ npm run dev
 ```
 
 
-## screenshot
-<img width="1151" alt="image" src="https://user-images.githubusercontent.com/24681147/217903341-467199d2-ea0a-4bc6-8ea4-e1c5bb0bc48f.png">
+## live demo
+https://foods-demo.vercel.app/
