@@ -49,7 +49,7 @@ export default function IngredientForm(props) {
                 setKcal(Number(newValue));
               }}
               min={0}
-              max={1000}
+              max={999}
               step={1}
               valueLabelDisplay="auto"
             />
@@ -65,10 +65,12 @@ export default function IngredientForm(props) {
               }}
               inputProps={{
                 min: 0,
-                max: 1000,
+                max: 999,
                 type: 'number',
               }}
-              endAdornment={<InputAdornment position="end">g</InputAdornment>}
+              endAdornment={
+                <InputAdornment position="end">kcal/100g</InputAdornment>
+              }
             />
           </Grid>
         </Grid>
@@ -84,7 +86,7 @@ export default function IngredientForm(props) {
                 setFat(Number(newValue));
               }}
               min={0}
-              max={200}
+              max={100}
               step={1}
               valueLabelDisplay="auto"
             />
@@ -99,7 +101,7 @@ export default function IngredientForm(props) {
               }}
               inputProps={{
                 min: 0,
-                max: 1000,
+                max: 100,
                 type: 'number',
               }}
               endAdornment={<InputAdornment position="end">g</InputAdornment>}
@@ -118,7 +120,7 @@ export default function IngredientForm(props) {
                 setCarbs(Number(newValue));
               }}
               min={0}
-              max={500}
+              max={100}
               step={1}
               valueLabelDisplay="auto"
             />
@@ -133,7 +135,7 @@ export default function IngredientForm(props) {
               }}
               inputProps={{
                 min: 0,
-                max: 1000,
+                max: 100,
                 type: 'number',
               }}
               endAdornment={<InputAdornment position="end">g</InputAdornment>}
@@ -152,7 +154,7 @@ export default function IngredientForm(props) {
                 setProteins(Number(newValue));
               }}
               min={0}
-              max={200}
+              max={100}
               step={1}
               valueLabelDisplay="auto"
             />
@@ -167,7 +169,7 @@ export default function IngredientForm(props) {
               }}
               inputProps={{
                 min: 0,
-                max: 1000,
+                max: 100,
                 type: 'number',
               }}
               endAdornment={<InputAdornment position="end">g</InputAdornment>}
