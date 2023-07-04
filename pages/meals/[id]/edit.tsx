@@ -13,6 +13,7 @@ import SaveMeal from '../../../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
 import { Meal } from '@prisma/client';
 import BackIcon from '@mui/icons-material/ArrowBack';
+import StickyFabs from '../../../components/stickyFabs';
 
 type Props = {
   meal: Omit<Meal, 'created_at' | 'updated_at'>;
@@ -105,16 +106,7 @@ export default function Edit(props: Props) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sx={{ display: { xs: 'none' } }}>
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={() => router.back()}
-        >
-          Back
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <Typography variant="h5" mt={2} mb={2}>
           Edit
         </Typography>
@@ -131,7 +123,7 @@ export default function Edit(props: Props) {
           isSavingEnabled={isSavingEnabled}
         ></PlanForm>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} md={6}>
         <MacroPieChart totals={totals}></MacroPieChart>
       </Grid>
       <Grid item xs={12}>
@@ -146,7 +138,7 @@ export default function Edit(props: Props) {
           onButtonClick={handleButtonClick}
         />
       </Grid>
-      <Grid
+      {/* <Grid
         item
         xs={12}
         sx={{
@@ -183,6 +175,21 @@ export default function Edit(props: Props) {
         >
           <BackIcon />
         </Fab>
+      </Grid> */}
+      <Grid
+        container
+        justifyContent="flex-end"
+        sx={{
+          position: 'sticky',
+          zIndex: 1,
+          bottom: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
+        }}
+      >
+        <Grid item xs={12}>
+          <StickyFabs />
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -21,6 +21,7 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
+import StickyFabs from '../../components/stickyFabs';
 
 type Props = {
   ingredientsJson: string;
@@ -60,7 +61,7 @@ export default function Ingredients(props: Props) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} md={6}>
         <Typography variant="h5" mt={2}>
           Food items
         </Typography>
@@ -125,7 +126,7 @@ export default function Ingredients(props: Props) {
           ))}
         </List>
       </Grid>
-      <Grid
+      {/* <Grid
         item
         xs={12}
         sm={8}
@@ -142,6 +143,23 @@ export default function Ingredients(props: Props) {
         <Fab aria-label="Save" color="primary" onClick={handleFabClick}>
           <AddIcon />
         </Fab>
+      </Grid> */}
+      <Grid
+        container
+        justifyContent="flex-end"
+        sx={{
+          position: 'sticky',
+          zIndex: 1,
+          bottom: '16px',
+          maxWidth: 'calc(100% - 16px)',
+          margin: '0 auto',
+          left: 0,
+          right: 0,
+        }}
+      >
+        <Grid item xs={12}>
+          <StickyFabs />
+        </Grid>
       </Grid>
     </Grid>
   );

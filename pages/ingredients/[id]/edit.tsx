@@ -3,6 +3,7 @@ import IngredientForm from '../../../components/forms/ingredientForm';
 import { Grid, Typography } from '@mui/material';
 import { NextApiRequest } from 'next';
 import { IngredientI } from '../../../types';
+import StickyFabs from '../../../components/stickyFabs';
 
 export const getServerSideProps = async (req: NextApiRequest) => {
   const ingredientRaw = await prisma.ingredient.findFirst({
@@ -21,11 +22,14 @@ export default function EditIngredient(props) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={6}>
         <Typography variant="h6" mt={2}>
           {ingredient.name}
         </Typography>
         <IngredientForm initialIngredient={ingredient} />
+      </Grid>
+      <Grid item xs={12}>
+        <StickyFabs />
       </Grid>
     </Grid>
   );

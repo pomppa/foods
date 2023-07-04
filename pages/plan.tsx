@@ -8,6 +8,7 @@ import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
 import SaveIcon from '@mui/icons-material/Save';
 import { useRouter } from 'next/router';
+import StickyFabs from '../components/stickyFabs';
 
 /**
  * @param props
@@ -154,6 +155,9 @@ export default function Plan() {
         >
           <SaveIcon />
         </Fab>
+      </Grid>
+      <Grid item xs={12}>
+        <StickyFabs />
       </Grid>
     </Grid>
   );
