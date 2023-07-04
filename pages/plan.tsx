@@ -1,4 +1,4 @@
-import { Fab, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { FormValue, IngredientI, Totals } from '../types';
 import MealTable from '../components/mealTable';
 import PlanForm from '../components/forms/planForm';
@@ -6,7 +6,6 @@ import MacroPieChart from '../components/macros';
 import { calculateTotals } from '../components/totalsCalculator';
 import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
-import SaveIcon from '@mui/icons-material/Save';
 import { useRouter } from 'next/router';
 import StickyFabs from '../components/stickyFabs';
 

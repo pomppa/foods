@@ -7,12 +7,10 @@ import { FormValue, IngredientI, Totals } from '../../../types';
 import { getIngredientDataForIds } from '../getIngredientDataForIds';
 import { getMeal } from '../../api/getMeal/[id]';
 import { calculateTotals } from '../../../components/totalsCalculator';
-import { Button, Fab, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import router from 'next/router';
 import SaveMeal from '../../../components/forms/saveMeal';
-import SaveIcon from '@mui/icons-material/Save';
 import { Meal } from '@prisma/client';
-import BackIcon from '@mui/icons-material/ArrowBack';
 import StickyFabs from '../../../components/stickyFabs';
 
 type Props = {

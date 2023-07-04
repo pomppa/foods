@@ -1,4 +1,4 @@
-import { Fab, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { getMeal } from '../api/getMeal/[id]';
 import { FormValue, IngredientI, Totals } from '../../types';
 import { NextApiRequest } from 'next';
@@ -8,7 +8,6 @@ import { getIngredientDataForIds } from './getIngredientDataForIds';
 import { calculateTotals } from '../../components/totalsCalculator';
 import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
-import BackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
 import StickyFabs from '../../components/stickyFabs';
 
