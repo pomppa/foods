@@ -23,8 +23,6 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import Link from 'next/link';
 import { ClickAwayListener, useMediaQuery } from '@mui/material';
 import useUser from '../../lib/useUser';
-import { useEffect } from 'react';
-// import AdbIcon from '@mui/icons-material/Adb';
 
 const drawerWidth = 240;
 
@@ -81,14 +79,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
   const { user } = useUser();
-  console.log('persistentDrawer', user);
-
-  useEffect(() => {
-    console.log('useEffect drawer', user);
-    if (user) {
-      console.log('useEffect drawer', user);
-    }
-  }, []);
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -105,7 +95,9 @@ export default function PersistentDrawerLeft() {
   const menu = [
     { title: 'Plan a meal', icon: ScaleIcon, link: '/plan' },
     { title: 'Food items', icon: LocalDiningIcon, link: '/ingredients/list' },
-    { title: 'Meals', icon: ListIcon, link: '/meals/list' },
+    ...(user?.isLoggedIn
+      ? [{ title: 'Meals', icon: ListIcon, link: '/meals/list' }]
+      : []),
     { title: 'About', icon: DashboardIcon, link: '/about' },
   ];
 
@@ -131,7 +123,6 @@ export default function PersistentDrawerLeft() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
               <Typography
                 variant="h6"
                 noWrap

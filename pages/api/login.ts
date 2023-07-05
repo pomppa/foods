@@ -10,7 +10,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
   const { username } = req.body;
-  console.log('onlogin', username);
 
   try {
     const user = {
@@ -23,7 +22,6 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       login: username,
     };
     await req.session.save();
-    console.log('onlogin', user);
 
     res.json(user);
   } catch (error) {

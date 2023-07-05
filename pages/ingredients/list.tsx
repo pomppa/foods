@@ -21,18 +21,20 @@ import { useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
 import { withSessionSsr } from '../../lib/withSession';
+import { GetServerSideProps } from 'next';
 import { User } from '../api/user';
+import useUser from '../../lib/useUser';
 
-type Props = {
+export type Props = {
   ingredientsJson: string;
-  user: User;
+  user?: User;
 };
 
-export const getServerSideProps = withSessionSsr(
+export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
   async function getServerSideProps({ req }) {
-    const user = req.session.user;
+    req.session.user;
 
-    if (!user) {
+    if (!req.session.user) {
       const ingredients = await prisma.fineli_Ingredient.findMany({
         take: 20,
         orderBy: [
@@ -55,7 +57,11 @@ export const getServerSideProps = withSessionSsr(
     });
     const ingredientsJson = JSON.stringify(ingredients);
 
-    return { props: { ingredientsJson, user: req.session.user } };
+    return {
+      props: {
+        ingredientsJson,
+      },
+    };
   },
 );
 
@@ -81,7 +87,7 @@ export default function Ingredients(props: Props) {
     router.push(`/ingredients/${id}/edit`);
   };
 
-  const { user } = props;
+  const { user } = useUser();
 
   return (
     <Grid container spacing={2}>
@@ -169,7 +175,7 @@ export default function Ingredients(props: Props) {
       >
         <Grid item xs={12}>
           <StickyFabs
-            primaryFabVisible={user}
+            primaryFabVisible={user?.isLoggedIn}
             primaryFabIcon={<AddIcon />}
             onPrimaryClick={handleFabClick}
           />

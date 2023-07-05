@@ -7,8 +7,16 @@ export default function useUser({
   redirectTo = '',
   redirectIfFound = false,
 } = {}) {
-  const { data: user, mutate: mutateUser } = useSWR<User>('/api/user');
-  console.log('useUser', user);
+  /* https://github.com/vvo/iron-session/issues/521 */
+  const userSwrFetcher = async () => {
+    const response = await fetch('/api/user');
+    const data = await response.json();
+    return data;
+  };
+  const { data: user, mutate: mutateUser } = useSWR<User>(
+    'swrUser',
+    userSwrFetcher,
+  );
 
   useEffect(() => {
     // if no redirect needed, just return (example: already on /dashboard)

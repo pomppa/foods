@@ -11,7 +11,7 @@ import StickyFabs from '../components/stickyFabs';
 import { withSessionSsr } from '../lib/withSession';
 import { User } from './api/user';
 
-export const getServerSideProps = withSessionSsr(async function ({ req, res }) {
+export const getServerSideProps = withSessionSsr(async function ({ req }) {
   const user: User = req.session.user;
 
   if (user) {

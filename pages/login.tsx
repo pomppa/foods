@@ -1,29 +1,26 @@
 import LoginForm from '../components/forms/loginForm';
 import { Grid } from '@mui/material';
-import { sessionOptions } from '../lib/withSession';
-import { withIronSessionSsr } from 'iron-session/next';
+import { withSessionSsr } from '../lib/withSession';
 
-export const getServerSideProps = withIronSessionSsr(
-  async function ({ req, res }) {
-    const { user } = req.session;
+export const getServerSideProps = withSessionSsr(async function ({ req }) {
+  const { user } = req.session;
 
-    if (user) {
-      return {
-        redirect: {
-          destination: '/profile',
-          permanent: false,
-        },
-      };
-    }
-
+  if (user) {
     return {
-      props: { user: null },
+      redirect: {
+        destination: '/profile',
+        permanent: false,
+      },
     };
-  },
-  { ...sessionOptions },
-);
+  }
 
-export default function Login({ user }) {
+  // return some object
+  return {
+    props: { user: null },
+  };
+});
+
+export default function Login() {
   return (
     <Grid container spacing={2}>
       <LoginForm />

@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
 
-export const getServerSideProps = withSessionSsr(async function ({ req, res }) {
+export const getServerSideProps = withSessionSsr(async function ({ req }) {
   const { user } = req.session;
 
   if (!user) {
