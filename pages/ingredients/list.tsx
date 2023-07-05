@@ -1,4 +1,5 @@
 import prisma from '../../lib/prisma';
+import { withIronSessionSsr } from 'iron-session/next';
 import { IngredientI } from '../../types';
 import {
   Box,
@@ -21,23 +22,44 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
-
+import { sessionOptions } from '../../lib/session';
 type Props = {
   ingredientsJson: string;
 };
 
-export const getServerSideProps = async () => {
-  const ingredients = await prisma.ingredient.findMany({
-    orderBy: [
-      {
-        updated_at: 'desc',
-      },
-    ],
-  });
-  const ingredientsJson = JSON.stringify(ingredients);
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req }) {
+    const user = req.session.user;
 
-  return { props: { ingredientsJson } };
-};
+    if (user?.isLoggedIn !== true) {
+      const ingredients = await prisma.fineli_Ingredient.findMany({
+        take: 20,
+        orderBy: [
+          {
+            updated_at: 'desc',
+          },
+        ],
+      });
+      const ingredientsJson = JSON.stringify(ingredients);
+
+      return { props: { ingredientsJson } };
+    }
+
+    const ingredients = await prisma.ingredient.findMany({
+      orderBy: [
+        {
+          updated_at: 'desc',
+        },
+      ],
+    });
+    const ingredientsJson = JSON.stringify(ingredients);
+
+    return { props: { ingredientsJson } };
+  },
+  {
+    ...sessionOptions,
+  },
+);
 
 export default function Ingredients(props: Props) {
   const data: IngredientI[] = JSON.parse(props.ingredientsJson);
@@ -145,7 +167,6 @@ export default function Ingredients(props: Props) {
             primaryFabVisible={true}
             primaryFabIcon={<AddIcon />}
             onPrimaryClick={handleFabClick}
-            // onSecondaryClick={handleSecondaryClick}
           />
         </Grid>
       </Grid>
