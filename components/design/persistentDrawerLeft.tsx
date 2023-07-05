@@ -22,6 +22,8 @@ import ListIcon from '@mui/icons-material/List';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import Link from 'next/link';
 import { ClickAwayListener, useMediaQuery } from '@mui/material';
+import useUser from '../../lib/useUser';
+import { useEffect } from 'react';
 // import AdbIcon from '@mui/icons-material/Adb';
 
 const drawerWidth = 240;
@@ -78,6 +80,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+  const { user } = useUser();
+  console.log('persistentDrawer', user);
+
+  useEffect(() => {
+    console.log('useEffect drawer', user);
+    if (user) {
+      console.log('useEffect drawer', user);
+    }
+  }, []);
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -124,7 +136,7 @@ export default function PersistentDrawerLeft() {
                 variant="h6"
                 noWrap
                 component="a"
-                href="/plan"
+                href="/about"
                 sx={{
                   mr: 2,
                   display: { md: 'flex' },

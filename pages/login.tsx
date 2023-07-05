@@ -1,6 +1,6 @@
 import LoginForm from '../components/forms/loginForm';
 import { Grid } from '@mui/material';
-import { sessionOptions } from '../lib/session';
+import { sessionOptions } from '../lib/withSession';
 import { withIronSessionSsr } from 'iron-session/next';
 
 export const getServerSideProps = withIronSessionSsr(
@@ -24,7 +24,6 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 export default function Login({ user }) {
-  console.log(user);
   return (
     <Grid container spacing={2}>
       <LoginForm />

@@ -1,29 +1,24 @@
-import { withIronSessionSsr } from 'iron-session/next';
-import { sessionOptions } from '../lib/session';
 import { Grid, Typography } from '@mui/material';
+import { withSessionSsr } from '../lib/withSession';
 
-export const getServerSideProps = withIronSessionSsr(
-  async function ({ req, res }) {
-    const { user } = req.session;
+export const getServerSideProps = withSessionSsr(async function ({ req, res }) {
+  const { user } = req.session;
 
-    if (!user) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
+  if (!user) {
     return {
-      props: { user },
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
     };
-  },
-  { ...sessionOptions },
-);
+  }
+
+  return {
+    props: { user },
+  };
+});
 
 const Profile = ({ user }) => {
-  console.log(user);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

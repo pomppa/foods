@@ -1,7 +1,7 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { sessionOptions } from '../../lib/session';
-import { User } from './user';
+import { sessionOptions } from '../../lib/withSession';
+import type { User } from './user';
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
@@ -10,6 +10,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
   const { username } = req.body;
+  console.log('onlogin', username);
 
   try {
     const user = {
@@ -17,8 +18,13 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       login: username,
     } as User;
 
-    req.session.user = user;
+    req.session.user = {
+      isLoggedIn: username ? true : false,
+      login: username,
+    };
     await req.session.save();
+    console.log('onlogin', user);
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });

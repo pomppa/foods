@@ -1,11 +1,13 @@
 import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IngredientI } from '../../types';
+import { withIronSessionApiRoute } from 'iron-session/next';
+import { sessionOptions } from '../../lib/withSession';
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default withIronSessionApiRoute(handle, sessionOptions);
+
+async function handle(req: NextApiRequest, res: NextApiResponse) {
+  const { user } = req.session;
   try {
     const fineliIngredients: IngredientI[] =
       await prisma.fineli_Ingredient.findMany({
@@ -19,6 +21,10 @@ export default async function handle(
           },
         ],
       });
+
+    if (!user) {
+      return res.status(200).json(fineliIngredients);
+    }
 
     const ingredients: IngredientI[] = await prisma.ingredient.findMany({
       select: {

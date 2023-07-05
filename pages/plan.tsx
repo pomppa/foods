@@ -8,14 +8,29 @@ import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
 import { useRouter } from 'next/router';
 import StickyFabs from '../components/stickyFabs';
+import { withSessionSsr } from '../lib/withSession';
+import { User } from './api/user';
+
+export const getServerSideProps = withSessionSsr(async function ({ req, res }) {
+  const user: User = req.session.user;
+
+  if (user) {
+    return {
+      props: { user: req.session.user },
+    };
+  }
+
+  return {
+    props: { user: null },
+  };
+});
 
 /**
  * @param props
  * @returns
  */
-export default function Plan() {
+export default function Plan(props) {
   const router = useRouter();
-
   const [formValues, setFormValues] = useState<FormValue[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientI[]>(
     [],
@@ -103,6 +118,8 @@ export default function Plan() {
     }, 0);
   };
 
+  const { user } = props;
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -147,7 +164,7 @@ export default function Plan() {
       >
         <Grid item xs={12}>
           <StickyFabs
-            primaryFabVisible={true}
+            primaryFabVisible={user}
             primaryFabDisabled={hasNullValues || isSavingEnabled}
             onPrimaryClick={handleFabClick}
           />

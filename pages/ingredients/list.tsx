@@ -1,11 +1,9 @@
 import prisma from '../../lib/prisma';
-import { withIronSessionSsr } from 'iron-session/next';
 import { IngredientI } from '../../types';
 import {
   Box,
   Grid,
   IconButton,
-  Link,
   List,
   ListItemText,
   Table,
@@ -22,16 +20,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
-import { sessionOptions } from '../../lib/session';
+import { withSessionSsr } from '../../lib/withSession';
+import { User } from '../api/user';
+
 type Props = {
   ingredientsJson: string;
+  user: User;
 };
 
-export const getServerSideProps = withIronSessionSsr(
+export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
 
-    if (user?.isLoggedIn !== true) {
+    if (!user) {
       const ingredients = await prisma.fineli_Ingredient.findMany({
         take: 20,
         orderBy: [
@@ -54,16 +55,12 @@ export const getServerSideProps = withIronSessionSsr(
     });
     const ingredientsJson = JSON.stringify(ingredients);
 
-    return { props: { ingredientsJson } };
-  },
-  {
-    ...sessionOptions,
+    return { props: { ingredientsJson, user: req.session.user } };
   },
 );
 
 export default function Ingredients(props: Props) {
   const data: IngredientI[] = JSON.parse(props.ingredientsJson);
-
   const router = useRouter();
   const { query } = router;
   const openAccordionId = query.openAccordion;
@@ -79,6 +76,12 @@ export default function Ingredients(props: Props) {
   const handleAccordionChange = (accordionId: number) => {
     setOpenedAccordion(accordionId === openedAccordion ? null : accordionId);
   };
+
+  const handleEditButtonClick = (id) => {
+    router.push(`/ingredients/${id}/edit`);
+  };
+
+  const { user } = props;
 
   return (
     <Grid container spacing={2}>
@@ -131,11 +134,13 @@ export default function Ingredients(props: Props) {
                         right: '8px',
                       }}
                     >
-                      <Link href={`/ingredients/${x.id}/edit`}>
-                        <IconButton aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Link>
+                      <IconButton
+                        aria-label="Edit"
+                        onClick={() => handleEditButtonClick(x.id)}
+                        disabled={x.fineli_id !== undefined}
+                      >
+                        <EditIcon />
+                      </IconButton>
                     </Box>
                   </Grid>
                   <Grid item xs={6}>
@@ -164,7 +169,7 @@ export default function Ingredients(props: Props) {
       >
         <Grid item xs={12}>
           <StickyFabs
-            primaryFabVisible={true}
+            primaryFabVisible={user}
             primaryFabIcon={<AddIcon />}
             onPrimaryClick={handleFabClick}
           />
