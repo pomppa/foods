@@ -1,16 +1,30 @@
-import { useEffect } from 'react';
 import LoginForm from '../components/forms/loginForm';
-import user from './api/user';
-import Router from 'next/router';
 import { Grid } from '@mui/material';
+import { sessionOptions } from '../lib/session';
+import { withIronSessionSsr } from 'iron-session/next';
 
-export default function Login() {
-  useEffect(() => {
+export const getServerSideProps = withIronSessionSsr(
+  async function ({ req, res }) {
+    const { user } = req.session;
+
     if (user) {
-      Router.push('/admin');
+      return {
+        redirect: {
+          destination: '/profile',
+          permanent: false,
+        },
+      };
     }
-  }, []);
 
+    return {
+      props: { user: null },
+    };
+  },
+  { ...sessionOptions },
+);
+
+export default function Login({ user }) {
+  console.log(user);
   return (
     <Grid container spacing={2}>
       <LoginForm />

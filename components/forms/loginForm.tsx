@@ -6,7 +6,7 @@ export default function LoginForm() {
   const [login, setLogin] = useState('');
 
   const { mutateUser } = useUser({
-    redirectTo: '/admin',
+    redirectTo: '/profile',
     redirectIfFound: true,
   });
 
