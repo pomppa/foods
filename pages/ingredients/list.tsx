@@ -6,6 +6,7 @@ import {
   IconButton,
   List,
   ListItemText,
+  Pagination,
   Table,
   TableBody,
   TableCell,
@@ -22,44 +23,57 @@ import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
 import { withSessionSsr } from '../../lib/withSession';
 import { GetServerSideProps } from 'next';
-import { User } from '../api/user';
 import useUser from '../../lib/useUser';
 
-export type Props = {
+type Props = {
   ingredientsJson: string;
-  user?: User;
+  totalPages: number;
+  currentPage: number;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
-  async function getServerSideProps({ req }) {
+  async function getServerSideProps({ req, query }) {
     req.session.user;
 
+    const page = query.page ? Number(query.page) : 1;
+    const pageSize = 30;
+
+    let ingredients;
+    let ingredientsCount;
+
     if (!req.session.user) {
-      const ingredients = await prisma.fineli_Ingredient.findMany({
-        take: 20,
+      ingredients = await prisma.fineli_Ingredient.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
         orderBy: [
           {
             updated_at: 'desc',
           },
         ],
       });
-      const ingredientsJson = JSON.stringify(ingredients);
-
-      return { props: { ingredientsJson } };
+      ingredientsCount = await prisma.fineli_Ingredient.count();
+    } else {
+      ingredients = await prisma.ingredient.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: [
+          {
+            updated_at: 'desc',
+          },
+        ],
+      });
+      ingredientsCount = await prisma.ingredient.count();
     }
 
-    const ingredients = await prisma.ingredient.findMany({
-      orderBy: [
-        {
-          updated_at: 'desc',
-        },
-      ],
-    });
+    const totalPages = Math.ceil(ingredientsCount / pageSize);
+
     const ingredientsJson = JSON.stringify(ingredients);
 
     return {
       props: {
         ingredientsJson,
+        totalPages,
+        currentPage: page,
       },
     };
   },
@@ -159,6 +173,18 @@ export default function Ingredients(props: Props) {
             </Accordion>
           ))}
         </List>
+        <Grid item mt={2} xs={12} display="flex" justifyContent="center">
+          {props.totalPages > 1 && (
+            <Pagination
+              count={props.totalPages}
+              page={props.currentPage}
+              onChange={(_event, page) => {
+                router.push(`/ingredients/list?page=${page}`);
+              }}
+              color="primary"
+            />
+          )}
+        </Grid>
       </Grid>
       <Grid
         container
