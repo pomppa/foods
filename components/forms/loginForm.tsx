@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Grid, Input, Typography } from '@mui/material';
 import useUser from '../../lib/useUser';
+import { onLogin } from '../../lib/login';
 
 export default function LoginForm() {
   const [login, setLogin] = useState('');
@@ -10,28 +11,9 @@ export default function LoginForm() {
     redirectIfFound: true,
   });
 
-  async function onSubmit() {
-    const body = {
-      username: login,
-    };
-
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        mutateUser(data, false);
-      } else {
-        console.error('An unexpected error occurred:', response.statusText);
-      }
-    } catch (error) {
-      console.error('An unexpected error occurred:', error);
-    }
-  }
+  const handleLogin = async () => {
+    await onLogin(mutateUser, login);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -45,7 +27,7 @@ export default function LoginForm() {
             setLogin(event.target.value);
           }}
         />
-        <Button onClick={onSubmit}>Login</Button>
+        <Button onClick={handleLogin}>Login</Button>
       </Grid>
     </Grid>
   );

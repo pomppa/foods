@@ -20,10 +20,12 @@ import ListItemText from '@mui/material/ListItemText';
 import ScaleIcon from '@mui/icons-material/Scale';
 import ListIcon from '@mui/icons-material/List';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
-import Link from 'next/link';
-import { ClickAwayListener, useMediaQuery } from '@mui/material';
-import useUser from '../../lib/useUser';
 
+import Link from 'next/link';
+import { Button, ClickAwayListener, useMediaQuery } from '@mui/material';
+import useUser from '../../lib/useUser';
+import { onLogout } from '../../lib/login';
+import { useRouter } from 'next/router';
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -78,7 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
-  const { user } = useUser();
+  const { user, mutateUser } = useUser();
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -105,6 +107,20 @@ export default function PersistentDrawerLeft() {
     const { icon } = props;
     const TheIcon = icon;
     return <TheIcon {...props} />;
+  };
+
+  const router = useRouter();
+
+  const handleLoginLogout = async () => {
+    if (user?.isLoggedIn) {
+      const data = await onLogout(mutateUser);
+      console.log(data.isLoggedIn);
+      if (data.isLoggedIn === false) {
+        router.push('/about');
+      }
+    } else {
+      router.push('/login');
+    }
   };
 
   return (
@@ -139,6 +155,22 @@ export default function PersistentDrawerLeft() {
               >
                 FOODS
               </Typography>
+            </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                marginLeft: 'auto',
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              <Button onClick={handleLoginLogout}>
+                {user?.isLoggedIn ? 'LOGOUT' : 'LOGIN'}
+              </Button>
             </Typography>
           </Toolbar>
         </AppBar>
