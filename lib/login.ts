@@ -27,7 +27,6 @@ export async function onLogout(mutateUser) {
     const response = await fetch('/api/logout');
 
     if (response.ok) {
-      console.log('resposne ok');
       const data = await response.json();
       mutateUser(data, false);
       return data;

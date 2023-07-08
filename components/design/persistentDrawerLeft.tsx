@@ -114,7 +114,6 @@ export default function PersistentDrawerLeft() {
   const handleLoginLogout = async () => {
     if (user?.isLoggedIn) {
       const data = await onLogout(mutateUser);
-      console.log(data.isLoggedIn);
       if (data.isLoggedIn === false) {
         router.push('/about');
       }
