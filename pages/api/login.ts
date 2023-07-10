@@ -22,15 +22,16 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user.password);
+      const sessionUser = exclude(user, ['password']);
 
       if (passwordMatch) {
         req.session.user = {
           isLoggedIn: true,
-          ...user,
+          ...sessionUser,
         };
         await req.session.save();
         res.json({
-          ...user,
+          ...sessionUser,
           isLoggedIn: true,
         });
       } else {
@@ -42,4 +43,14 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }
+}
+
+function exclude<User, Key extends keyof User>(
+  user: User,
+  keys: Key[],
+): Omit<User, Key> {
+  for (const key of keys) {
+    delete user[key];
+  }
+  return user as Omit<User, Key>;
 }
