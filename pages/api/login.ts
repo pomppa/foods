@@ -4,15 +4,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { sessionOptions } from '../../lib/withSession';
 import bcrypt from 'bcrypt';
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  created_at: Date;
-  updated_at: Date;
-  isLoggedin?: boolean;
-};
+// type User = {
+//   id: number;
+//   name: string;
+//   email: string;
+//   password: string;
+//   created_at: Date;
+//   updated_at: Date;
+//   isLoggedin?: boolean;
+// };
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
