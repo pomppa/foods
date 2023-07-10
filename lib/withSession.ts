@@ -5,7 +5,8 @@ import {
   GetServerSidePropsResult,
   NextApiHandler,
 } from 'next';
-import type { User } from '@prisma/client';
+import { User } from '@prisma/client';
+
 export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: 'iron-session/examples/next.js',
