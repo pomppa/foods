@@ -5,7 +5,16 @@ import {
   GetServerSidePropsResult,
   NextApiHandler,
 } from 'next';
-import { User } from '@prisma/client';
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+  isLoggedin?: boolean;
+};
 
 export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,

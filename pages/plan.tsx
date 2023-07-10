@@ -9,7 +9,21 @@ import SaveMeal from '../components/forms/saveMeal';
 import { useRouter } from 'next/router';
 import StickyFabs from '../components/stickyFabs';
 import { withSessionSsr } from '../lib/withSession';
-import type { User } from '@prisma/client';
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+  isLoggedin?: boolean;
+};
+
+export type UserResponse = {
+  isLoggedIn: boolean;
+  user?: User;
+};
 
 export const getServerSideProps = withSessionSsr(async function ({ req }) {
   const user: User = req.session.user;
