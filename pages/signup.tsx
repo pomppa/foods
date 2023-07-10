@@ -1,4 +1,4 @@
-import LoginForm from '../components/forms/loginForm';
+import SignupForm from '../components/forms/signupForm';
 import { Grid } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
 
@@ -24,7 +24,7 @@ export default function Login() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} mt={2}>
-        <LoginForm />
+        <SignupForm />
       </Grid>
     </Grid>
   );

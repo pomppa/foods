@@ -2,6 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
 
 export const getServerSideProps = withSessionSsr(async function ({ req }) {
+  // TODO never save password to session, always exclude it
   const { user } = req.session;
 
   if (!user) {

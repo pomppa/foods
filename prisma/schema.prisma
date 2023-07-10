@@ -20,6 +20,8 @@ model Ingredient {
   protein         Decimal           @db.Decimal(65, 2)
   carbs           Decimal           @db.Decimal(65, 2)
   fat             Decimal           @db.Decimal(65, 2)
+  user            User?@relation(fields:[userId], references:[id])
+  userId          Int?
 }
 
 model Meal {
@@ -28,6 +30,8 @@ model Meal {
   updated_at     DateTime          @updatedAt
   name           String
   formValues     Json?
+  user           User?@relation(fields:[userId], references:[id])
+  userId         Int?
 }
 
 model Fineli_Ingredient {
@@ -40,4 +44,16 @@ model Fineli_Ingredient {
   protein         Decimal           @db.Decimal(65, 2)
   carbs           Decimal           @db.Decimal(65, 2)
   fat             Decimal           @db.Decimal(65, 2)
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  email         String   @unique
+  password      String
+  created_at    DateTime  @default(now()) @map(name: "created_at")
+  updated_at    DateTime  @updatedAt @map(name: "updated_at")
+  meals         Meal[]
+  ingredients   Ingredient[]
+  @@map(name: "users")
 }
