@@ -1,6 +1,7 @@
 import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Ingredient } from '@prisma/client';
+import { Fineli_Ingredient, Ingredient } from '@prisma/client';
+import { CombinedIngredient } from '../../types';
 
 export default async function handle(
   req: NextApiRequest,
@@ -16,7 +17,7 @@ export default async function handle(
   }
 
   try {
-    const fineliIngredients: Ingredient[] =
+    const fineliIngredients: Fineli_Ingredient[] =
       await prisma.fineli_Ingredient.findMany({
         where: {
           id: {
@@ -34,7 +35,7 @@ export default async function handle(
     });
 
     /* ids could potentially collide */
-    const combinedIngredients: Ingredient[] = [
+    const combinedIngredients: CombinedIngredient[] = [
       ...ingredients,
       ...fineliIngredients,
     ];

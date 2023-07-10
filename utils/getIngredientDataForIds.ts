@@ -1,6 +1,6 @@
-import { Ingredient } from '@prisma/client';
+import { Fineli_Ingredient, Ingredient } from '@prisma/client';
 import prisma from '../lib/prisma';
-import { IngredientI } from '../types';
+import { CombinedIngredient, IngredientI } from '../types';
 
 /**
  * Converts to supported datatypes and excludes timestamps for meals page
@@ -9,7 +9,7 @@ import { IngredientI } from '../types';
  * @returns
  */
 export async function getIngredientDataForIds(ids: number[]) {
-  const fineliIngredients: Ingredient[] =
+  const fineliIngredients: Fineli_Ingredient[] =
     await prisma.fineli_Ingredient.findMany({
       where: {
         id: {
@@ -27,7 +27,7 @@ export async function getIngredientDataForIds(ids: number[]) {
   });
 
   /* ids could potentially collide */
-  const combinedIngredients: Ingredient[] = [
+  const combinedIngredients: CombinedIngredient[] = [
     ...ingredients,
     ...fineliIngredients,
   ];

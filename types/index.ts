@@ -1,3 +1,18 @@
+import { Decimal } from '@prisma/client/runtime';
+
+export type CombinedIngredient = {
+  id: number;
+  fineli_id?: number | null;
+  created_at: Date;
+  updated_at: Date;
+  name: string;
+  kcal: Decimal;
+  protein: Decimal;
+  carbs: Decimal;
+  fat: Decimal;
+  userId?: number | null;
+};
+
 export type MealI = {
   id: number;
   created_at?: Date;
