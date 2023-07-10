@@ -47,13 +47,13 @@ model Fineli_Ingredient {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  email         String   @unique
-  password      String
-  created_at    DateTime  @default(now()) @map(name: "created_at")
-  updated_at    DateTime  @updatedAt @map(name: "updated_at")
-  meals         Meal[]
-  ingredients   Ingredient[]
+  id                    Int       @id @default(autoincrement())
+  name                  String    @unique
+  email                 String    @unique
+  password              String
+  created_at            DateTime  @default(now()) @map(name: "created_at")
+  updated_at            DateTime  @updatedAt @map(name: "updated_at")
+  meals                 Meal[]
+  ingredients           Ingredient[]
   @@map(name: "users")
 }

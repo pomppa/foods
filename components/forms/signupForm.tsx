@@ -42,7 +42,7 @@ export default function SignupForm() {
           <Input
             required
             placeholder="Username"
-            sx={{ width: '30%' }}
+            sx={{ width: '50%' }}
             onChange={(event) => {
               setUsername(event.target.value);
             }}
@@ -52,7 +52,7 @@ export default function SignupForm() {
           <Input
             required
             placeholder="Email"
-            sx={{ width: '30%' }}
+            sx={{ width: '50%' }}
             onChange={(event) => {
               setEmail(event.target.value);
             }}
@@ -64,7 +64,7 @@ export default function SignupForm() {
             type="password"
             placeholder="Password"
             onKeyPress={handleKeyPress}
-            sx={{ width: '30%' }}
+            sx={{ width: '50%' }}
             onChange={(event) => {
               setPassword(event.target.value);
             }}

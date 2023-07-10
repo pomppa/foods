@@ -14,7 +14,6 @@ async function signUpRoute(req: NextApiRequest, res: NextApiResponse) {
   const { username, email, password } = req.body;
 
   try {
-    // Check if username or email already exists
     const existingUser: User = await prisma.user.findFirst({
       where: {
         OR: [{ name: username }, { email: email }],

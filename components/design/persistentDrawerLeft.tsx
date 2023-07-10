@@ -167,7 +167,7 @@ export default function PersistentDrawerLeft() {
                 textDecoration: 'none',
               }}
             >
-              <Button onClick={handleLoginLogout}>
+              <Button sx={{ color: 'inherit' }} onClick={handleLoginLogout}>
                 {user?.isLoggedIn ? 'LOGOUT' : 'LOGIN'}
               </Button>
             </Typography>

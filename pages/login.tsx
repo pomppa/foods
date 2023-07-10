@@ -1,6 +1,7 @@
 import LoginForm from '../components/forms/loginForm';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
+import SignupForm from '../components/forms/signupForm';
 
 export const getServerSideProps = withSessionSsr(async function ({ req }) {
   const { user } = req.session;
@@ -23,8 +24,11 @@ export const getServerSideProps = withSessionSsr(async function ({ req }) {
 export default function Login() {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} mt={2}>
+      <Grid item xs={12} sm={6} md={6}>
         <LoginForm />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6}>
+        <SignupForm />
       </Grid>
     </Grid>
   );

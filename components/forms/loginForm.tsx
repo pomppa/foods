@@ -37,7 +37,7 @@ export default function LoginForm() {
           <Input
             required
             placeholder="Username or email"
-            sx={{ width: '30%' }}
+            sx={{ width: '50%' }}
             onChange={(event) => {
               setLogin(event.target.value);
             }}
@@ -49,7 +49,7 @@ export default function LoginForm() {
             type="password"
             placeholder="Password"
             onKeyPress={handleKeyPress}
-            sx={{ width: '30%' }}
+            sx={{ width: '50%' }}
             onChange={(event) => {
               setPassword(event.target.value);
             }}
