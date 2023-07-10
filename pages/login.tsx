@@ -24,10 +24,10 @@ export const getServerSideProps = withSessionSsr(async function ({ req }) {
 export default function Login() {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={6} md={6}>
+      <Grid item xs={12} sm={6} md={6} mt={2}>
         <LoginForm />
       </Grid>
-      <Grid item xs={12} sm={6} md={6}>
+      <Grid item xs={12} sm={6} md={6} mt={2}>
         <SignupForm />
       </Grid>
     </Grid>
