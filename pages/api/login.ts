@@ -23,12 +23,9 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { login, password } = req.body;
 
   try {
-    const user: User | null = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { name: login }, // Check if username matches
-          { email: login }, // Check if email matches
-        ],
+        OR: [{ name: login }, { email: login }],
       },
     });
 
