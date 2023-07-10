@@ -14,7 +14,7 @@ const fineliAPI = 'https://fineli.fi/fineli/api/v1/foods/';
 async function read() {
   console.log('reading data from csv');
   fs.createReadStream('lib/data/food.csv')
-    .pipe(parse({ delimiter: ';', from_line: 2 }))
+    .pipe(parse({ delimiter: ';', from_line: 2, to_line: 20 }))
     .on('data', async function (row) {
       console.log(row[2]);
       if (row[0] > startFromId && row[2] === 'FOOD') {
