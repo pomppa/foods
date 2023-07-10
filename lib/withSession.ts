@@ -5,16 +5,7 @@ import {
   GetServerSidePropsResult,
   NextApiHandler,
 } from 'next';
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  created_at: Date;
-  updated_at: Date;
-  isLoggedin?: boolean;
-};
+import type { SessionUser } from '../types';
 
 export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
@@ -27,7 +18,7 @@ export const sessionOptions: IronSessionOptions = {
 // This is where we specify the typings of req.session.*
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: User & { isLoggedIn: boolean };
+    user?: SessionUser;
   }
 }
 

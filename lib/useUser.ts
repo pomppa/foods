@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
 import useSWR from 'swr';
-import type { UserResponse } from '../pages/api/user';
+import type { SessionUser } from '../types';
 
 export default function useUser({
   redirectTo = '',
@@ -13,7 +13,7 @@ export default function useUser({
     const data = await response.json();
     return data;
   };
-  const { data: user, mutate: mutateUser } = useSWR<UserResponse>(
+  const { data: user, mutate: mutateUser } = useSWR<SessionUser>(
     'swrUser',
     userSwrFetcher,
   );

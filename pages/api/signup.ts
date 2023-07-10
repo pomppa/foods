@@ -3,6 +3,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sessionOptions } from '../../lib/withSession';
 import bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 export default withIronSessionApiRoute(signUpRoute, sessionOptions);
 
@@ -14,7 +15,7 @@ async function signUpRoute(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     // Check if username or email already exists
-    const existingUser = await prisma.user.findFirst({
+    const existingUser: User = await prisma.user.findFirst({
       where: {
         OR: [{ name: username }, { email: email }],
       },

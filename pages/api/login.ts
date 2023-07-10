@@ -3,16 +3,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sessionOptions } from '../../lib/withSession';
 import bcrypt from 'bcrypt';
-
-// type User = {
-//   id: number;
-//   name: string;
-//   email: string;
-//   password: string;
-//   created_at: Date;
-//   updated_at: Date;
-//   isLoggedin?: boolean;
-// };
+import type { User } from '@prisma/client';
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
@@ -23,7 +14,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { login, password } = req.body;
 
   try {
-    const user = await prisma.user.findFirst({
+    const user: User = await prisma.user.findFirst({
       where: {
         OR: [{ name: login }, { email: login }],
       },
