@@ -1,4 +1,3 @@
-import { NextApiRequest } from 'next';
 import { useState } from 'react';
 import PlanForm from '../../../components/forms/planForm';
 import MacroPieChart from '../../../components/macros';
@@ -12,25 +11,33 @@ import router from 'next/router';
 import SaveMeal from '../../../components/forms/saveMeal';
 import { Meal } from '@prisma/client';
 import StickyFabs from '../../../components/stickyFabs';
+import { withSessionSsr } from '../../../lib/withSession';
+import { GetServerSideProps } from 'next';
 
 type Props = {
   meal: Omit<Meal, 'created_at' | 'updated_at'>;
   initialFormValues: FormValue[];
   ingredientDataForIds: IngredientI[];
 };
-export const getServerSideProps = async (req: NextApiRequest) => {
-  const meal = await getMeal(req.query.id);
 
-  const initialFormValues = meal.formValues as FormValue[];
+export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
+  async function ({ req, query }) {
+    const { user } = req.session;
+    const { id } = query;
 
-  const ingredientIds = initialFormValues.map((value) => value.ingredient_id);
+    const meal = await getMeal(id, user?.data.id);
 
-  const ingredientDataForIds = await getIngredientDataForIds(ingredientIds);
+    const initialFormValues = meal.formValues as FormValue[];
 
-  return {
-    props: { meal, initialFormValues, ingredientDataForIds },
-  };
-};
+    const ingredientIds = initialFormValues.map((value) => value.ingredient_id);
+
+    const ingredientDataForIds = await getIngredientDataForIds(ingredientIds);
+
+    return {
+      props: { meal, initialFormValues, ingredientDataForIds },
+    };
+  },
+);
 
 /**
  * Edit page component

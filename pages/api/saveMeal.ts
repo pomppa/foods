@@ -11,15 +11,20 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { mealName, formValues } = req.body;
   const { user } = req.session;
+
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const { mealName, formValues } = req.body;
 
   try {
     const meal: Meal = await prisma.meal.create({
       data: {
         name: mealName,
         formValues: formValues,
-        userId: user?.data.id,
+        userId: user.data.id,
       },
     });
 

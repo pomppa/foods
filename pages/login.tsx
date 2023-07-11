@@ -1,5 +1,5 @@
 import LoginForm from '../components/forms/loginForm';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
 import SignupForm from '../components/forms/signupForm';
 

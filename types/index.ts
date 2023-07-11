@@ -35,6 +35,7 @@ export type IngredientI = {
   carbs?: number;
   fat?: number;
   fineli_id?: number;
+  user_id?: number;
 };
 
 export type FormValue = {

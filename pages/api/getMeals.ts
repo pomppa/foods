@@ -7,7 +7,12 @@ export default withIronSessionApiRoute(handle, sessionOptions);
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
-  const meals = await getAllMeals(user?.data.id);
+
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const meals = await getAllMeals(user.data.id);
 
   switch (req.method) {
     case 'GET':

@@ -1,12 +1,19 @@
 import prisma from '../../../lib/prisma';
 import { MealI } from '../../../types';
+import { withIronSessionApiRoute } from 'iron-session/next';
+import { sessionOptions } from '../../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default withIronSessionApiRoute(handle, sessionOptions);
+
+async function handle(req: NextApiRequest, res: NextApiResponse) {
   const mealId = String(req.query.id);
+  const { user } = req.session;
+
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   try {
     const updatedMeal = await updateMeal(mealId, req.body);
 
@@ -18,7 +25,7 @@ export default async function handle(
 
 async function updateMeal(mealId: string, meal: MealI) {
   return await prisma.meal.update({
-    where: { id: parseInt(mealId, 10) },
+    where: { id: parseInt(mealId) },
     data: {
       name: meal.name,
       formValues: meal.formValues,

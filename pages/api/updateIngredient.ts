@@ -10,9 +10,14 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'PUT') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-  const { id, name, kcal, fat, carbs, protein } = req.body;
+  const { user } = req.session;
 
-  // todo all necessary routes to use session
+  const { id, name, kcal, fat, carbs, protein, userId } = req.body;
+
+  if (!user || userId !== user?.data.id) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   try {
     const updatedIngredient: Ingredient = await prisma.ingredient.update({
       where: { id: id },

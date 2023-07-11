@@ -10,6 +10,7 @@ import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import StickyFabs from '../../components/stickyFabs';
+import { withSessionSsr } from '../../lib/withSession';
 
 type Props = {
   name: string;
@@ -23,22 +24,34 @@ type Props = {
  * @param req
  * @returns
  */
-export const getServerSideProps = async (req: NextApiRequest) => {
-  const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
-    req.query.id,
-  );
+//export const getServerSideProps = withSessionSsr(async function ({ req }) {
 
-  const { name, id } = meal;
+export const getServerSideProps = withSessionSsr(async ({ req, query }) => {
+  try {
+    const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
+      query.id,
+      req.session.user?.data.id,
+    );
 
-  const formValues: FormValue[] = meal.formValues as FormValue[];
-  const ingredients: IngredientI[] = await getIngredientDataForIds(
-    formValues.map((value) => value.ingredient_id),
-  );
+    const { name, id } = meal;
 
-  return {
-    props: { name, id, formValues, ingredients },
-  };
-};
+    const formValues: FormValue[] = meal.formValues as FormValue[];
+    const ingredients: IngredientI[] = await getIngredientDataForIds(
+      formValues.map((value) => value.ingredient_id),
+    );
+
+    return {
+      props: { name, id, formValues, ingredients },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/meals/list',
+        permanent: false,
+      },
+    };
+  }
+});
 
 /**
  * Meal page component.

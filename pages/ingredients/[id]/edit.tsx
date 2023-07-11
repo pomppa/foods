@@ -2,7 +2,7 @@ import prisma from '../../../lib/prisma';
 import IngredientForm from '../../../components/forms/ingredientForm';
 import { Grid, Typography } from '@mui/material';
 import { NextApiRequest } from 'next';
-import { IngredientI } from '../../../types';
+import { Ingredient } from '@prisma/client';
 import StickyFabs from '../../../components/stickyFabs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -20,7 +20,7 @@ export const getServerSideProps = async (req: NextApiRequest) => {
 };
 
 export default function EditIngredient(props) {
-  const ingredient: IngredientI = JSON.parse(props.ingredient);
+  const ingredient: Ingredient = JSON.parse(props.ingredient);
 
   const router = useRouter();
 
@@ -48,6 +48,7 @@ export default function EditIngredient(props) {
           fat,
           carbs,
           protein,
+          userId: ingredient.userId,
         }),
       });
 
