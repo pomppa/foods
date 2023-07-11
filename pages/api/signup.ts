@@ -1,9 +1,9 @@
 import prisma from '../../lib/prisma';
 import { withIronSessionApiRoute } from 'iron-session/next';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { sessionOptions } from '../../lib/withSession';
 import bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default withIronSessionApiRoute(signUpRoute, sessionOptions);
 
@@ -30,7 +30,6 @@ async function signUpRoute(req: NextApiRequest, res: NextApiResponse) {
       data: {
         name: username,
         password: hashedPassword,
-        resetToken: 'asd',
       },
     });
 

@@ -28,10 +28,10 @@ export async function onLogout(mutateUser) {
       mutateUser(data, false);
       return data;
     } else {
-      console.error('An unexpected error occurred:', response.statusText);
+      console.error('An unexpected error occurred: ', response.statusText);
     }
   } catch (error) {
-    console.error('An unexpected error occurred:', error);
+    console.error('An unexpected error occurred: ', error);
   }
 }
 
@@ -57,7 +57,7 @@ export async function onCreate(username, password) {
       throw new Error('An unexpected error occurred: ' + response.statusText);
     }
   } catch (error) {
-    console.error('An unexpected error occurred:', error);
+    console.error('An unexpected error occurred :', error);
     throw error;
   }
 }

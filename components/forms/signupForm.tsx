@@ -52,6 +52,7 @@ export default function SignupForm() {
             required
             type="password"
             placeholder="Password"
+            inputProps={{ minLength: 8 }}
             onKeyPress={handleKeyPress}
             sx={{ width: '50%' }}
             onChange={(event) => {
@@ -59,7 +60,7 @@ export default function SignupForm() {
             }}
           />
           <Button
-            disabled={!username.trim() || !password.trim()}
+            disabled={!username.trim() || password.length < 8}
             variant="contained"
             sx={{ ml: 2 }}
             onClick={handleSignup}
@@ -68,9 +69,6 @@ export default function SignupForm() {
           </Button>
           {signupError && (
             <>
-              <Typography variant="body1" color="error">
-                Failed to creata an account
-              </Typography>
               <Typography variant="body2" color="error">
                 {signupErrorMsg}
               </Typography>

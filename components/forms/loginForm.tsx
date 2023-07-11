@@ -55,7 +55,7 @@ export default function LoginForm() {
             }}
           />
           <Button
-            disabled={!login.trim() || !password.trim()}
+            disabled={!login.trim() || password.length < 8}
             variant="contained"
             sx={{ ml: 2 }}
             onClick={handleLogin}
