@@ -16,7 +16,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   try {
     const user: User = await prisma.user.findFirst({
       where: {
-        OR: [{ name: login }, { email: login }],
+        name: login,
       },
     });
 

@@ -35,10 +35,9 @@ export async function onLogout(mutateUser) {
   }
 }
 
-export async function onCreate(username, email, password) {
+export async function onCreate(username, password) {
   const body = {
     username: username,
-    email: email,
     password: password,
   };
 
@@ -53,7 +52,7 @@ export async function onCreate(username, email, password) {
       const data = await response.json();
       return data;
     } else if (response.status === 409) {
-      throw new Error('Username or email already exists');
+      throw new Error('Username already exists');
     } else {
       throw new Error('An unexpected error occurred: ' + response.statusText);
     }

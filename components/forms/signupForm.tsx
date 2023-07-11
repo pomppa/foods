@@ -5,7 +5,6 @@ import useUser from '../../lib/useUser';
 
 export default function SignupForm() {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signupError, setSignupError] = useState(false);
   const [signupErrorMsg, setSignupErrorMsg] = useState('');
@@ -17,7 +16,7 @@ export default function SignupForm() {
 
   const handleSignup = async () => {
     try {
-      await onCreate(username, email, password);
+      await onCreate(username, password);
       setSignupError(false);
       await onLogin(mutateUser, username, password);
     } catch (error) {
@@ -51,16 +50,6 @@ export default function SignupForm() {
         <Grid item xs={12} mt={2}>
           <Input
             required
-            placeholder="Email"
-            sx={{ width: '50%' }}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} mt={2}>
-          <Input
-            required
             type="password"
             placeholder="Password"
             onKeyPress={handleKeyPress}
@@ -70,7 +59,7 @@ export default function SignupForm() {
             }}
           />
           <Button
-            disabled={!username.trim() || !email.trim() || !password.trim()}
+            disabled={!username.trim() || !password.trim()}
             variant="contained"
             sx={{ ml: 2 }}
             onClick={handleSignup}

@@ -3,7 +3,7 @@ import { MealI } from '../../../types';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionOptions } from '../../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
+import { getMeal } from '../getMeal/[id]';
 export default withIronSessionApiRoute(handle, sessionOptions);
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
@@ -15,9 +15,14 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const updatedMeal = await updateMeal(mealId, req.body);
+    await getMeal(mealId, user.data?.id);
+  } catch (error) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
-    res.status(200).json({ data: updatedMeal });
+  try {
+    const meal = await updateMeal(mealId, req.body);
+    res.status(200).json({ data: meal });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update meal' });
   }

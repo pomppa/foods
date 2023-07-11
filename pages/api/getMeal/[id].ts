@@ -14,6 +14,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const meal = await getMeal(id, user.data.id);
+
   if (meal.userId !== user.data.id) {
     return res.status(401).json({ message: 'Unauthorized' });
   }

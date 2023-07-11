@@ -36,7 +36,7 @@ export default function LoginForm() {
         <Grid item xs={12}>
           <Input
             required
-            placeholder="Username or email"
+            placeholder="Username"
             sx={{ width: '50%' }}
             onChange={(event) => {
               setLogin(event.target.value);

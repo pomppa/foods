@@ -11,19 +11,17 @@ async function signUpRoute(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-  const { username, email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
     const existingUser: User = await prisma.user.findFirst({
       where: {
-        OR: [{ name: username }, { email: email }],
+        name: username,
       },
     });
 
     if (existingUser) {
-      return res
-        .status(409)
-        .json({ message: 'Username or email already exists' });
+      return res.status(409).json({ message: 'Username already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,8 +29,8 @@ async function signUpRoute(req: NextApiRequest, res: NextApiResponse) {
     const user = await prisma.user.create({
       data: {
         name: username,
-        email: email,
         password: hashedPassword,
+        resetToken: 'asd',
       },
     });
 

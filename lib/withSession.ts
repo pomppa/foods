@@ -31,7 +31,7 @@ export function withSessionSsr<
   P extends { [key: string]: unknown } = { [key: string]: unknown },
 >(
   handler: (
-    context: GetServerSidePropsContext & { query: { [key: string]: string } },
+    context: GetServerSidePropsContext,
   ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>,
 ) {
   return withIronSessionSsr(handler, sessionOptions);

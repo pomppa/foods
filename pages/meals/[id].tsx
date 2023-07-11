@@ -1,7 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import { getMeal } from '../api/getMeal/[id]';
 import { FormValue, IngredientI, Totals } from '../../types';
-import { NextApiRequest } from 'next';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macros';
 import { getIngredientDataForIds } from '../../utils/getIngredientDataForIds';
