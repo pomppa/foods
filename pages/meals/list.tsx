@@ -16,15 +16,17 @@ import StickyFabs from '../../components/stickyFabs';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { withSessionSsr } from '../../lib/withSession';
 
 type Props = {
   meals: Omit<Meal, 'created_at' | 'updated_at'>[];
 };
 
-export const getServerSideProps = async () => {
-  const meals = await getAllMeals();
+export const getServerSideProps = withSessionSsr(async function ({ req }) {
+  const { user } = req.session;
+  const meals = await getAllMeals(user?.id);
   return { props: { meals } };
-};
+});
 
 export default function Meals(props: Props) {
   const router = useRouter();

@@ -31,6 +31,9 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         id: true,
         name: true,
       },
+      where: {
+        userId: user?.id,
+      },
       orderBy: [
         {
           updated_at: 'desc',

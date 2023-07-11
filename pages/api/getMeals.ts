@@ -1,11 +1,13 @@
 import prisma from '../../lib/prisma';
+import { withIronSessionApiRoute } from 'iron-session/next';
+import { sessionOptions } from '../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const meals = await getAllMeals();
+export default withIronSessionApiRoute(handle, sessionOptions);
+
+async function handle(req: NextApiRequest, res: NextApiResponse) {
+  const { user } = req.session;
+  const meals = await getAllMeals(user?.id);
 
   switch (req.method) {
     case 'GET':
@@ -14,10 +16,13 @@ export default async function handle(
   }
 }
 
-export async function getAllMeals() {
+export async function getAllMeals(userId) {
   const meals = await prisma.meal.findMany({
     orderBy: {
       updated_at: 'desc',
+    },
+    where: {
+      userId,
     },
   });
 

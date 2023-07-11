@@ -1,13 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { sessionOptions } from '../../lib/withSession';
 const prisma = new PrismaClient();
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default withIronSessionApiRoute(handle, sessionOptions);
+
+export async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { name, kcal, fat, carbs, protein } = req.body;
+    const { user } = req.session;
 
     try {
       const createdIngredient = await prisma.ingredient.create({
@@ -17,6 +19,7 @@ export default async function handle(
           fat,
           carbs,
           protein,
+          userId: user?.id,
         },
       });
       await prisma.$disconnect();

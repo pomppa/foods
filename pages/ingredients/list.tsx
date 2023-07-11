@@ -33,8 +33,6 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
   async function getServerSideProps({ req, query }) {
-    req.session.user;
-
     const page = query.page ? Number(query.page) : 1;
     const pageSize = 30;
 
@@ -56,6 +54,9 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
       ingredients = await prisma.ingredient.findMany({
         skip: (page - 1) * pageSize,
         take: pageSize,
+        where: {
+          userId: req.session.user?.id,
+        },
         orderBy: [
           {
             updated_at: 'desc',

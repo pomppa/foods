@@ -3,7 +3,6 @@ import IngredientForm from '../../components/forms/ingredientForm';
 import { Grid, Typography } from '@mui/material';
 import StickyFabs from '../../components/stickyFabs';
 import { useRouter } from 'next/router';
-useRouter;
 
 export default function Ingredients() {
   const router = useRouter();
