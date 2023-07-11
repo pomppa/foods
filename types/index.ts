@@ -2,7 +2,7 @@ import type { Decimal } from '@prisma/client/runtime';
 import type { User } from '@prisma/client';
 
 export type SessionUser = {
-  user?: User;
+  data?: Omit<User, 'password'>;
   isLoggedIn: boolean;
 };
 

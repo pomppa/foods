@@ -19,7 +19,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       data: {
         name: mealName,
         formValues: formValues,
-        userId: user?.id,
+        userId: user?.data.id,
       },
     });
 

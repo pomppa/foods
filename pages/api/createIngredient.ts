@@ -19,7 +19,7 @@ export async function handle(req: NextApiRequest, res: NextApiResponse) {
           fat,
           carbs,
           protein,
-          userId: user?.id,
+          userId: user?.data.id,
         },
       });
       await prisma.$disconnect();

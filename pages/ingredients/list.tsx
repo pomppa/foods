@@ -33,6 +33,7 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
   async function getServerSideProps({ req, query }) {
+    const { user } = req.session;
     const page = query.page ? Number(query.page) : 1;
     const pageSize = 30;
 
@@ -55,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
         skip: (page - 1) * pageSize,
         take: pageSize,
         where: {
-          userId: req.session.user?.id,
+          userId: user?.data.id,
         },
         orderBy: [
           {

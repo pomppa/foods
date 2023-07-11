@@ -33,7 +33,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         id: {
           in: ingredientIds,
         },
-        userId: user?.id,
+        userId: user?.data.id,
       },
     });
 

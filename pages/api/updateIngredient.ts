@@ -11,7 +11,8 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
   const { id, name, kcal, fat, carbs, protein } = req.body;
-  // todo session?
+
+  // todo all necessary routes to use session
   try {
     const updatedIngredient: Ingredient = await prisma.ingredient.update({
       where: { id: id },

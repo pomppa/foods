@@ -24,7 +24,7 @@ type Props = {
 
 export const getServerSideProps = withSessionSsr(async function ({ req }) {
   const { user } = req.session;
-  const meals = await getAllMeals(user?.id);
+  const meals = await getAllMeals(user?.data.id);
   return { props: { meals } };
 });
 

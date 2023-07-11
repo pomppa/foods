@@ -32,7 +32,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         name: true,
       },
       where: {
-        userId: user?.id,
+        userId: user?.data.id,
       },
       orderBy: [
         {

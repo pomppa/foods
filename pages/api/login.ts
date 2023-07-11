@@ -27,12 +27,12 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       if (passwordMatch) {
         req.session.user = {
           isLoggedIn: true,
-          ...sessionUser,
+          data: sessionUser,
         };
         await req.session.save();
         res.json({
-          ...sessionUser,
           isLoggedIn: true,
+          data: sessionUser,
         });
       } else {
         res.status(401).json({ message: 'Invalid password' });
