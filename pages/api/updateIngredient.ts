@@ -16,10 +16,14 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const { id, name, kcal, fat, carbs, protein, userId } = req.body;
+  const { id, name, kcal, fat, carbs, protein } = req.body;
 
-  if (!user || userId !== user.data.id) {
-    return res.status(401).json({ message: 'Unauthorized' });
+  const ingredientToUpdate = await prisma.ingredient.findFirst({
+    where: { id: id, userId: user.data.id },
+  });
+
+  if (!ingredientToUpdate) {
+    return res.status(404).json({ message: 'Not found' });
   }
 
   try {
@@ -28,10 +32,8 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       data: { name, kcal, fat, carbs, protein },
     });
 
-    await prisma.$disconnect();
     return res.status(200).json({ ingredient: updatedIngredient });
   } catch (error) {
-    await prisma.$disconnect();
     return res.status(500).json({ message: 'Failed to update ingredient' });
   }
 }

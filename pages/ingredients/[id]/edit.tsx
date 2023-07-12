@@ -6,21 +6,46 @@ import { Ingredient } from '@prisma/client';
 import StickyFabs from '../../../components/stickyFabs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { withSessionSsr } from '../../../lib/withSession';
 
-export const getServerSideProps = async (req: NextApiRequest) => {
-  const ingredientRaw = await prisma.ingredient.findFirst({
+export const getServerSideProps = withSessionSsr(async function ({
+  req,
+  query,
+}) {
+  const { id } = query;
+  const { user } = req.session;
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/ingredients',
+        permanent: false,
+      },
+    };
+  }
+  const ingredient = await prisma.ingredient.findFirst({
     where: {
-      id: Number(req.query.id),
+      id: Number(id),
+      userId: user.data.id,
     },
   });
 
-  const ingredient = JSON.stringify(ingredientRaw);
+  if (!ingredient) {
+    return {
+      redirect: {
+        destination: '/ingredients/list',
+        permanent: false,
+      },
+    };
+  }
 
-  return { props: { ingredient } };
-};
+  const ingredientData = JSON.stringify(ingredient);
+
+  return { props: { ingredientData } };
+});
 
 export default function EditIngredient(props) {
-  const ingredient: Ingredient = JSON.parse(props.ingredient);
+  const ingredient: Ingredient = JSON.parse(props.ingredientData);
 
   const router = useRouter();
 
@@ -51,7 +76,17 @@ export default function EditIngredient(props) {
           userId: ingredient.userId,
         }),
       });
-
+      console.log(
+        JSON.stringify({
+          id: ingredient.id,
+          name,
+          kcal,
+          fat,
+          carbs,
+          protein,
+          userId: ingredient.userId,
+        }),
+      );
       if (!response.ok) {
         throw new Error('Failed to save ingredient');
       }
