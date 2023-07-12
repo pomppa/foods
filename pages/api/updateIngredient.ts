@@ -12,9 +12,13 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
   }
   const { user } = req.session;
 
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   const { id, name, kcal, fat, carbs, protein, userId } = req.body;
 
-  if (!user || userId !== user?.data.id) {
+  if (!user || userId !== user.data.id) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 

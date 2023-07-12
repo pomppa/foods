@@ -15,9 +15,13 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    await getMeal(mealId, user.data?.id);
+    const meal = await getMeal(mealId, user.data.id);
+
+    if (meal.id !== user.data.id) {
+      throw new Error('No such meal for user');
+    }
   } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(404).json({ message: 'Not found' });
   }
 
   try {

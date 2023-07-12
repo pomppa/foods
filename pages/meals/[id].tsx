@@ -26,12 +26,12 @@ type Props = {
 //export const getServerSideProps = withSessionSsr(async function ({ req }) {
 
 export const getServerSideProps = withSessionSsr(async ({ req, query }) => {
+  const { user } = req.session;
   try {
     const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
       query.id,
-      req.session.user?.data.id,
+      user.data.id,
     );
-
     const { name, id } = meal;
 
     const formValues: FormValue[] = meal.formValues as FormValue[];

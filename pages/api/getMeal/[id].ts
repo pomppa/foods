@@ -15,24 +15,24 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
 
   const meal = await getMeal(id, user.data.id);
 
-  if (meal.userId !== user.data.id) {
-    return res.status(401).json({ message: 'Unauthorized' });
+  if (!meal) {
+    return res.status(404).json({ message: 'Not found' });
   }
+
+  if (meal.userId !== user.data.id) {
+    return res.status(404).json({ message: 'Not found' });
+  }
+
+  return res.status(200).json({ meal });
 }
 
 export async function getMeal(id: string | string[], userId: number) {
   const meal = await prisma.meal.findFirst({
     where: {
       id: Number(id),
-      userId,
+      userId: userId,
     },
   });
-
-  if (meal.userId !== userId) {
-    throw new Error('Unauthorized');
-  }
-
-  await prisma.$disconnect();
   return exclude(meal, ['created_at', 'updated_at']);
 }
 

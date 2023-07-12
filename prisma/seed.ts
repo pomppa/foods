@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { parse } from 'csv-parse';
 import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 /* init prisma */
 const prisma = new PrismaClient();
@@ -76,3 +77,98 @@ read().catch(async (e) => {
   await prisma.$disconnect();
   process.exit(1);
 });
+
+async function populate() {
+  await prisma.$queryRaw`ALTER TABLE ingredient AUTO_INCREMENT = 5000;`;
+
+  const hashedPassword = await bcrypt.hash('testtest', 10);
+
+  const testData = [
+    {
+      userName: 'user-seed-1',
+      password: hashedPassword,
+      ingredient: {
+        name: 'test',
+        kcal: '450',
+        protein: '20',
+        fat: '10',
+        carbs: '50',
+      },
+      meal: {
+        name: 'mealname',
+        formValues: [
+          {
+            weight: 120,
+            ingredient_id: 4,
+          },
+          {
+            weight: 340,
+            ingredient_id: 2,
+          },
+          {
+            weight: 230,
+            ingredient_id: 5000,
+          },
+        ],
+      },
+    },
+    {
+      userName: 'user-seed-2',
+      password: hashedPassword,
+      ingredient: {
+        name: 'test2',
+        kcal: '250',
+        protein: '15',
+        fat: '20',
+        carbs: '25',
+      },
+      meal: {
+        name: 'mealname2',
+        formValues: [
+          {
+            weight: 100,
+            ingredient_id: 4,
+          },
+          {
+            weight: 200,
+            ingredient_id: 2,
+          },
+          {
+            weight: 300,
+            ingredient_id: 5001,
+          },
+        ],
+      },
+    },
+  ];
+
+  for (const data of testData) {
+    const user = await prisma.user.create({
+      data: {
+        name: data.userName,
+        password: data.password,
+      },
+    });
+
+    await prisma.ingredient.create({
+      data: {
+        name: data.ingredient.name,
+        kcal: data.ingredient.kcal,
+        protein: data.ingredient.protein,
+        fat: data.ingredient.fat,
+        carbs: data.ingredient.carbs,
+        userId: user.id,
+      },
+    });
+
+    await prisma.meal.create({
+      data: {
+        name: data.meal.name,
+        formValues: data.meal.formValues,
+        userId: user.id,
+      },
+    });
+  }
+}
+
+populate();
