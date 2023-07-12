@@ -7,5 +7,6 @@ export default withIronSessionApiRoute(logoutRoute, sessionOptions);
 
 function logoutRoute(req: NextApiRequest, res: NextApiResponse<SessionUser>) {
   req.session.destroy();
+  res.setHeader('Cache-Control', 'no-store');
   res.json({ isLoggedIn: false });
 }

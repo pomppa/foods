@@ -9,6 +9,7 @@ async function userRoute(
   req: NextApiRequest,
   res: NextApiResponse<SessionUser>,
 ) {
+  res.setHeader('Cache-Control', 'no-store');
   if (req.session.user) {
     res.json({
       ...req.session.user,
