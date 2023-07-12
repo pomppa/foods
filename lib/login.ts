@@ -21,7 +21,7 @@ export async function onLogin(mutateUser, login, password) {
 
 export async function onLogout(mutateUser) {
   try {
-    const response = await fetch('/api/logout');
+    const response = await fetch('/api/logout?' + new Date().getTime());
 
     if (response.ok) {
       const data = await response.json();
