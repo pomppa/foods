@@ -55,6 +55,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
       skip: (page - 1) * pageSize,
       take: pageSize,
       where: {
+        userId: user?.data.id,
         name: {
           contains: searchQuery,
         },
