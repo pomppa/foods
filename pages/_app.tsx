@@ -4,6 +4,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import createEmotionCache from '../utils/createEmotionCache';
 import dark from '../styles/theme/dark';
+import { Analytics } from '@vercel/analytics/react';
 import '../styles/globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -26,6 +27,7 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
         <CssBaseline />
         <Layout>
           <Component {...pageProps} />
+          <Analytics />
         </Layout>
       </ThemeProvider>
     </CacheProvider>
