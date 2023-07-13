@@ -10,22 +10,23 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ScaleIcon from '@mui/icons-material/Scale';
-import ListIcon from '@mui/icons-material/List';
-import LocalDiningIcon from '@mui/icons-material/LocalDining';
-
 import Link from 'next/link';
 import { Button, ClickAwayListener, useMediaQuery } from '@mui/material';
 import useUser from '../../lib/useUser';
 import { onLogout } from '../../lib/login';
 import { useRouter } from 'next/router';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import InfoIcon from '@mui/icons-material/Info';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -95,12 +96,19 @@ export default function PersistentDrawerLeft() {
   };
 
   const menu = [
-    { title: 'Plan a meal', icon: ScaleIcon, link: '/plan' },
-    { title: 'Food items', icon: LocalDiningIcon, link: '/ingredients/list' },
+    { title: 'Plan a meal', icon: KitchenIcon, link: '/plan' },
+    {
+      title: 'Foods',
+      icon: FastfoodIcon,
+      link: '/ingredients/fineli',
+    },
     ...(user?.isLoggedIn
-      ? [{ title: 'Meals', icon: ListIcon, link: '/meals/list' }]
+      ? [
+          { title: 'Your foods', icon: KitchenIcon, link: '/ingredients/list' },
+          { title: 'Meals', icon: RestaurantMenuIcon, link: '/meals/list' },
+        ]
       : []),
-    { title: 'About', icon: DashboardIcon, link: '/about' },
+    { title: 'About', icon: InfoIcon, link: '/about' },
   ];
 
   const Icon = (props) => {
@@ -120,6 +128,10 @@ export default function PersistentDrawerLeft() {
     } else {
       router.push('/login');
     }
+  };
+
+  const handleProfile = () => {
+    router.push('/profile');
   };
 
   return (
@@ -167,6 +179,16 @@ export default function PersistentDrawerLeft() {
                 textDecoration: 'none',
               }}
             >
+              {user?.isLoggedIn && (
+                <IconButton
+                  color="inherit"
+                  aria-label="profile"
+                  onClick={handleProfile}
+                >
+                  <AccountCircleIcon />
+                </IconButton>
+              )}
+
               <Button sx={{ color: 'inherit' }} onClick={handleLoginLogout}>
                 {user?.isLoggedIn ? 'LOGOUT' : 'LOGIN'}
               </Button>
