@@ -2,6 +2,7 @@ import prisma from '../../lib/prisma';
 import { IngredientI } from '../../types';
 import {
   Box,
+  CircularProgress,
   Grid,
   IconButton,
   List,
@@ -11,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  TextField,
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -18,54 +20,60 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
 import { withSessionSsr } from '../../lib/withSession';
 import { GetServerSideProps } from 'next';
 import useUser from '../../lib/useUser';
+import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
   ingredientsJson: string;
   totalPages: number;
   currentPage: number;
+  searchQuery: string;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
   async function getServerSideProps({ req, query }) {
     const { user } = req.session;
+    const searchQuery = query.search !== undefined ? String(query.search) : '';
+
+    if (!user) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
     const page = query.page ? Number(query.page) : 1;
     const pageSize = 30;
 
-    let ingredients;
-    let ingredientsCount;
-
-    if (!req.session.user) {
-      ingredients = await prisma.fineli_Ingredient.findMany({
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        orderBy: [
-          {
-            updated_at: 'desc',
-          },
-        ],
-      });
-      ingredientsCount = await prisma.fineli_Ingredient.count();
-    } else {
-      ingredients = await prisma.ingredient.findMany({
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        where: {
-          userId: user?.data.id,
+    const ingredients = await prisma.ingredient.findMany({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      where: {
+        name: {
+          contains: searchQuery,
         },
-        orderBy: [
-          {
-            updated_at: 'desc',
-          },
-        ],
-      });
-      ingredientsCount = await prisma.ingredient.count();
-    }
+      },
+      orderBy: [
+        {
+          updated_at: 'desc',
+        },
+      ],
+    });
+
+    const ingredientsCount = await prisma.ingredient.count({
+      where: {
+        userId: user?.data.id,
+        name: {
+          contains: searchQuery,
+        },
+      },
+    });
 
     const totalPages = Math.ceil(ingredientsCount / pageSize);
 
@@ -76,6 +84,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
         ingredientsJson,
         totalPages,
         currentPage: page,
+        searchQuery,
       },
     };
   },
@@ -105,6 +114,37 @@ export default function Ingredients(props: Props) {
 
   const { user } = useUser();
 
+  const [searchQuery, setSearchQuery] = useState(props.searchQuery || '');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleSearch = () => {
+      if (searchQuery !== '') {
+        router.push(`/ingredients/list?search=${searchQuery}`);
+      } else {
+        router.push('/ingredients/list');
+      }
+      setLoading(false);
+    };
+
+    const timerId = setTimeout(handleSearch, 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchQuery, router]);
+
+  const handleChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    if (query === '') {
+      router.push('/ingredients/fineli');
+    } else {
+      setLoading(true);
+    }
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
@@ -116,6 +156,37 @@ export default function Ingredients(props: Props) {
             ? 'List of all, sorted by creation date'
             : ' No food items, create a new one'}
         </Typography>
+        {data.length > 0 && (
+          <TextField
+            label="Search"
+            value={searchQuery}
+            onChange={handleChange}
+            type="search"
+            fullWidth
+            sx={{
+              marginTop: 1,
+              marginBottom: 2,
+            }}
+            InputProps={{
+              startAdornment: (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '8px',
+                  }}
+                >
+                  {loading ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <SearchIcon fontSize="small" />
+                  )}
+                </Box>
+              ),
+            }}
+          />
+        )}
+
         <List>
           {data.map((x) => (
             <Accordion

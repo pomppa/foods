@@ -23,7 +23,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
-import debounce from 'lodash/debounce';
 import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
@@ -35,7 +34,7 @@ type Props = {
 
 export async function getServerSideProps({ query }) {
   const page = query.page ? Number(query.page) : 1;
-  const searchQuery = query.search !== undefined ? query.search : '';
+  const searchQuery = query.search !== undefined ? String(query.search) : '';
 
   const pageSize = 30;
 
@@ -71,7 +70,7 @@ export async function getServerSideProps({ query }) {
       ingredientsJson,
       totalPages,
       currentPage: page,
-      searchQuery: searchQuery,
+      searchQuery,
     },
   };
 }
