@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
       skip: (page - 1) * pageSize,
       take: pageSize,
       where: {
-        userId: user?.data.id,
+        userId: user.data.id,
         name: {
           contains: searchQuery,
         },
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
 
     const ingredientsCount = await prisma.ingredient.count({
       where: {
-        userId: user?.data.id,
+        userId: user.data.id,
         name: {
           contains: searchQuery,
         },
