@@ -75,20 +75,11 @@ export default function EditIngredient(props) {
           userId: ingredient.userId,
         }),
       });
-      console.log(
-        JSON.stringify({
-          id: ingredient.id,
-          name,
-          kcal,
-          fat,
-          carbs,
-          protein,
-          userId: ingredient.userId,
-        }),
-      );
+
       if (!response.ok) {
         throw new Error('Failed to save ingredient');
       }
+
       const data = await response.json();
       router.push(`/ingredients/list?openAccordion=${data.ingredient.id}`);
     } catch (error) {

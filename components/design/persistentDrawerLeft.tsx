@@ -26,7 +26,12 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { CustomThemeContext } from '../themeContext';
+import { useContext } from 'react';
+import { Switch } from '@mui/material';
 
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -134,6 +139,12 @@ export default function PersistentDrawerLeft() {
     router.push('/profile');
   };
 
+  const { isDarkTheme, toggleTheme } = useContext(CustomThemeContext);
+
+  const handleThemeToggle = () => {
+    toggleTheme();
+  };
+
   return (
     <ClickAwayListener onClickAway={handleDrawerClose}>
       <Box sx={{ display: 'flex' }}>
@@ -159,7 +170,7 @@ export default function PersistentDrawerLeft() {
                   mr: 2,
                   display: { md: 'flex' },
                   fontWeight: 700,
-                  letterSpacing: '.3rem',
+                  letterSpacing: '.2rem',
                   color: 'inherit',
                   textDecoration: 'none',
                 }}
@@ -167,16 +178,11 @@ export default function PersistentDrawerLeft() {
                 FOODS
               </Typography>
             </Typography>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
+            <Box
               sx={{
-                mr: 2,
+                display: 'flex',
                 marginLeft: 'auto',
-                letterSpacing: '.3rem',
                 color: 'inherit',
-                textDecoration: 'none',
               }}
             >
               {user?.isLoggedIn && (
@@ -188,11 +194,21 @@ export default function PersistentDrawerLeft() {
                   <AccountCircleIcon />
                 </IconButton>
               )}
-
-              <Button sx={{ color: 'inherit' }} onClick={handleLoginLogout}>
+              <Button
+                sx={{
+                  backgroundColor: 'primary',
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginLeft: 'auto',
+                  letterSpacing: '.2rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+                onClick={handleLoginLogout}
+              >
                 {user?.isLoggedIn ? 'LOGOUT' : 'LOGIN'}
               </Button>
-            </Typography>
+            </Box>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -224,15 +240,71 @@ export default function PersistentDrawerLeft() {
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Icon icon={element.icon} />
+                      <Icon
+                        icon={element.icon}
+                        sx={{
+                          color: 'text.primary',
+                          fontSize: '1.25rem',
+                        }}
+                      />
                     </ListItemIcon>
-                    <ListItemText primary={element.title} />
+                    <ListItemText
+                      primary={element.title}
+                      primaryTypographyProps={{
+                        sx: {
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1rem',
+                          color: 'text.secondary',
+                          fontSize: '0.875rem',
+                        },
+                      }}
+                    />
                   </ListItemButton>
                 </ListItem>
               </Link>
             ))}
           </List>
           <Divider />
+          <Box sx={{ marginTop: 'auto', p: 2 }}>
+            <Divider />
+            <ListItem>
+              <ListItemText>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1rem',
+                    fontSize: '0.75rem',
+                    color: 'text.secondary',
+                  }}
+                >
+                  Appearance
+                </Typography>
+              </ListItemText>
+              <Switch
+                checked={isDarkTheme}
+                onChange={handleThemeToggle}
+                icon={
+                  <LightModeIcon
+                    fontSize="small"
+                    color="action"
+                    style={{
+                      verticalAlign: 'middle',
+                    }}
+                  />
+                }
+                checkedIcon={
+                  <DarkModeIcon
+                    fontSize="small"
+                    style={{
+                      verticalAlign: 'middle',
+                    }}
+                  />
+                }
+                color="secondary"
+              />
+            </ListItem>
+          </Box>
         </Drawer>
         <Main open={open} mobile={mobile ? 1 : 0}>
           <DrawerHeader />

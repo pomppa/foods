@@ -1,7 +1,7 @@
 import { ThemeOptions } from '@mui/material/styles';
 import { blueGrey } from '@mui/material/colors';
 
-const lightThemeOptions: ThemeOptions = {
+export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
@@ -10,4 +10,8 @@ const lightThemeOptions: ThemeOptions = {
   },
 };
 
-export default lightThemeOptions;
+export const darkThemeOptions: ThemeOptions = {
+  palette: {
+    mode: 'dark',
+  },
+};
