@@ -121,7 +121,6 @@ export default function PersistentDrawerLeft() {
     menu.forEach((item) => {
       router.prefetch(item.link);
     });
-
     router.prefetch('/login');
   };
 
