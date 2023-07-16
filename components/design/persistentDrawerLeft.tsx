@@ -29,7 +29,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { CustomThemeContext } from '../themeContext';
 import { useContext } from 'react';
 import { Switch } from '@mui/material';
-
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 const drawerWidth = 240;
@@ -116,13 +115,23 @@ export default function PersistentDrawerLeft() {
     { title: 'About', icon: InfoIcon, link: '/about' },
   ];
 
+  const router = useRouter();
+
+  const prefetchLinks = () => {
+    menu.forEach((item) => {
+      router.prefetch(item.link);
+    });
+
+    router.prefetch('/login');
+  };
+
+  prefetchLinks();
+
   const Icon = (props) => {
     const { icon } = props;
     const TheIcon = icon;
     return <TheIcon {...props} />;
   };
-
-  const router = useRouter();
 
   const handleLoginLogout = async () => {
     if (user?.isLoggedIn) {
