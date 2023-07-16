@@ -196,6 +196,7 @@ export default function PersistentDrawerLeft() {
               )}
               <Button
                 sx={{
+                  fontSize: '0.75rem',
                   backgroundColor: 'primary',
                   display: 'flex',
                   alignItems: 'center',

@@ -10,7 +10,7 @@ export const CustomThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(null);
 
   useEffect(() => {
-    const storedThemePreference = getCookie('themePreference');
+    const storedThemePreference = getCookie('isDarkTheme');
 
     if (storedThemePreference !== null) {
       setIsDarkTheme(JSON.parse(storedThemePreference));
@@ -21,7 +21,7 @@ export const CustomThemeProvider = ({ children }) => {
 
   useEffect(() => {
     if (isDarkTheme !== null) {
-      setCookie('themePreference', JSON.stringify(isDarkTheme));
+      setCookie('isDarkTheme', JSON.stringify(isDarkTheme));
     }
   }, [isDarkTheme]);
 
