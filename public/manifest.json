@@ -3,8 +3,8 @@
     "short_name": "Foods",
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#333333",
+    "background_color": "#222222",
     "icons": [
       {
         "src": "/favicon-16x16.png",
