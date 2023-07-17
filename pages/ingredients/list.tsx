@@ -33,6 +33,7 @@ type Props = {
   totalPages: number;
   currentPage: number;
   searchQuery: string;
+  hasIngredients: number;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
@@ -75,6 +76,11 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
         },
       },
     });
+    const hasIngredients = await prisma.ingredient.count({
+      where: {
+        userId: user.data.id,
+      },
+    });
 
     const totalPages = Math.ceil(ingredientsCount / pageSize);
 
@@ -86,6 +92,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
         totalPages,
         currentPage: page,
         searchQuery,
+        hasIngredients,
       },
     };
   },
@@ -93,9 +100,11 @@ export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
 
 export default function Ingredients(props: Props) {
   const data: IngredientI[] = JSON.parse(props.ingredientsJson);
+  // const data = [];
   const router = useRouter();
   const { query } = router;
   const openAccordionId = query.openAccordion;
+  const { hasIngredients } = props;
 
   const handleFabClick = () => {
     router.push('/ingredients/new');
@@ -120,10 +129,12 @@ export default function Ingredients(props: Props) {
 
   useEffect(() => {
     const handleSearch = () => {
-      if (searchQuery !== '') {
+      if (searchQuery !== '' && query.search !== searchQuery) {
         router.push(`/ingredients/list?search=${searchQuery}`);
       } else {
-        router.push('/ingredients/list');
+        if (router.pathname !== '/ingredients/list') {
+          router.push('/ingredients/list');
+        }
       }
       setLoading(false);
     };
@@ -133,14 +144,14 @@ export default function Ingredients(props: Props) {
     return () => {
       clearTimeout(timerId);
     };
-  }, [searchQuery, router]);
+  }, [searchQuery, router, query.search]);
 
   const handleChange = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
 
     if (query === '') {
-      router.push('/ingredients/fineli');
+      router.push('/ingredients/list');
     } else {
       setLoading(true);
     }
@@ -152,40 +163,44 @@ export default function Ingredients(props: Props) {
         <Typography variant="h5" mt={2}>
           Food items
         </Typography>
-        <Typography variant="body2" mt={2} mb={2}>
-          {data.length > 0
-            ? 'List of all, sorted by creation date'
-            : ' No food items, create a new one'}
-        </Typography>
-        {data.length > 0 && (
-          <TextField
-            label="Search"
-            value={searchQuery}
-            onChange={handleChange}
-            type="search"
-            fullWidth
-            sx={{
-              marginTop: 1,
-              marginBottom: 2,
-            }}
-            InputProps={{
-              startAdornment: (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginRight: '8px',
-                  }}
-                >
-                  {loading ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <SearchIcon fontSize="small" />
-                  )}
-                </Box>
-              ),
-            }}
-          />
+        {hasIngredients > 0 ? (
+          <>
+            <Typography variant="body2" mt={2} mb={2}>
+              List of all, sorted by creation date
+            </Typography>
+            <TextField
+              label="Search"
+              value={searchQuery}
+              onChange={handleChange}
+              type="search"
+              fullWidth
+              sx={{
+                marginTop: 1,
+                marginBottom: 2,
+              }}
+              InputProps={{
+                startAdornment: (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginRight: '8px',
+                    }}
+                  >
+                    {loading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <SearchIcon fontSize="small" />
+                    )}
+                  </Box>
+                ),
+              }}
+            />
+          </>
+        ) : (
+          <Typography variant="body2" mt={2} mb={2}>
+            No food items, create a new one
+          </Typography>
         )}
 
         <List>
@@ -231,7 +246,7 @@ export default function Ingredients(props: Props) {
                       <IconButton
                         aria-label="Edit"
                         onClick={() => handleEditButtonClick(x.id)}
-                        disabled={x.fineli_id !== undefined}
+                        disabled={x.fineli_id !== undefined} // false
                       >
                         <EditIcon />
                       </IconButton>
