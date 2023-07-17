@@ -7,6 +7,7 @@ export default function Layout({ children }) {
     <>
       <Head>
         <title>Foods</title>
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <PersistentDrawerLeft />
       <Box sx={{ ml: 3, mr: 3, mb: 3, maxWidth: 'md' }}>
