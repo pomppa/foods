@@ -15,14 +15,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
-import StickyFabs from '../../components/stickyFabs';
 import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
@@ -95,10 +93,12 @@ export default function Ingredients(props: Props) {
 
   useEffect(() => {
     const handleSearch = () => {
-      if (searchQuery !== '') {
+      if (searchQuery !== '' && query.search !== searchQuery) {
         router.push(`/ingredients/fineli?search=${searchQuery}`);
       } else {
-        router.push('/ingredients/fineli');
+        if (router.pathname !== '/ingredients/fineli') {
+          router.push('/ingredients/fineli');
+        }
       }
       setLoading(false);
     };
@@ -108,7 +108,7 @@ export default function Ingredients(props: Props) {
     return () => {
       clearTimeout(timerId);
     };
-  }, [searchQuery, router]);
+  }, [searchQuery, router, query.search]);
 
   const handleChange = (event) => {
     const query = event.target.value;
@@ -228,23 +228,6 @@ export default function Ingredients(props: Props) {
               color="primary"
             />
           )}
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        justifyContent="flex-end"
-        sx={{
-          position: 'sticky',
-          zIndex: 1,
-          bottom: '16px',
-          maxWidth: 'calc(100% - 16px)',
-          margin: '0 auto',
-          left: 0,
-          right: 0,
-        }}
-      >
-        <Grid item xs={12}>
-          <StickyFabs primaryFabVisible={false} primaryFabIcon={<AddIcon />} />
         </Grid>
       </Grid>
     </Grid>

@@ -16,5 +16,17 @@
   },
   "plugins": [
     "@typescript-eslint"
+  ],
+  "ignorePatterns": [
+    "public/sw.js",
+    "public/workbox-*.js"
+  ],
+  "overrides": [
+    {
+      "files": ["next.config.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
   ]
 }
