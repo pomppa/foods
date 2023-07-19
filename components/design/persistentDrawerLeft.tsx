@@ -17,7 +17,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Link from 'next/link';
-import { Button, ClickAwayListener, useMediaQuery } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  ClickAwayListener,
+  useMediaQuery,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -29,7 +34,7 @@ import { useContext } from 'react';
 import { Switch } from '@mui/material';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 const drawerWidth = 240;
 
@@ -86,6 +91,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
   const { data: session } = useSession();
+  const name = session?.user?.name || '';
+  const image = session?.user?.image;
+
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
@@ -134,7 +142,6 @@ export default function PersistentDrawerLeft() {
   prefetchLinks();
 
   const handleLoginLogout = async () => {
-    //session ? await signOut() : await signIn();
     session ? await signOut() : router.push('/login');
   };
 
@@ -192,7 +199,15 @@ export default function PersistentDrawerLeft() {
                   aria-label="profile"
                   onClick={handleProfile}
                 >
-                  <AccountCircleIcon />
+                  {session.user.image ? (
+                    <Avatar
+                      src={image}
+                      alt={name}
+                      sx={{ width: '32px', height: '32px' }}
+                    />
+                  ) : (
+                    <AccountCircleIcon />
+                  )}
                 </IconButton>
               )}
               <Button
@@ -208,7 +223,7 @@ export default function PersistentDrawerLeft() {
                 }}
                 onClick={handleLoginLogout}
               >
-                {session ? 'LOGOUT' : 'LOGIN'}
+                {session ? 'SIGN OUT' : 'SIGN IN'}
               </Button>
             </Box>
           </Toolbar>

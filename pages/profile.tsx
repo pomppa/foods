@@ -29,8 +29,11 @@ const Profile = (props: Props) => {
           Your Profile
         </Typography>
       </Grid>
+      <Grid item xs={12} mt={2}>
+        <Typography variant="body2">{session.user.name}</Typography>
+      </Grid>
       <Grid item xs={12}>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
+        <Typography variant="body2">{session.user.email}</Typography>
       </Grid>
     </Grid>
   );
