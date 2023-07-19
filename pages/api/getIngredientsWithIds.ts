@@ -35,7 +35,7 @@ export default async function handle(
         id: {
           in: ingredientIds,
         },
-        userId: session.user.email,
+        userId: session.user.id,
       },
     });
 
@@ -47,6 +47,6 @@ export default async function handle(
 
     return res.status(200).json(combinedIngredients);
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to fetch ingredient data' });
+    return res.status(500).json({ error: 'Failed to fetch ingredient data' });
   }
 }

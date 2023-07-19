@@ -68,7 +68,8 @@ export default function Plan() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to save meal');
+        const res = await response.json();
+        throw new Error(res);
       }
 
       const {

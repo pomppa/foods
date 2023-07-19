@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const meals = await getAllMeals('0');
+  const meals = await getAllMeals(session.user.id);
   return { props: { meals } };
 }
 

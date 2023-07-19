@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async function ({
 
   const session = await getServerSession(req, res, authOptions);
 
-  const meal = await getMeal(id, session.user.email);
+  const meal = await getMeal(id, session.user.id);
 
   const initialFormValues = meal.formValues as FormValue[];
 

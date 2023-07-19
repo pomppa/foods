@@ -16,10 +16,10 @@ export default async function handle(
   }
 
   try {
-    const meal = await getMeal(mealId, session.user.email);
+    const meal = await getMeal(mealId, session.user.id);
 
     //todo
-    if (meal.id !== parseInt(session.user.email)) {
+    if (meal.userId !== session.user.id) {
       throw new Error('No such meal for user');
     }
   } catch (error) {

@@ -25,14 +25,12 @@ export default async function handle(
       data: {
         name: mealName,
         formValues: formValues,
-        userId: session.user.email,
+        userId: session.user.id,
       },
     });
 
-    await prisma.$disconnect();
     return res.status(200).json({ data: meal });
   } catch (error) {
-    await prisma.$disconnect();
-    return res.status(500).json({ message: 'Failed to save meal' });
+    return res.status(500).json({ error: 'Failed to save meal' });
   }
 }

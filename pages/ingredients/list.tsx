@@ -56,7 +56,7 @@ export async function getServerSideProps({ req, res, query }) {
     skip: (page - 1) * pageSize,
     take: pageSize,
     where: {
-      userId: session.user.email,
+      userId: session.user.id,
       name: {
         contains: searchQuery,
       },
@@ -70,7 +70,7 @@ export async function getServerSideProps({ req, res, query }) {
 
   const ingredientsCount = await prisma.ingredient.count({
     where: {
-      userId: session.user.email,
+      userId: session.user.id,
       name: {
         contains: searchQuery,
       },
@@ -78,7 +78,7 @@ export async function getServerSideProps({ req, res, query }) {
   });
   const hasIngredients = await prisma.ingredient.count({
     where: {
-      userId: session.user.email,
+      userId: session.user.id,
     },
   });
 
@@ -100,12 +100,10 @@ export async function getServerSideProps({ req, res, query }) {
 
 export default function Ingredients(props: Props) {
   const data: IngredientI[] = JSON.parse(props.ingredientsJson);
-  // const data = [];
   const router = useRouter();
   const { query } = router;
   const openAccordionId = query.openAccordion;
-  const { hasIngredients } = props;
-  const { session } = props;
+  const { hasIngredients, session } = props;
 
   const handleFabClick = () => {
     router.push('/ingredients/new');

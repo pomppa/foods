@@ -19,7 +19,7 @@ export default async function handle(
   const { id, name, kcal, fat, carbs, protein } = req.body;
 
   const ingredientToUpdate = await prisma.ingredient.findFirst({
-    where: { id: id, userId: session.user.email },
+    where: { id: id, userId: session.user.id },
   });
 
   if (!ingredientToUpdate) {
@@ -34,6 +34,6 @@ export default async function handle(
 
     return res.status(200).json({ ingredient: updatedIngredient });
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to update ingredient' });
+    return res.status(500).json({ error: 'Failed to update ingredient' });
   }
 }

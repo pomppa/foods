@@ -29,7 +29,7 @@ export default async function handle(
         fat,
         carbs,
         protein,
-        userId: session.user.email,
+        userId: session.user.id,
       },
     });
 

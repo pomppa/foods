@@ -25,7 +25,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
   try {
     const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
       query.id,
-      session.user.email,
+      session.user.id,
     );
     const { name, id } = meal;
 

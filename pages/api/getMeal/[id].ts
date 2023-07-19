@@ -12,23 +12,20 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  //todo
-  const meal = await getMeal(id, parseInt(session.user.email));
+  const meal = await getMeal(id, session.user.id);
 
   if (!meal) {
     return res.status(404).json({ message: 'Not found' });
   }
 
-  // todo
-  if (meal.userId !== session.user.email) {
+  if (meal.userId !== session.user.id) {
     return res.status(404).json({ message: 'Not found' });
   }
 
   return res.status(200).json({ meal });
 }
 
-//todo
-export async function getMeal(id: string | string[], userId) {
+export async function getMeal(id: string | string[], userId: string) {
   const meal = await prisma.meal.findFirst({
     where: {
       id: Number(id),
