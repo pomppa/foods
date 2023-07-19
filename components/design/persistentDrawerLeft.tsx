@@ -18,8 +18,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Link from 'next/link';
 import { Button, ClickAwayListener, useMediaQuery } from '@mui/material';
-import useUser from '../../lib/useUser';
-import { onLogout } from '../../lib/login';
 import { useRouter } from 'next/router';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -31,6 +29,8 @@ import { useContext } from 'react';
 import { Switch } from '@mui/material';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useSession, signIn, signOut } from 'next-auth/react';
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -85,11 +85,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerLeft() {
-  const { user, mutateUser } = useUser();
-
+  const { data: session } = useSession();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const router = useRouter();
+
+  const [open, setOpen] = React.useState(false);
+
+  const { isDarkTheme, toggleTheme } = useContext(CustomThemeContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -99,6 +102,12 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
+  const Icon = (props) => {
+    const { icon } = props;
+    const TheIcon = icon;
+    return <TheIcon {...props} />;
+  };
+
   const menu = [
     { title: 'Plan a meal', icon: KitchenIcon, link: '/plan' },
     {
@@ -106,7 +115,7 @@ export default function PersistentDrawerLeft() {
       icon: FastfoodIcon,
       link: '/ingredients/fineli',
     },
-    ...(user?.isLoggedIn
+    ...(session
       ? [
           { title: 'Your foods', icon: KitchenIcon, link: '/ingredients/list' },
           { title: 'Meals', icon: RestaurantMenuIcon, link: '/meals/list' },
@@ -114,8 +123,6 @@ export default function PersistentDrawerLeft() {
       : []),
     { title: 'About', icon: InfoIcon, link: '/about' },
   ];
-
-  const router = useRouter();
 
   const prefetchLinks = () => {
     menu.forEach((item) => {
@@ -126,28 +133,14 @@ export default function PersistentDrawerLeft() {
 
   prefetchLinks();
 
-  const Icon = (props) => {
-    const { icon } = props;
-    const TheIcon = icon;
-    return <TheIcon {...props} />;
-  };
-
   const handleLoginLogout = async () => {
-    if (user?.isLoggedIn) {
-      const data = await onLogout(mutateUser);
-      if (data.isLoggedIn === false) {
-        router.push('/about');
-      }
-    } else {
-      router.push('/login');
-    }
+    //session ? await signOut() : await signIn();
+    session ? await signOut() : router.push('/login');
   };
 
   const handleProfile = () => {
     router.push('/profile');
   };
-
-  const { isDarkTheme, toggleTheme } = useContext(CustomThemeContext);
 
   const handleThemeToggle = () => {
     toggleTheme();
@@ -193,7 +186,7 @@ export default function PersistentDrawerLeft() {
                 color: 'inherit',
               }}
             >
-              {user?.isLoggedIn && (
+              {session && (
                 <IconButton
                   color="inherit"
                   aria-label="profile"
@@ -215,7 +208,7 @@ export default function PersistentDrawerLeft() {
                 }}
                 onClick={handleLoginLogout}
               >
-                {user?.isLoggedIn ? 'LOGOUT' : 'LOGIN'}
+                {session ? 'LOGOUT' : 'LOGIN'}
               </Button>
             </Box>
           </Toolbar>

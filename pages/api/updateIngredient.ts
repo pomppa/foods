@@ -1,25 +1,25 @@
 import prisma from '../../lib/prisma';
 import { Ingredient } from '@prisma/client';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionOptions } from '../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
 
-export default withIronSessionApiRoute(handle, sessionOptions);
-
-async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== 'PUT') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-  const { user } = req.session;
-
-  if (!user) {
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
   const { id, name, kcal, fat, carbs, protein } = req.body;
 
   const ingredientToUpdate = await prisma.ingredient.findFirst({
-    where: { id: id, userId: user.data.id },
+    where: { id: id, userId: session.user.email },
   });
 
   if (!ingredientToUpdate) {

@@ -1,3 +1,8 @@
+/**
+ * todo props and refactor
+ * @param name
+ * @param value
+ */
 export const setCookie = (name, value) => {
   document.cookie = `${name}=${encodeURIComponent(
     value,

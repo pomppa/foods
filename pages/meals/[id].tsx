@@ -3,13 +3,14 @@ import { getMeal } from '../api/getMeal/[id]';
 import { FormValue, IngredientI, Totals } from '../../types';
 import MealTable from '../../components/mealTable';
 import MacroPieChart from '../../components/macros';
-import { getIngredientDataForIds } from '../../utils/getIngredientDataForIds';
+import { getIngredientDataForIds } from '../../lib/getIngredientDataForIds';
 import { calculateTotals } from '../../components/totalsCalculator';
 import { Meal } from '@prisma/client';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import StickyFabs from '../../components/stickyFabs';
-import { withSessionSsr } from '../../lib/withSession';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 type Props = {
   name: string;
@@ -18,19 +19,13 @@ type Props = {
   formValues: FormValue[];
 };
 
-/**
- *
- * @param req
- * @returns
- */
-//export const getServerSideProps = withSessionSsr(async function ({ req }) {
+export const getServerSideProps = async ({ req, res, query }) => {
+  const session = await getServerSession(req, res, authOptions);
 
-export const getServerSideProps = withSessionSsr(async ({ req, query }) => {
-  const { user } = req.session;
   try {
     const meal: Omit<Meal, 'created_at' | 'updated_at'> = await getMeal(
       query.id,
-      user.data.id,
+      session.user.email,
     );
     const { name, id } = meal;
 
@@ -50,7 +45,7 @@ export const getServerSideProps = withSessionSsr(async ({ req, query }) => {
       },
     };
   }
-});
+};
 
 /**
  * Meal page component.

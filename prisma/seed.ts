@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { parse } from 'csv-parse';
 import fs from 'fs';
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 
 /* init prisma */
 const prisma = new PrismaClient();
@@ -80,7 +80,7 @@ read().catch(async (e) => {
 
 async function populate() {
   await prisma.$queryRaw`ALTER TABLE ingredient AUTO_INCREMENT = 5000;`;
-
+  /*
   const hashedPassword = await bcrypt.hash('testtest', 10);
 
   const testData = [
@@ -146,7 +146,7 @@ async function populate() {
     const user = await prisma.user.create({
       data: {
         name: data.userName,
-        password: data.password,
+        // password: data.password,
       },
     });
 
@@ -169,6 +169,7 @@ async function populate() {
       },
     });
   }
+  */
 }
 
 populate();

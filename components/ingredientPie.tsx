@@ -1,6 +1,11 @@
 import { blueGrey } from '@mui/material/colors';
 import { PieChart } from 'react-minimal-pie-chart';
 
+/**
+ *
+ * @param props todo
+ * @returns
+ */
 export default function IngredientPie(props) {
   const { protein, carbs, fat, kcal } = props.ingredient;
 

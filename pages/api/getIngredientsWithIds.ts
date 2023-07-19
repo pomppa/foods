@@ -2,17 +2,19 @@ import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Fineli_Ingredient, Ingredient } from '@prisma/client';
 import { CombinedIngredient } from '../../types';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionOptions } from '../../lib/withSession';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './auth/[...nextauth]';
 
-export default withIronSessionApiRoute(handle, sessionOptions);
-
-async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
   const { ingredientIds } = req.body;
-  const { user } = req.session;
+
+  const session = await getServerSession(req, res, authOptions);
 
   if (!ingredientIds || ingredientIds.length === 0) {
     return res.status(200).json([]);
@@ -33,11 +35,11 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         id: {
           in: ingredientIds,
         },
-        userId: user?.data.id,
+        userId: session.user.email,
       },
     });
 
-    /* ids could potentially collide */
+    /* ids could potentially collide, also todo fix type */
     const combinedIngredients: CombinedIngredient[] = [
       ...ingredients,
       ...fineliIngredients,

@@ -8,28 +8,13 @@ import { useState } from 'react';
 import SaveMeal from '../components/forms/saveMeal';
 import { useRouter } from 'next/router';
 import StickyFabs from '../components/stickyFabs';
-import { withSessionSsr } from '../lib/withSession';
-import type { SessionUser } from '../types';
-
-export const getServerSideProps = withSessionSsr(async function ({ req }) {
-  const user: SessionUser = req.session.user;
-
-  if (user) {
-    return {
-      props: { user: req.session.user },
-    };
-  }
-
-  return {
-    props: { user: null },
-  };
-});
+import { useSession } from 'next-auth/react';
 
 /**
  * @param props
  * @returns
  */
-export default function Plan(props) {
+export default function Plan() {
   const router = useRouter();
   const [formValues, setFormValues] = useState<FormValue[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientI[]>(
@@ -118,7 +103,15 @@ export default function Plan(props) {
     }, 0);
   };
 
-  const { user } = props;
+  /**
+   * useSession() returns an object containing two values: data and status:
+   * data: This can be three values: Session / undefined / null.
+   * when the session hasn't been fetched yet, data will be undefined
+   * in case it failed to retrieve the session, data will be null
+   * in case of success, data will be Session.
+   * status: enum mapping to three possible session states: "loading" | "authenticated" | "unauthenticated"
+   */
+  const { data: session } = useSession();
 
   return (
     <Grid container spacing={2}>
@@ -164,7 +157,7 @@ export default function Plan(props) {
       >
         <Grid item xs={12}>
           <StickyFabs
-            primaryFabVisible={user}
+            primaryFabVisible={session}
             primaryFabDisabled={hasNullValues || isSavingEnabled}
             onPrimaryClick={handleFabClick}
           />

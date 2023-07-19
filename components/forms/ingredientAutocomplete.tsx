@@ -19,15 +19,19 @@ type Props = {
  * @returns
  */
 export default function IngredientAutocomplete(props: Props) {
-  const { onIngredientChange, onWeightChange, isSavingEnabled } = props;
-
-  const weight: number = props.weight;
+  const {
+    onIngredientChange,
+    onWeightChange,
+    isSavingEnabled,
+    weight,
+    options,
+  } = props;
 
   const [inputValue, setInputValue] = useState('');
 
-  const options: IngredientI[] = props.options;
   const selected: IngredientI =
     options.find((option) => option.id === props.value) ?? null;
+
   return (
     <>
       <Autocomplete

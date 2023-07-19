@@ -1,10 +1,9 @@
 import { Fineli_Ingredient, Ingredient } from '@prisma/client';
-import prisma from '../lib/prisma';
+import prisma from './prisma';
 import { CombinedIngredient, IngredientI } from '../types';
 
 /**
  * Converts to supported datatypes and excludes timestamps for meals page
- * @todo move to somewhere else than api route
  * @param ids
  * @returns
  */

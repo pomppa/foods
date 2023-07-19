@@ -1,24 +1,27 @@
 import { Grid, Typography } from '@mui/material';
-import { withSessionSsr } from '../lib/withSession';
+import { getServerSession, Session } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
-export const getServerSideProps = withSessionSsr(async function ({ req }) {
-  const { user } = req.session;
+type Props = {
+  session: Session;
+};
+export const getServerSideProps = async function ({ req, res }) {
+  const session = await getServerSession(req, res, authOptions);
 
-  if (!user) {
+  if (!session) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/ingredients/list',
         permanent: false,
       },
     };
   }
 
-  return {
-    props: { user },
-  };
-});
+  return { props: { session } };
+};
+const Profile = (props: Props) => {
+  const { session } = props;
 
-const Profile = ({ user }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -27,7 +30,7 @@ const Profile = ({ user }) => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+        <pre>{JSON.stringify(session, null, 2)}</pre>
       </Grid>
     </Grid>
   );

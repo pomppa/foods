@@ -12,47 +12,88 @@ datasource db {
 }
 
 model Ingredient {
-  id              Int               @id @default(autoincrement())
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
-  name            String            @db.VarChar(255)
-  kcal            Decimal           @db.Decimal(65, 2)
-  protein         Decimal           @db.Decimal(65, 2)
-  carbs           Decimal           @db.Decimal(65, 2)
-  fat             Decimal           @db.Decimal(65, 2)
-  user            User?@relation(fields:[userId], references:[id])
-  userId          Int?
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  name       String   @db.VarChar(255)
+  kcal       Decimal  @db.Decimal(65, 2)
+  protein    Decimal  @db.Decimal(65, 2)
+  carbs      Decimal  @db.Decimal(65, 2)
+  fat        Decimal  @db.Decimal(65, 2)
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     String?
 }
 
 model Meal {
-  id             Int               @id @default(autoincrement())
-  created_at     DateTime          @default(now())
-  updated_at     DateTime          @updatedAt
-  name           String
-  formValues     Json?
-  user           User?@relation(fields:[userId], references:[id])
-  userId         Int?
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  name       String
+  formValues Json?
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     String?
 }
 
 model Fineli_Ingredient {
-  id              Int               @id @default(autoincrement())
-  fineli_id       Int               @db.Int
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
-  name            String            @db.VarChar(255)
-  kcal            Decimal           @db.Decimal(65, 2)
-  protein         Decimal           @db.Decimal(65, 2)
-  carbs           Decimal           @db.Decimal(65, 2)
-  fat             Decimal           @db.Decimal(65, 2)
+  id         Int      @id @default(autoincrement())
+  fineli_id  Int      @db.Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  name       String   @db.VarChar(255)
+  kcal       Decimal  @db.Decimal(65, 2)
+  protein    Decimal  @db.Decimal(65, 2)
+  carbs      Decimal  @db.Decimal(65, 2)
+  fat        Decimal  @db.Decimal(65, 2)
+}
+
+model Account {
+  id                        String  @id @default(cuid())
+  userId                    String
+  type                      String
+  provider                  String
+  providerAccountId         String
+  refresh_token             String?  @db.Text
+  refresh_token_expires_in  Int?
+  access_token              String?  @db.Text
+  expires_at                Int?
+  token_type                String?
+  scope                     String?
+  id_token                  String?  @db.Text
+  session_state             String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id                    Int       @id @default(autoincrement())
-  name                  String    @unique
-  password              String
-  created_at            DateTime  @default(now()) @map(name: "created_at")
-  updated_at            DateTime  @updatedAt @map(name: "updated_at")
-  meals                 Meal[]
-  ingredients           Ingredient[]
+  id            String       @id @default(cuid())
+  email         String?      @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  ingredients   Ingredient[]
+  meals         Meal[]
+  accounts      Account[]
+  sessions      Session[]
+
   @@map(name: "user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

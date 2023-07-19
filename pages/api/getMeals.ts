@@ -1,27 +1,6 @@
 import prisma from '../../lib/prisma';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionOptions } from '../../lib/withSession';
-import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default withIronSessionApiRoute(handle, sessionOptions);
-
-async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const { user } = req.session;
-
-  if (!user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  const meals = await getAllMeals(user.data.id);
-
-  switch (req.method) {
-    case 'GET':
-      res.json({ meals });
-      break;
-  }
-}
-
-export async function getAllMeals(userId: number) {
+export async function getAllMeals(userId) {
   const meals = await prisma.meal.findMany({
     orderBy: {
       updated_at: 'desc',

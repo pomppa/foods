@@ -23,10 +23,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
-import { withSessionSsr } from '../../lib/withSession';
-import { GetServerSideProps } from 'next';
-import useUser from '../../lib/useUser';
 import SearchIcon from '@mui/icons-material/Search';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
+import type { Session } from 'next-auth';
 
 type Props = {
   ingredientsJson: string;
@@ -34,69 +34,69 @@ type Props = {
   currentPage: number;
   searchQuery: string;
   hasIngredients: number;
+  session: Session;
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = withSessionSsr(
-  async function getServerSideProps({ req, query }) {
-    const { user } = req.session;
-    const searchQuery = query.search !== undefined ? String(query.search) : '';
+export async function getServerSideProps({ req, res, query }) {
+  const searchQuery = query.search !== undefined ? String(query.search) : '';
+  const session = await getServerSession(req, res, authOptions);
 
-    if (!user) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-    const page = query.page ? Number(query.page) : 1;
-    const pageSize = 30;
-
-    const ingredients = await prisma.ingredient.findMany({
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      where: {
-        userId: user.data.id,
-        name: {
-          contains: searchQuery,
-        },
-      },
-      orderBy: [
-        {
-          updated_at: 'desc',
-        },
-      ],
-    });
-
-    const ingredientsCount = await prisma.ingredient.count({
-      where: {
-        userId: user.data.id,
-        name: {
-          contains: searchQuery,
-        },
-      },
-    });
-    const hasIngredients = await prisma.ingredient.count({
-      where: {
-        userId: user.data.id,
-      },
-    });
-
-    const totalPages = Math.ceil(ingredientsCount / pageSize);
-
-    const ingredientsJson = JSON.stringify(ingredients);
-
+  if (!session) {
     return {
-      props: {
-        ingredientsJson,
-        totalPages,
-        currentPage: page,
-        searchQuery,
-        hasIngredients,
+      redirect: {
+        destination: '/login',
+        permanent: false,
       },
     };
-  },
-);
+  }
+  const page = query.page ? Number(query.page) : 1;
+  const pageSize = 30;
+
+  const ingredients = await prisma.ingredient.findMany({
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    where: {
+      userId: session.user.email,
+      name: {
+        contains: searchQuery,
+      },
+    },
+    orderBy: [
+      {
+        updated_at: 'desc',
+      },
+    ],
+  });
+
+  const ingredientsCount = await prisma.ingredient.count({
+    where: {
+      userId: session.user.email,
+      name: {
+        contains: searchQuery,
+      },
+    },
+  });
+  const hasIngredients = await prisma.ingredient.count({
+    where: {
+      userId: session.user.email,
+    },
+  });
+
+  const totalPages = Math.ceil(ingredientsCount / pageSize);
+
+  const ingredientsJson = JSON.stringify(ingredients);
+
+  return {
+    props: {
+      ingredientsJson,
+      totalPages,
+      currentPage: page,
+      searchQuery,
+      hasIngredients,
+      session,
+    },
+  };
+}
 
 export default function Ingredients(props: Props) {
   const data: IngredientI[] = JSON.parse(props.ingredientsJson);
@@ -105,6 +105,7 @@ export default function Ingredients(props: Props) {
   const { query } = router;
   const openAccordionId = query.openAccordion;
   const { hasIngredients } = props;
+  const { session } = props;
 
   const handleFabClick = () => {
     router.push('/ingredients/new');
@@ -121,8 +122,6 @@ export default function Ingredients(props: Props) {
   const handleEditButtonClick = (id) => {
     router.push(`/ingredients/${id}/edit`);
   };
-
-  const { user } = useUser();
 
   const [searchQuery, setSearchQuery] = useState(props.searchQuery || '');
   const [loading, setLoading] = useState(false);
@@ -290,7 +289,7 @@ export default function Ingredients(props: Props) {
       >
         <Grid item xs={12}>
           <StickyFabs
-            primaryFabVisible={user?.isLoggedIn}
+            primaryFabVisible={session}
             primaryFabIcon={<AddIcon />}
             onPrimaryClick={handleFabClick}
           />

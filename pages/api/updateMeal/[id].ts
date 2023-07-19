@@ -1,23 +1,25 @@
 import prisma from '../../../lib/prisma';
 import { MealI } from '../../../types';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionOptions } from '../../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getMeal } from '../getMeal/[id]';
-export default withIronSessionApiRoute(handle, sessionOptions);
+import { authOptions } from '../auth/[...nextauth]';
+import { getServerSession } from 'next-auth';
 
-async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const mealId = String(req.query.id);
-  const { user } = req.session;
-
-  if (!user) {
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
   try {
-    const meal = await getMeal(mealId, user.data.id);
+    const meal = await getMeal(mealId, session.user.email);
 
-    if (meal.id !== user.data.id) {
+    //todo
+    if (meal.id !== parseInt(session.user.email)) {
       throw new Error('No such meal for user');
     }
   } catch (error) {

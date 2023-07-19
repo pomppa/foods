@@ -5,16 +5,15 @@ import { Ingredient } from '@prisma/client';
 import StickyFabs from '../../../components/stickyFabs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { withSessionSsr } from '../../../lib/withSession';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]';
 
-export const getServerSideProps = withSessionSsr(async function ({
-  req,
-  query,
-}) {
+export const getServerSideProps = async function ({ req, res, query }) {
   const { id } = query;
-  const { user } = req.session;
 
-  if (!user) {
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
     return {
       redirect: {
         destination: '/ingredients',
@@ -25,7 +24,7 @@ export const getServerSideProps = withSessionSsr(async function ({
   const ingredient = await prisma.ingredient.findFirst({
     where: {
       id: Number(id),
-      userId: user.data.id,
+      userId: session.user.email,
     },
   });
 
@@ -41,7 +40,7 @@ export const getServerSideProps = withSessionSsr(async function ({
   const ingredientData = JSON.stringify(ingredient);
 
   return { props: { ingredientData } };
-});
+};
 
 export default function EditIngredient(props) {
   const ingredient: Ingredient = JSON.parse(props.ingredientData);

@@ -1,36 +1,38 @@
 import prisma from '../../../lib/prisma';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { sessionOptions } from '../../../lib/withSession';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-export default withIronSessionApiRoute(handle, sessionOptions);
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  const { user } = req.session;
 
-  if (!user) {
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  const meal = await getMeal(id, user.data.id);
+  //todo
+  const meal = await getMeal(id, parseInt(session.user.email));
 
   if (!meal) {
     return res.status(404).json({ message: 'Not found' });
   }
 
-  if (meal.userId !== user.data.id) {
+  // todo
+  if (meal.userId !== session.user.email) {
     return res.status(404).json({ message: 'Not found' });
   }
 
   return res.status(200).json({ meal });
 }
 
-export async function getMeal(id: string | string[], userId: number) {
+//todo
+export async function getMeal(id: string | string[], userId) {
   const meal = await prisma.meal.findFirst({
     where: {
       id: Number(id),
-      userId: userId,
+      userId,
     },
   });
   return exclude(meal, ['created_at', 'updated_at']);
@@ -45,3 +47,5 @@ function exclude<Meal, Key extends keyof Meal>(
   }
   return meal;
 }
+
+export default handle;
