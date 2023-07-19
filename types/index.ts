@@ -16,7 +16,7 @@ export type CombinedIngredient = {
   protein: Decimal;
   carbs: Decimal;
   fat: Decimal;
-  userId?: number | null;
+  userId?: string | null;
 };
 
 export type MealI = {

@@ -1,19 +1,21 @@
 import { AppProps } from 'next/app';
-import Layout from '../components/design/layout';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-import createEmotionCache from '../lib/createEmotionCache';
 import { Analytics } from '@vercel/analytics/react';
+import { CustomThemeProvider } from '../components/themeContext';
+import { SessionProvider } from 'next-auth/react';
+import { Session } from 'next-auth';
+import Layout from '../components/design/layout';
+import createEmotionCache from '../lib/createEmotionCache';
 import '../styles/globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { CustomThemeProvider } from '../components/themeContext';
-import { SessionProvider } from 'next-auth/react';
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
+  pageProps: { session?: Session };
 }
 
 const clientSideEmotionCache = createEmotionCache();

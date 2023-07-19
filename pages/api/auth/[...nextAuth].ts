@@ -1,10 +1,13 @@
 import prisma from '../../../lib/prisma';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 /**
- * todo adapter type?
+ * Using adapter from next-auth
+ * @auth/prisma-adapter": "^1.0.1" not TS compatible
+ *
+ * @see https://github.com/nextauthjs/next-auth/pull/7443
  */
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
