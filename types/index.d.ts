@@ -2,7 +2,7 @@ import type { Decimal } from '@prisma/client/runtime';
 
 export type CombinedIngredient = {
   id: string;
-  fineli_id?: string | null;
+  fineli_id?: number | null;
   created_at: Date;
   updated_at: Date;
   name: string;
