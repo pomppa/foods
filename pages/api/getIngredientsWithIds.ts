@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Fineli_Ingredient, Ingredient } from '@prisma/client';
 import { CombinedIngredient } from '../../types';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from './auth/[...nextauth]';
+import { authOptions } from './auth/authOptions';
 
 export default async function handle(
   req: NextApiRequest,

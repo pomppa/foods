@@ -16,7 +16,7 @@ import StickyFabs from '../../components/stickyFabs';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '../api/auth/authOptions';
 import { getServerSession } from 'next-auth/next';
 
 type Props = {

@@ -2,7 +2,7 @@ import prisma from '../../../lib/prisma';
 import { MealI } from '../../../types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getMeal } from '../getMeal/[id]';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '../auth/authOptions';
 import { getServerSession } from 'next-auth';
 
 export default async function handle(

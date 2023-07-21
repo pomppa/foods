@@ -25,7 +25,7 @@ import IngredientPie from '../../components/ingredientPie';
 import StickyFabs from '../../components/stickyFabs';
 import SearchIcon from '@mui/icons-material/Search';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '../api/auth/authOptions';
 import type { Session } from 'next-auth';
 
 type Props = {

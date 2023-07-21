@@ -2,7 +2,7 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import { getServerSession } from 'next-auth';
 import { getProviders, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { authOptions } from './api/auth/[...nextauth]';
+import { authOptions } from './api/auth/authOptions';
 import { Paper } from '@mui/material';
 import { GitHub, Google } from '@mui/icons-material';
 
