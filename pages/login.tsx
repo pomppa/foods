@@ -32,11 +32,11 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
 
-  const providers: Providers = await getProviders();
-  console.log('/login returning providers');
+  // const providers: Providers = await getProviders();
+  // console.log('/login returning providers');
 
   return {
-    props: { providers },
+    props: { providers: {} },
   };
 };
 
@@ -66,7 +66,7 @@ export default function Login({ providers }) {
               items.
             </Typography>
             <Box mt={3} textAlign="center">
-              {Object.values(providers).map((provider: Provider) => (
+              {/* {Object.values(providers).map((provider: Provider) => (
                 <Button
                   key={provider.id}
                   variant="outlined"
@@ -76,7 +76,7 @@ export default function Login({ providers }) {
                 >
                   Sign in with {provider.name}
                 </Button>
-              ))}
+              ))} */}
             </Box>
           </Box>
         </Paper>
