@@ -1,7 +1,6 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { getServerSession } from 'next-auth';
 import { getProviders, signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { authOptions } from './api/auth/[...nextauth]';
 import { Paper } from '@mui/material';
 import { GitHub, Google } from '@mui/icons-material';
@@ -39,12 +38,11 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 export default function Login({ providers }) {
-  const router = useRouter();
   console.log(providers);
 
   const handleSignIn = async (provider) => {
     await signIn(provider, {
-      callbackUrl: (router.query.callbackUrl as string) || '/profile',
+      callbackUrl: '/profile',
     });
   };
 
