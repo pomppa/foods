@@ -20,6 +20,7 @@ type Provider = {
 };
 
 export const getServerSideProps = async ({ req, res }) => {
+  console.log('/login serversideprops');
   const session = await getServerSession(req, res, authOptions);
 
   if (session) {
@@ -32,6 +33,7 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 
   const providers: Providers = await getProviders();
+  console.log('/login returning providers');
 
   return {
     props: { providers },
