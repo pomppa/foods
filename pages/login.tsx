@@ -38,13 +38,11 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 export default function Login({ providers }) {
-  console.log(providers);
-
-  const handleSignIn = async (provider) => {
-    await signIn(provider, {
-      callbackUrl: '/profile',
-    });
-  };
+  // const handleSignIn = async (provider) => {
+  //   await signIn(provider, {
+  //     callbackUrl: '/profile',
+  //   });
+  // };
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -67,7 +65,7 @@ export default function Login({ providers }) {
                 <Button
                   key={provider.id}
                   variant="outlined"
-                  onClick={() => handleSignIn(provider.id)}
+                  // onClick={() => handleSignIn(provider.id)}
                   sx={{ mt: 2 }}
                   startIcon={provider.id === 'github' ? <GitHub /> : <Google />}
                 >
