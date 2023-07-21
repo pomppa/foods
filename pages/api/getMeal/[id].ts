@@ -1,7 +1,7 @@
 import prisma from '../../../lib/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/authOptions';
+import { authOptions } from '../auth/[...nextauth]';
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;

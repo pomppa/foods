@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import { getServerSession, Session } from 'next-auth';
-import { authOptions } from './api/auth/authOptions';
+import { authOptions } from './api/auth/[...nextauth]';
 
 type Props = {
   session: Session;

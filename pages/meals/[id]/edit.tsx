@@ -13,7 +13,7 @@ import { Meal } from '@prisma/client';
 import StickyFabs from '../../../components/stickyFabs';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../api/auth/authOptions';
+import { authOptions } from '../../api/auth/[...nextauth]';
 
 type Props = {
   meal: Omit<Meal, 'created_at' | 'updated_at'>;

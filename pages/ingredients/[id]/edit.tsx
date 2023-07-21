@@ -6,7 +6,7 @@ import StickyFabs from '../../../components/stickyFabs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../api/auth/authOptions';
+import { authOptions } from '../../api/auth/[...nextauth]';
 
 export const getServerSideProps = async function ({ req, res, query }) {
   const { id } = query;

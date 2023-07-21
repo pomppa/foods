@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import StickyFabs from '../../components/stickyFabs';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/authOptions';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 type Props = {
   name: string;
