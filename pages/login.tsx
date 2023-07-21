@@ -32,16 +32,17 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
 
-  // const providers: Providers = await getProviders();
-  // console.log('/login returning providers');
+  const providers: Providers = await getProviders();
+  console.log('/login returning providers');
 
   return {
-    props: { providers: {} },
+    props: { providers },
   };
 };
 
 export default function Login({ providers }) {
   const router = useRouter();
+  console.log(providers);
 
   const handleSignIn = async (provider) => {
     await signIn(provider, {
