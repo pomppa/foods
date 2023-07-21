@@ -18,7 +18,6 @@ export default async function handle(
   try {
     const meal = await getMeal(mealId, session.user.id);
 
-    //todo
     if (meal.userId !== session.user.id) {
       throw new Error('No such meal for user');
     }
@@ -36,7 +35,7 @@ export default async function handle(
 
 async function updateMeal(mealId: string, meal: MealI) {
   return await prisma.meal.update({
-    where: { id: parseInt(mealId) },
+    where: { id: mealId },
     data: {
       name: meal.name,
       formValues: meal.formValues,

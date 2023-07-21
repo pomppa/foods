@@ -109,11 +109,11 @@ export default function Ingredients(props: Props) {
     router.push('/ingredients/new');
   };
 
-  const [openedAccordion, setOpenedAccordion] = useState<number | null>(
-    Number(openAccordionId),
+  const [openedAccordion, setOpenedAccordion] = useState<string | null>(
+    openAccordionId as string,
   );
 
-  const handleAccordionChange = (accordionId: number) => {
+  const handleAccordionChange = (accordionId: string) => {
     setOpenedAccordion(accordionId === openedAccordion ? null : accordionId);
   };
 

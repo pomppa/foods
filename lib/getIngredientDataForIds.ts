@@ -7,7 +7,7 @@ import { CombinedIngredient, IngredientI } from '../types';
  * @param ids
  * @returns
  */
-export async function getIngredientDataForIds(ids: number[]) {
+export async function getIngredientDataForIds(ids: string[]) {
   const fineliIngredients: Fineli_Ingredient[] =
     await prisma.fineli_Ingredient.findMany({
       where: {

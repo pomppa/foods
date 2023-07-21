@@ -14,7 +14,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 
 type Props = {
   name: string;
-  id: number;
+  id: string;
   ingredients: IngredientI[];
   formValues: FormValue[];
 };

@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Ingredient {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(cuid())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   name       String   @db.VarChar(255)
@@ -25,7 +25,7 @@ model Ingredient {
 }
 
 model Meal {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(cuid())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   name       String
@@ -35,7 +35,7 @@ model Meal {
 }
 
 model Fineli_Ingredient {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(cuid())
   fineli_id  Int      @db.Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

@@ -40,7 +40,7 @@ export default function PlanForm(props: Props) {
     props.formValues ?? [{ ingredient_id: null, weight: null }],
   );
 
-  const disabledOptions: number[] = Object.values(ingredients).map(
+  const disabledOptions: string[] = Object.values(ingredients).map(
     (item) => item.ingredient_id,
   );
 
@@ -71,7 +71,7 @@ export default function PlanForm(props: Props) {
     onChange(updatedIngredients);
   };
 
-  const handleIngredientChange = (index: number, ingredient: number) => {
+  const handleIngredientChange = (index: number, ingredient: string) => {
     const updatedIngredients: FormValue[] = [...ingredients];
     updatedIngredients[index].ingredient_id = ingredient;
     setIngredients(updatedIngredients);
@@ -94,7 +94,7 @@ export default function PlanForm(props: Props) {
             value={ingredient.ingredient_id}
             weight={ingredient.weight}
             options={ingredientIdsAndNames}
-            onIngredientChange={(updatedIngredient: number) =>
+            onIngredientChange={(updatedIngredient: string) =>
               handleIngredientChange(index, updatedIngredient)
             }
             onWeightChange={(weight: number) =>

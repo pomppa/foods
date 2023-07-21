@@ -28,7 +28,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
 export async function getMeal(id: string | string[], userId: string) {
   const meal = await prisma.meal.findFirst({
     where: {
-      id: Number(id),
+      id: id as string,
       userId,
     },
   });

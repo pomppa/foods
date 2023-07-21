@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { IngredientI } from '../../types';
+import type { IngredientI } from '../../types';
 
 type Props = {
-  disabledOptions: number[];
-  onIngredientChange: (id: number) => void;
+  disabledOptions: string[];
+  onIngredientChange: (id: string) => void;
   onWeightChange: (weight: number | string) => void;
   options: IngredientI[];
-  value: number;
+  value: string;
   weight: number;
   isSavingEnabled?: boolean;
 };
@@ -35,14 +35,14 @@ export default function IngredientAutocomplete(props: Props) {
   return (
     <>
       <Autocomplete
-        getOptionLabel={(option: { name: string; id: number }) => option.name}
+        getOptionLabel={(option: { name: string; id: string }) => option.name}
         value={selected ?? null}
         isOptionEqualToValue={(option, value) =>
-          option.id == value?.id || value?.id === 0
+          option.id == value?.id || value?.id === ''
         }
         onChange={(
           _event: React.ChangeEvent,
-          value: { name: string; id: number } | null,
+          value: { name: string; id: string } | null,
         ) => {
           onIngredientChange(value?.id || null);
         }}

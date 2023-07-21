@@ -23,7 +23,7 @@ export const getServerSideProps = async function ({ req, res, query }) {
   }
   const ingredient = await prisma.ingredient.findFirst({
     where: {
-      id: Number(id),
+      id: id,
       userId: session.user.id,
     },
   });

@@ -1,8 +1,8 @@
 import type { Decimal } from '@prisma/client/runtime';
 
 export type CombinedIngredient = {
-  id: number;
-  fineli_id?: number | null;
+  id: string;
+  fineli_id?: string | null;
   created_at: Date;
   updated_at: Date;
   name: string;
@@ -14,27 +14,27 @@ export type CombinedIngredient = {
 };
 
 export type MealI = {
-  id: number;
+  id: string;
   created_at?: Date;
   updated_at?: Date;
   name: string;
-  formValues: string;
+  formValues: string; //JSON?
 };
 
 export type IngredientI = {
-  id: number;
+  id: string;
   name: string;
   kcal?: number;
   protein?: number;
   carbs?: number;
   fat?: number;
-  fineli_id?: number;
-  user_id?: number;
+  fineli_id?: string;
+  user_id?: string;
 };
 
 export type FormValue = {
   weight: number | null;
-  ingredient_id: number | null;
+  ingredient_id: string | null;
 };
 
 export interface Totals {
@@ -63,5 +63,5 @@ export type TableData = {
 
 export type AutocompleteOption = {
   label: string;
-  id: number;
+  id: string;
 };
