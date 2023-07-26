@@ -13,7 +13,7 @@
     "prisma:generate": "prisma generate"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/fineli-seed.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.3",
