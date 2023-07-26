@@ -39,7 +39,6 @@ export default async function handle(
       },
     });
 
-    /* ids could potentially collide, also todo fix type */
     const combinedIngredients: CombinedIngredient[] = [
       ...ingredients,
       ...fineliIngredients,
