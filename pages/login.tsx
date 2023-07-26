@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
-import { getServerSession } from 'next-auth';
-import { getProviders, signIn } from 'next-auth/react';
-import { authOptions } from './api/auth/[...nextauth]';
+import { getProviders, signIn, useSession } from 'next-auth/react';
 import { Paper } from '@mui/material';
 import { GitHub, Google } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 type Providers = {
   github: Provider;
@@ -18,18 +18,7 @@ type Provider = {
   callbackUrl: string;
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-  const session = await getServerSession(req, res, authOptions);
-
-  if (session) {
-    return {
-      redirect: {
-        destination: '/profile',
-        permanent: false,
-      },
-    };
-  }
-
+export const getStaticProps = async () => {
   const providers: Providers = await getProviders();
 
   return {
@@ -38,11 +27,20 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 export default function Login({ providers }) {
-  // const handleSignIn = async (provider) => {
-  //   await signIn(provider, {
-  //     callbackUrl: '/profile',
-  //   });
-  // };
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push('/profile');
+    }
+  }, [session, router]);
+
+  const handleSignIn = async (provider) => {
+    await signIn(provider, {
+      callbackUrl: '/profile',
+    });
+  };
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -65,7 +63,7 @@ export default function Login({ providers }) {
                 <Button
                   key={provider.id}
                   variant="outlined"
-                  // onClick={() => handleSignIn(provider.id)}
+                  onClick={() => handleSignIn(provider.id)}
                   sx={{ mt: 2 }}
                   startIcon={provider.id === 'github' ? <GitHub /> : <Google />}
                 >
