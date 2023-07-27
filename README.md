@@ -1,4 +1,4 @@
-personal [Next.js](https://nextjs.org/) journey - heavily wip
+personal [Next.js](https://nextjs.org/) journey
 
 ## getting started
 
@@ -22,6 +22,8 @@ run the development server
 npm run dev
 ```
 
+## live site
+https://foods.pomppa.xyz/
 
-## live demo
-https://foods-demo.vercel.app/
+
+
