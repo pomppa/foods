@@ -5,39 +5,47 @@ import { CombinedIngredient } from '../../types';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
+
   const { ingredientIds } = req.body;
 
   const session = await getServerSession(req, res, authOptions);
+  const userId = session?.user?.id;
 
   if (!ingredientIds || ingredientIds.length === 0) {
     return res.status(200).json([]);
   }
 
   try {
-    const fineliIngredients: Fineli_Ingredient[] =
-      await prisma.fineli_Ingredient.findMany({
-        where: {
-          id: {
-            in: ingredientIds,
+    const fetchIngredients = async () => {
+      if (userId) {
+        const ingredients: Ingredient[] = await prisma.ingredient.findMany({
+          where: {
+            id: {
+              in: ingredientIds,
+            },
+            userId: userId,
           },
-        },
-      });
+        });
 
-    const ingredients: Ingredient[] = await prisma.ingredient.findMany({
+        return ingredients;
+      } else {
+        return [];
+      }
+    };
+
+    const fineliIngredients: Fineli_Ingredient[] = await prisma.fineli_Ingredient.findMany({
       where: {
         id: {
           in: ingredientIds,
         },
-        userId: session.user.id,
       },
     });
+
+    const ingredients: Ingredient[] = userId ? await fetchIngredients() : [];
 
     const combinedIngredients: CombinedIngredient[] = [
       ...ingredients,
