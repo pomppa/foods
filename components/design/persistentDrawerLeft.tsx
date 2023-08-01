@@ -16,10 +16,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Link from 'next/link';
 import {
   Avatar,
+  Backdrop,
   Button,
+  CircularProgress,
   ClickAwayListener,
   useMediaQuery,
 } from '@mui/material';
@@ -30,7 +31,7 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import InfoIcon from '@mui/icons-material/Info';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { CustomThemeContext } from '../themeContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Switch } from '@mui/material';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -142,7 +143,13 @@ export default function PersistentDrawerLeft() {
   prefetchLinks();
 
   const handleLoginLogout = async () => {
-    session ? await signOut() : router.push('/login');
+    setShowBackdrop(true);
+
+    if (session) {
+      await signOut();
+    } else {
+      router.push('/login');
+    }
   };
 
   const handleProfile = () => {
@@ -153,9 +160,51 @@ export default function PersistentDrawerLeft() {
     toggleTheme();
   };
 
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = (href) => {
+    setShowBackdrop(true);
+    handleDrawerClose();
+    router.push(href);
+  };
+
+  const [showBackdrop, setShowBackdrop] = useState(false);
+
+  useEffect(() => {
+    if (showBackdrop) {
+      const timeoutId = setTimeout(() => {
+        setLoading(true);
+      }, 300);
+
+      return () => clearTimeout(timeoutId);
+    }
+
+    setLoading(false);
+  }, [showBackdrop]);
+
+  useEffect(() => {
+    const handleCompleteAction = () => {
+      setShowBackdrop(false);
+    };
+
+    router.events.on('routeChangeComplete', handleCompleteAction);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleCompleteAction);
+    };
+  }, [router]);
+
   return (
     <ClickAwayListener onClickAway={handleDrawerClose}>
       <Box sx={{ display: 'flex' }}>
+        {loading && (
+          <Backdrop
+            open={loading}
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
@@ -253,32 +302,30 @@ export default function PersistentDrawerLeft() {
           <Divider />
           <List>
             {menu.map((element) => (
-              <Link key={element.link} href={element.link}>
-                <ListItem disablePadding>
-                  <ListItemButton onClick={handleDrawerClose}>
-                    <ListItemIcon>
-                      <Icon
-                        icon={element.icon}
-                        sx={{
-                          color: 'text.primary',
-                          fontSize: '1.25rem',
-                        }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={element.title}
-                      primaryTypographyProps={{
-                        sx: {
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.1rem',
-                          color: 'text.secondary',
-                          fontSize: '0.875rem',
-                        },
+              <ListItem key={element.link} disablePadding>
+                <ListItemButton onClick={() => handleClick(element.link)}>
+                  <ListItemIcon>
+                    <Icon
+                      icon={element.icon}
+                      sx={{
+                        color: 'text.primary',
+                        fontSize: '1.25rem',
                       }}
                     />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={element.title}
+                    primaryTypographyProps={{
+                      sx: {
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1rem',
+                        color: 'text.secondary',
+                        fontSize: '0.875rem',
+                      },
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
             ))}
           </List>
           <Divider />
