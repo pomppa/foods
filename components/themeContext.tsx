@@ -34,6 +34,7 @@ export const CustomThemeProvider = ({ children }) => {
   }
 
   const theme = createTheme(isDarkTheme ? darkThemeOptions : lightThemeOptions);
+  console.log('Theme Mode on Context:', theme.palette.mode);
 
   return (
     <CustomThemeContext.Provider value={{ isDarkTheme, toggleTheme }}>

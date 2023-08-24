@@ -13,5 +13,8 @@ export const lightThemeOptions: ThemeOptions = {
 export const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
+    primary: {
+      main: blueGrey[900],
+    },
   },
 };
