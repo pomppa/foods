@@ -2,11 +2,10 @@ import PersistentDrawerLeft from './persistentDrawerLeft';
 import { Box } from '@mui/system';
 import Head from 'next/head';
 import { useTheme } from '@mui/material/styles';
+import Link from 'next/link';
 
 export default function Layout({ children }) {
   const theme = useTheme();
-  console.log('Theme Mode on Layout:', theme.palette.mode);
-
   return (
     <Box
       sx={{
@@ -35,12 +34,39 @@ export default function Layout({ children }) {
       <Box
         component="footer"
         sx={{
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.primary.main,
           py: 2,
           textAlign: 'center',
+          color: theme.palette.text.secondary,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1rem',
+          fontSize: '0.75rem',
         }}
       >
-        Footer
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Link href="/privacy" passHref>
+            <a
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                margin: '0 10px',
+              }}
+            >
+              Privacy Policy
+            </a>
+          </Link>
+          <Link href="/terms" passHref>
+            <a
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                margin: '0 10px',
+              }}
+            >
+              Terms and Conditions
+            </a>
+          </Link>
+        </Box>
       </Box>
     </Box>
   );

@@ -14,12 +14,17 @@ function About() {
         </Typography>
         <Typography variant="body2" mt={5}>
           1509 food items from Finnish national Food Composition Database{' '}
-          <Link
-            href="https://fineli.fi/fineli/fi/index"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Fineli
+          <Link href="https://fineli.fi/fineli/fi/index">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'inherit',
+                textDecoration: 'underline',
+              }}
+            >
+              Fineli
+            </a>
           </Link>
           .
         </Typography>
