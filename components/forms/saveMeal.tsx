@@ -83,14 +83,14 @@ const SaveMeal = ({
               </Button>
               <Button
                 variant="contained"
-                color="primary"
+                color="success"
                 onClick={handleConfirmSaveClick}
                 disabled={!mealName.trim() || hasNullValues || loading}
                 style={{
                   backgroundColor:
                     !mealName.trim() || hasNullValues || loading
                       ? grey[850]
-                      : 'primary',
+                      : 'success',
                 }}
                 startIcon={<SaveIcon />}
               >

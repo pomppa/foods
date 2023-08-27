@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import Head from 'next/head';
 import { useTheme } from '@mui/material/styles';
 import Link from 'next/link';
-import { grey } from '@mui/material/colors';
 
 export default function Layout({ children }) {
   const theme = useTheme();
@@ -35,7 +34,7 @@ export default function Layout({ children }) {
       <Box
         component="footer"
         sx={{
-          backgroundColor: grey[900],
+          backgroundColor: theme.palette.primary.light,
           py: 2,
           textAlign: 'center',
           color: theme.palette.text.secondary,

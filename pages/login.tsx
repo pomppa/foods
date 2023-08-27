@@ -4,6 +4,7 @@ import { getProviders, signIn, useSession } from 'next-auth/react';
 import { Paper } from '@mui/material';
 import { GitHub, Google } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { blue } from '@mui/material/colors';
 
 type Providers = {
   github: Provider;
@@ -64,7 +65,7 @@ export default function Login({ providers }) {
                   key={provider.id}
                   variant="outlined"
                   onClick={() => handleSignIn(provider.id)}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, color: blue[300], borderColor: blue[300] }}
                   startIcon={provider.id === 'github' ? <GitHub /> : <Google />}
                 >
                   Sign in with {provider.name}
